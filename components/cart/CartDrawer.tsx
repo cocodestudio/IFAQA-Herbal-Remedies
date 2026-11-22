@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { X, ShoppingBag, ArrowRight } from 'lucide-react';
+import { X, ShoppingBag, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { CartItemRow } from './CartItemRow';
 import { ShippingProgressBar } from './ShippingProgressBar';
@@ -30,66 +30,79 @@ export function CartDrawer() {
     };
   }, [isOpen, closeCart]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex justify-end select-none">
-      {/* Backdrop */}
+    <div
+      className={`fixed inset-0 z-50 flex justify-end select-none transition-all duration-300 ${
+        isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+      }`}
+      aria-hidden={!isOpen}
+    >
+      {/* Luxury Backdrop with smooth fade */}
       <div
-        className="fixed inset-0 bg-ifaqa-plum/60 backdrop-blur-sm transition-opacity"
+        className={`fixed inset-0 bg-[#0B2D22]/65 backdrop-blur-sm transition-opacity duration-300 ease-out ${
+          isOpen ? 'opacity-100' : 'opacity-0'
+        }`}
         onClick={closeCart}
       />
 
-      {/* Drawer Container */}
+      {/* Side Drawer Container with smooth slide-in physics from the right */}
       <div
-        style={{
-          transition: 'transform 250ms cubic-bezier(0.32, 0.72, 0, 1)',
-        }}
-        className="relative w-full max-w-md bg-white border-l border-ifaqa-sand/60 h-full flex flex-col justify-between z-10 shadow-2xl"
+        className={`relative w-full max-w-md bg-[#FAF8F5] border-l-2 border-ifaqa-sand/70 h-full flex flex-col justify-between z-10 shadow-2xl transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         {/* Drawer Header */}
-        <div className="p-5 border-b border-ifaqa-sand/40 flex items-center justify-between bg-ifaqa-linen">
-          <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-ifaqa-plum" />
-            <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum">
-              {t('cart')}
-            </h3>
-            <span className="text-xs font-mono text-ifaqa-blackberry font-bold">
-              ({itemCount} {itemCount === 1 ? 'item' : 'items'})
-            </span>
+        <div className="p-5 border-b border-ifaqa-sand/40 flex items-center justify-between bg-white shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-ifaqa-plum text-ifaqa-sand flex items-center justify-center border border-ifaqa-sand/40">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum">
+                {t('cart')}
+              </h3>
+              <p className="text-[10px] font-mono text-ifaqa-blackberry font-bold">
+                {itemCount} {itemCount === 1 ? 'Formulation' : 'Formulations'} Added
+              </p>
+            </div>
           </div>
           <button
             onClick={closeCart}
-            className="p-1.5 text-ifaqa-plum hover:bg-ifaqa-sand/30 transition-colors"
+            className="p-2 text-ifaqa-plum hover:bg-ifaqa-sand/20 hover:text-ifaqa-blackberry transition-colors"
             aria-label="Close cart drawer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Free Shipping Bar */}
-        <div className="p-4 bg-ifaqa-linen/50 border-b border-ifaqa-sand/30">
+        {/* Free Shipping Tier Progress */}
+        <div className="p-4 bg-[#FAF5EC] border-b border-ifaqa-sand/30">
           <ShippingProgressBar subtotal={subtotalPKR} />
         </div>
 
         {/* Cart Item List */}
-        <div className="flex-1 overflow-y-auto p-5 divide-y divide-ifaqa-sand/30">
+        <div className="flex-1 overflow-y-auto p-5 divide-y divide-ifaqa-sand/30 bg-white/70">
           {items.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
-              <span className="text-4xl">🌿</span>
-              <p className="font-serif text-base font-bold text-ifaqa-plum">
-                Your cart is empty
-              </p>
-              <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed font-medium">
-                Browse our dispensary to find tailored herbal formulations for any condition.
-              </p>
+            <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4">
+              <div className="w-16 h-16 bg-[#FAF5EC] border border-ifaqa-sand/60 flex items-center justify-center text-3xl">
+                🌿
+              </div>
+              <div className="space-y-1">
+                <p className="font-serif text-base font-bold text-ifaqa-plum">
+                  Your Apothecary Cart Is Empty
+                </p>
+                <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed max-w-xs font-medium">
+                  Browse our classical pharmacopoeia to discover empirical remedies compounded for your health needs.
+                </p>
+              </div>
               <div className="pt-2">
                 <Link
                   href="/catalog"
                   onClick={closeCart}
-                  className="px-4 py-2 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-wider inline-block hover:bg-ifaqa-blackberry"
+                  className="px-6 py-2.5 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-widest inline-flex items-center gap-2 hover:bg-ifaqa-blackberry transition-colors shadow-md"
                 >
-                  Explore Catalog
+                  <span>Explore Pharmacopoeia</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-ifaqa-sand" />
                 </Link>
               </div>
             </div>
@@ -102,12 +115,18 @@ export function CartDrawer() {
 
         {/* Drawer Footer */}
         {items.length > 0 && (
-          <div className="p-5 border-t border-ifaqa-sand/50 bg-ifaqa-linen/60 space-y-4">
-            <div className="flex items-center justify-between text-xs font-sans">
-              <span className="text-ifaqa-blackberry font-bold uppercase tracking-wider">Subtotal:</span>
-              <span className="font-mono text-lg font-bold text-ifaqa-plum">
-                {formatPriceINR(subtotalPKR)}
-              </span>
+          <div className="p-5 border-t-2 border-ifaqa-sand/60 bg-white space-y-4 shadow-lg">
+            <div className="space-y-1.5 pb-2 border-b border-ifaqa-sand/30">
+              <div className="flex items-center justify-between text-xs font-sans">
+                <span className="text-ifaqa-blackberry font-bold uppercase tracking-wider">Subtotal:</span>
+                <span className="font-mono text-xl font-bold text-ifaqa-plum">
+                  {formatPriceINR(subtotalPKR)}
+                </span>
+              </div>
+              <p className="text-[10px] text-ifaqa-blackberry/80 font-sans flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-800" />
+                <span>GST included • 100% Genuine botanical formulations</span>
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -116,17 +135,17 @@ export function CartDrawer() {
                 onClick={closeCart}
                 className="block w-full"
               >
-                <Button3D variant="primary" size="lg" className="w-full font-bold shadow-md">
-                  <span>Checkout Now</span>
-                  <ArrowRight className="w-4 h-4 ml-1.5 inline-block" />
+                <Button3D variant="primary" size="lg" className="w-full font-bold shadow-md justify-center">
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight className="w-4 h-4 ml-1.5 inline-block text-ifaqa-sand" />
                 </Button3D>
               </Link>
               <Link
                 href="/cart"
                 onClick={closeCart}
-                className="block w-full text-center py-2 text-xs font-serif text-ifaqa-plum font-bold hover:underline"
+                className="block w-full text-center py-2 text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold hover:text-ifaqa-blackberry transition-colors underline"
               >
-                View Full Cart
+                View Full Dispensary Cart
               </Link>
             </div>
           </div>

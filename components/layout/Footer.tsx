@@ -107,12 +107,18 @@ export function Footer() {
                 <span>care@ifaqaremedies.com</span>
               </div>
             </div>
-            <div className="pt-3">
+            <div className="pt-3 flex gap-2">
               <Link
                 href="/catalog"
-                className="inline-block px-4 py-2 text-xs font-serif font-bold uppercase tracking-wider bg-ifaqa-sand text-ifaqa-plum hover:bg-white transition-colors"
+                className="inline-block px-3 py-2 text-[11px] font-serif font-bold uppercase tracking-wider bg-ifaqa-sand text-ifaqa-plum hover:bg-white transition-colors"
               >
-                Browse All Remedies
+                Browse Catalog
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-block px-3 py-2 text-[11px] font-serif font-bold uppercase tracking-wider border border-ifaqa-sand text-ifaqa-linen hover:bg-white/10 transition-colors"
+              >
+                Consultation
               </Link>
             </div>
           </div>
@@ -121,8 +127,12 @@ export function Footer() {
         {/* Bottom Bar: Copyright & Notices */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-sans text-ifaqa-linen/80">
           <p>© {new Date().getFullYear()} IFAQA Herbal Remedies. All rights reserved. Registered Desi Dawakhana.</p>
-          <div className="flex items-center gap-6">
-            <Link href="/catalog" className="hover:text-ifaqa-sand transition-colors">Apothecary Index</Link>
+          <div className="flex items-center gap-4 sm:gap-5 flex-wrap">
+            <Link href="/about" className="hover:text-ifaqa-sand transition-colors">About Us</Link>
+            <span className="text-ifaqa-sand/40">•</span>
+            <Link href="/contact" className="hover:text-ifaqa-sand transition-colors">Contact</Link>
+            <span className="text-ifaqa-sand/40">•</span>
+            <Link href="/privacy-policy" className="hover:text-ifaqa-sand transition-colors">Privacy Policy</Link>
             <span className="text-ifaqa-sand/40">•</span>
             <Link href="/cart" className="hover:text-ifaqa-sand transition-colors">Shopping Cart</Link>
             <span className="text-ifaqa-sand/40">•</span>

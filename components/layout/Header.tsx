@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { ShoppingBag, User, Menu, ShieldCheck, Globe, ChevronDown, Check } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -11,8 +12,9 @@ import { MobileNavDrawer } from './MobileNavDrawer';
 
 export function Header() {
   const { itemCount, openCart } = useCart();
-  const { user, openPhoneModal, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -35,6 +37,13 @@ export function Header() {
   ];
 
   const currentLangObj = languageOptions.find(l => l.code === language) || languageOptions[0];
+
+  const navLinks = [
+    { label: t('home'), href: '/' },
+    { label: t('about'), href: '/about' },
+    { label: t('contact'), href: '/contact' },
+    { label: t('privacyPolicy'), href: '/privacy-policy' },
+  ];
 
   return (
     <>
@@ -68,50 +77,27 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center gap-5 lg:gap-8">
-              <Link
-                href="/"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-bold"
-              >
-                {t('home')}
-              </Link>
-              <Link
-                href="/catalog"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-bold"
-              >
-                {t('catalog')}
-              </Link>
-              <Link
-                href="/catalog/hazim"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-semibold"
-              >
-                Digestive
-              </Link>
-              <Link
-                href="/catalog/muqawwi"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-semibold"
-              >
-                Vitality
-              </Link>
-              <Link
-                href="/catalog/sual"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-semibold"
-              >
-                Respiratory
-              </Link>
-              <Link
-                href="/catalog/mafasil"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-semibold"
-              >
-                Joint Care
-              </Link>
-              <Link
-                href="/catalog/quwwat-e-mudafiat"
-                className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors font-semibold"
-              >
-                Immunity
-              </Link>
+            {/* Desktop Navigation Links - Clean & Stable: Only Home, About, Contact, Privacy Policy */}
+            <nav className="hidden md:flex items-center gap-7 lg:gap-10">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative text-xs font-serif uppercase tracking-widest transition-colors font-bold py-1 ${
+                      isActive
+                        ? 'text-ifaqa-plum font-extrabold'
+                        : 'text-ifaqa-blackberry hover:text-ifaqa-plum'
+                    }`}
+                  >
+                    <span>{link.label}</span>
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-ifaqa-sand" />
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Header Right Actions */}
@@ -169,9 +155,9 @@ export function Header() {
                 )}
               </div>
 
-              {/* Patron Sign In / Account */}
-              <button
-                onClick={openPhoneModal}
+              {/* Dedicated Patron Sign In / Account Page Link */}
+              <Link
+                href="/sign-in"
                 className="p-2 text-ifaqa-plum hover:text-ifaqa-blackberry hover:bg-ifaqa-sand/20 transition-all flex items-center gap-1.5"
                 title={isAuthenticated ? `Logged in: ${user?.phoneNumber}` : "Patron Sign In"}
                 aria-label="Account details"
@@ -184,9 +170,9 @@ export function Header() {
                 <span className="hidden lg:inline text-[11px] font-serif uppercase tracking-wider font-bold">
                   {isAuthenticated ? 'Account' : t('signIn')}
                 </span>
-              </button>
+              </Link>
 
-              {/* Shopping Cart Button */}
+              {/* Shopping Cart Button - Triggers Smooth Side Drawer */}
               <button
                 onClick={openCart}
                 className="relative p-2 text-ifaqa-plum hover:text-ifaqa-blackberry hover:bg-ifaqa-sand/20 transition-all flex items-center gap-2"

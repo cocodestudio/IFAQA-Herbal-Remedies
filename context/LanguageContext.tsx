@@ -16,6 +16,9 @@ export interface LanguageContextType {
 const translations: Record<LanguageCode, Record<string, string>> = {
   en: {
     home: 'Home',
+    about: 'About',
+    contact: 'Contact',
+    privacyPolicy: 'Privacy Policy',
     catalog: 'Pharmacopoeia',
     cart: 'Cart',
     checkout: 'Checkout',
@@ -49,6 +52,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
   },
   hi: {
     home: 'होम',
+    about: 'परिचय (About)',
+    contact: 'संपर्क (Contact)',
+    privacyPolicy: 'गोपनीयता नीति (Privacy)',
     catalog: 'दवाइयां एवं उत्पाद',
     cart: 'कार्ट',
     checkout: 'चेकआउट',
@@ -82,6 +88,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
   },
   ur: {
     home: 'ہوم',
+    about: 'تعارف (About)',
+    contact: 'رابطہ (Contact)',
+    privacyPolicy: 'رازداری پالیسی (Privacy)',
     catalog: 'دواخانہ و ادویات',
     cart: 'ٹوکری',
     checkout: 'چیک آؤٹ',
