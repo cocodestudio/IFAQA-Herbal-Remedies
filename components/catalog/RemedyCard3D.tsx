@@ -111,10 +111,10 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
       >
         {/* Instant Navigation Feedback Indicator Overlay */}
         {isNavigating && (
-          <div className="absolute inset-0 z-30 bg-white/75 backdrop-blur-[2px] flex items-center justify-center animate-in fade-in duration-100">
-            <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0B2D22] text-[#DFBA73] border border-[#DFBA73]/60 shadow-lg">
+          <div className="absolute inset-0 z-30 bg-white/80 backdrop-blur-[2px] flex items-center justify-center animate-in fade-in duration-100">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0B2D22] text-[#DFBA73] border border-[#DFBA73]/70 shadow-xl">
               <div className="w-3.5 h-3.5 border-2 border-[#DFBA73]/30 border-t-[#DFBA73] rounded-full animate-spin" />
-              <span className="text-[10px] font-serif font-bold uppercase tracking-widest">Opening...</span>
+              <span className="text-[10px] font-serif font-bold uppercase tracking-widest">Viewing Formulation...</span>
             </div>
           </div>
         )}

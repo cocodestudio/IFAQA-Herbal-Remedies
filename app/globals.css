@@ -133,3 +133,15 @@ button,
     width: 100%;
   }
 }
+
+@keyframes triangle3dSpin {
+  0% {
+    transform: perspective(800px) rotateX(15deg) rotateY(0deg) rotateZ(0deg);
+  }
+  50% {
+    transform: perspective(800px) rotateX(25deg) rotateY(180deg) rotateZ(10deg);
+  }
+  100% {
+    transform: perspective(800px) rotateX(15deg) rotateY(360deg) rotateZ(0deg);
+  }
+}

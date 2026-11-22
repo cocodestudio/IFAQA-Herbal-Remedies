@@ -92,7 +92,7 @@ export default function RemedyDetailPage() {
           />
         </div>
         <span className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum">
-          Loading Formulation...
+          Consulting Pharmacopoeia...
         </span>
       </div>
     );
