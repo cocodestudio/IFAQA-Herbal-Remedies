@@ -1,0 +1,2497 @@
+{
+  "categories": [
+    {
+      "id": "hazim",
+      "name": "Digestive & Gastrointestinal Care",
+      "urduName": "ہاضم اور نظام انہضام",
+      "romanName": "Hazim wa Nizam-e-Inhezam",
+      "slug": "hazim",
+      "tagline": "Classical remedies for gastric ease, indigestion, and metabolic balance",
+      "description": "Centuries-proven herbal formulations engineered to rekindle digestive fire, ease bloating, and optimize gut flora.",
+      "iconIdentifier": "stomach",
+      "bannerImage": "/banners/hazim-header.jpg",
+      "displayOrder": 1,
+      "remedyCount": 7,
+      "isActive": true
+    },
+    {
+      "id": "muqawwi",
+      "name": "Vitality & General Tonics",
+      "urduName": "مقوی عام اور تقویت اعصاب",
+      "romanName": "Muqawwi-e-Aam wa Asabi",
+      "slug": "muqawwi",
+      "tagline": "Rejuvenating formulations for nervous vigor, heart stamina, and youthfulness",
+      "description": "Nobility-grade Unani tonics featuring pearls, amber, and rare botanicals to restore somatic and cerebral vigor.",
+      "iconIdentifier": "sparkles",
+      "bannerImage": "/banners/muqawwi-header.jpg",
+      "displayOrder": 2,
+      "remedyCount": 10,
+      "isActive": true
+    },
+    {
+      "id": "sual",
+      "name": "Respiratory & Throat Wellness",
+      "urduName": "سعال اور تنفس",
+      "romanName": "Sual wa Tanaffus",
+      "slug": "sual",
+      "tagline": "Soothing elixirs for bronchial relief, lingering coughs, and throat comfort",
+      "description": "Expectorant and anti-tussive decoctions prepared with black mulberry, licorice, and Cordia myxa.",
+      "iconIdentifier": "wind",
+      "bannerImage": "/banners/sual-header.jpg",
+      "displayOrder": 3,
+      "remedyCount": 2,
+      "isActive": true
+    },
+    {
+      "id": "mafasil",
+      "name": "Joints & Musculoskeletal Relief",
+      "urduName": "مفاصل اور جوڑوں کا درد",
+      "romanName": "Waja-ul-Mafasil",
+      "slug": "mafasil",
+      "tagline": "Colchicum-rich formulas and warming oils for arthritic stiffness and backache",
+      "description": "Potent formulations combining Suranjan (Colchicum autumnale) with anti-inflammatory herbs to dissolve uric crystalline buildup.",
+      "iconIdentifier": "shield",
+      "bannerImage": "/banners/mafasil-header.jpg",
+      "displayOrder": 4,
+      "remedyCount": 2,
+      "isActive": true
+    },
+    {
+      "id": "jild",
+      "name": "Dermatological & Skin Alchemy",
+      "urduName": "جلد اور حسن و نکھار",
+      "romanName": "Jild wa Husn",
+      "slug": "jild",
+      "tagline": "Purifying hydrolats and cooling ointments for radiant complexion and healing",
+      "description": "Hydro-distilled pure rose water and camphorated zinc ointments crafted to purify cutaneous microcirculation.",
+      "iconIdentifier": "flower",
+      "bannerImage": "/banners/jild-header.jpg",
+      "displayOrder": 5,
+      "remedyCount": 3,
+      "isActive": true
+    },
+    {
+      "id": "quwwat-e-mudafiat",
+      "name": "Immune & Constitutional Defense",
+      "urduName": "قوت مدافعت",
+      "romanName": "Quwwat-e-Mudafiat",
+      "slug": "quwwat-e-mudafiat",
+      "tagline": "Deep immunological fortification and celestial cardiac cardioprotection",
+      "description": "Precious gem-infused electuaries strengthening vital organs against pestilence, seasonal weakness, and oxidation.",
+      "iconIdentifier": "shield-check",
+      "bannerImage": "/banners/mudafiat-header.jpg",
+      "displayOrder": 6,
+      "remedyCount": 7,
+      "isActive": true
+    }
+  ],
+  "remedies": [
+    {
+      "id": "hazim-chatni",
+      "sku": "IFA-HAZ-001",
+      "name": "Hazim Chatni",
+      "hindiName": "हाज़िम चटनी",
+      "urduName": "ہاضم چٹنی",
+      "romanUrduName": "Hazim Chatni",
+      "slug": "hazim-chatni",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "पेट की हर समस्या का आसान और असरदार समाधान — गैस, कब्ज़, एसिडिटी और बदहज़मी दूर करे।",
+      "longDescription": "हाज़िम चटनी यूनानी व देसी जड़ी-बूटियों से तैयार एक बेमिसाल पाचक चटनी है। यह कब्ज़, गैस और उनसे पैदा होने वाली तकलीफ़ों को दूर करती है, सीने की जलन, बदहज़मी और अफारे में तुरंत आराम दिलाती है और पेट की अतिरिक्त चर्बी को कम करके पाचन तंत्र को चुस्त व दुरुस्त बनाती है।",
+      "therapeuticIndications": [
+        "Acidity & Hyperacidity (तेज़ाबीपन)",
+        "Chronic Constipation (कब्ज़)",
+        "Indigestion & Dyspepsia (बदहज़मी)",
+        "Gastric Distension & Bloating (गैस व अफारा)",
+        "Loss of Appetite (भूख की कमी)",
+        "Abdominal Fat Reduction (पेट की चर्बी कम करना)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Zingiber officinale",
+          "commonName": "Sonth (Dry Ginger)",
+          "partUsed": "Rhizome",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Piper nigrum",
+          "commonName": "Kali Mirch (Black Pepper)",
+          "partUsed": "Berries",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Cuminum cyminum",
+          "commonName": "Jeera (Cumin)",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Ferula foetida",
+          "commonName": "Hing (Asafoetida)",
+          "partUsed": "Resin",
+          "proportion": "10%"
+        },
+        {
+          "botanicalName": "Punica granatum",
+          "commonName": "Anardana (Pomegranate)",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Black Rock Salt",
+          "commonName": "Kala Namak",
+          "partUsed": "Mineral Base",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5-7 ग्राम",
+        "timing": "खाना खाने के बाद दिन में 2 बार",
+        "anupana": "ताज़ा पानी या हल्के गर्म पानी के साथ",
+        "contraindications": [
+          "गंभीर पेप्टिक अल्सर के दौरान कम मात्रा में लें।"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "200 gm",
+        "containerType": "Sealed HDPE Jar"
+      },
+      "pricePKR": 199,
+      "comparePricePKR": 249,
+      "priceUSD": 2.99,
+      "stockQuantity": 120,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 142,
+      "images": [
+        "/images/booklet/page-2.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-2.jpg"
+    },
+    {
+      "id": "halwa-gainaf-pro",
+      "sku": "IFA-MUQ-001",
+      "name": "Halwa Gainaf Pro",
+      "hindiName": "हलवा गैनाफ प्रो",
+      "urduName": "حلوہ گیناف پرو",
+      "romanUrduName": "Halwa Gainaf Pro",
+      "slug": "halwa-gainaf-pro",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Premium Quality For Muscles — महिलाओं के वज़न और शारीरिक उभार को बढ़ाने का कुदरती हलवा।",
+      "longDescription": "जिस्म में कुदरती ताक़त पैदा करके वज़न में इज़ाफ़ा करता है, पिस्तानों को भरपूर और उभरा हुआ बनाता है, चेहरे और जिस्म के ढांचे को नर्मी और दिलकशी बख्शता है। खून की कमी और कमज़ोरी को दूर करके जिस्म को ताक़तवर बनाता है। लगातार इस्तेमाल से महिलाओं के हुस्न और आकर्षण में बढ़ोत्तरी करता है।",
+      "therapeuticIndications": [
+        "Women's Natural Weight Gain (वज़न बढ़ाना)",
+        "Breast Firmness & Fullness (पिस्तानों का उभार)",
+        "General Physical Weakness (कमज़ोरी व थकान)",
+        "Anemia (खून की कमी)",
+        "Facial Glow & Feminine Radiance (चेहरे का निखार)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Withania somnifera",
+          "commonName": "Ashwagandha",
+          "partUsed": "Root",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Asparagus racemosus",
+          "commonName": "Shatavari",
+          "partUsed": "Root",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Phoenix dactylifera",
+          "commonName": "Khurma (Dates)",
+          "partUsed": "Fruit Paste",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Prunus amygdalus",
+          "commonName": "Badam (Almond)",
+          "partUsed": "Kernel",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Crocus sativus",
+          "commonName": "Zafran (Saffron)",
+          "partUsed": "Stigma",
+          "proportion": "5%"
+        },
+        {
+          "botanicalName": "Pure Cow Ghee & Honey",
+          "commonName": "Desi Ghee & Shahad",
+          "partUsed": "Confection Base",
+          "proportion": "10%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 ग्राम",
+        "timing": "सुबह व शाम",
+        "anupana": "गुनगुने मीठे दूध के साथ",
+        "contraindications": [
+          "गर्भावस्था के दौरान चिकित्सक की सलाह लें।"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "250 gm",
+        "containerType": "Sealed Luxury Box & Pack"
+      },
+      "pricePKR": 365,
+      "comparePricePKR": 450,
+      "priceUSD": 4.99,
+      "stockQuantity": 85,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 96,
+      "images": [
+        "/images/booklet/page-3.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-3.jpg"
+    },
+    {
+      "id": "halwa-gainam-pro",
+      "sku": "IFA-MUQ-002",
+      "name": "Halwa Gainam Pro (Body Gain-M)",
+      "hindiName": "हलवा गैनाम प्रो (बॉडी गेन-एम)",
+      "urduName": "حلوہ گینام پرو",
+      "romanUrduName": "Halwa Gainam Pro",
+      "slug": "halwa-gainam-pro",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Specially crafted to support men's health, muscle growth, appetite and overall vitality.",
+      "longDescription": "हर उम्र के पुरुषों के लिए बेहतरीन हलवा। सामान्य शारीरिक दुर्बलता, खून की कमी और बीमारी के बाद की दुर्बलता को दूर करता है। जिस्म को ताक़तवर और भरा हुआ बनाता है। कमज़ोरी और खून की कमी को दूर करके वज़न बढ़ाता है और चेहरे व जिस्म को खूबसूरत और तंदुरुस्त बनाता है।",
+      "therapeuticIndications": [
+        "Men's Muscle Mass Building (मांसपेशियों का विकास)",
+        "Appetite Regulation (भूख बढ़ाना)",
+        "Post-Illness Convalescence (कमज़ोरी दूर करना)",
+        "Stamina & Vigor (ताकत व फुर्ती)",
+        "Nutritional Deficiencies (पोषक तत्वों की पूर्ति)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Chlorophytum borivilianum",
+          "commonName": "Safed Musli",
+          "partUsed": "Root",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Mucuna pruriens",
+          "commonName": "Kaunch Beej",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Withania somnifera",
+          "commonName": "Ashwagandha",
+          "partUsed": "Root",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Tribulus terrestris",
+          "commonName": "Gokshura",
+          "partUsed": "Fruit",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Anacyclus pyrethrum",
+          "commonName": "Akarkara",
+          "partUsed": "Root",
+          "proportion": "10%"
+        },
+        {
+          "botanicalName": "Dry Fruits Blend",
+          "commonName": "Pista, Kaju, Maghz",
+          "partUsed": "Nuts",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 ग्राम",
+        "timing": "सुबह नाश्ते के बाद और रात को सोते समय",
+        "anupana": "गुनगुने दूध के साथ",
+        "contraindications": [
+          "उच्च रक्तचाप वाले चिकित्सक के परामर्श से लें।"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "250 gm",
+        "containerType": "Protective Carton & Jar"
+      },
+      "pricePKR": 360,
+      "comparePricePKR": 450,
+      "priceUSD": 4.99,
+      "stockQuantity": 90,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 110,
+      "images": [
+        "/images/booklet/page-4.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-4.jpg"
+    },
+    {
+      "id": "majoon-salateen-gold",
+      "sku": "IFA-MUQ-003",
+      "name": "Majoon Salateen Gold",
+      "hindiName": "माजून सलातीन गोल्ड",
+      "urduName": "معجون سلاطین گولڈ",
+      "romanUrduName": "Majoon Salateen Gold",
+      "slug": "majoon-salateen-gold",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Boost Strength & Libido (Always 18) — मर्दाना शक्ति, तनाव और टाइमिंग बढ़ाने का शाही फॉर्मूला।",
+      "longDescription": "माजून सलातीन गोल्ड मर्दाना कमज़ोरी दूर करने और ताक़त बढ़ाने का असरदार शाही नुस्खा है। यह जिस्म में ऊर्जा, आत्मविश्वास और मज़बूती पैदा करता है जिससे परफॉरमेंस बेहतर होती है। लिंग में सख्ती व तनाव बढ़ाकर सम्भोग क्रिया को लम्बे समय तक बनाए रखता है और वैवाहिक जीवन में पूर्ण संतुष्टि देता है।",
+      "therapeuticIndications": [
+        "Erectile Weakness (ढीलापन व तनाव की कमी)",
+        "Low Libido & Drive (इच्छा की कमी)",
+        "Lack of Stamina (जल्दी थक जाना)",
+        "Premature Ejaculation (कम टाइमिंग)",
+        "General Physical & Nervous Exhaustion (थकान)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Swarna Bhasma & Vark",
+          "commonName": "Gold Foil & Ash",
+          "partUsed": "Purified Mineral",
+          "proportion": "5%"
+        },
+        {
+          "botanicalName": "Crocus sativus",
+          "commonName": "Kesar / Zafran",
+          "partUsed": "Stigma",
+          "proportion": "10%"
+        },
+        {
+          "botanicalName": "Myristica fragrans",
+          "commonName": "Jaiphal & Javitri",
+          "partUsed": "Nut & Aril",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Orchis latifolia",
+          "commonName": "Salab Panja",
+          "partUsed": "Tuber",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Ambergris",
+          "commonName": "Ambar",
+          "partUsed": "Purified Oleoresin",
+          "proportion": "5%"
+        },
+        {
+          "botanicalName": "Herbal Honey Base",
+          "commonName": "Pure Wild Honey",
+          "partUsed": "Electuary Base",
+          "proportion": "40%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5-10 ग्राम",
+        "timing": "रात को सोने से 1 घंटा पहले",
+        "anupana": "गुनगुने दूध के साथ",
+        "contraindications": [
+          "18 वर्ष से कम उम्र के व्यक्तियों के लिए नहीं।"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "250 gm",
+        "containerType": "Luxury Gold Crest Jar"
+      },
+      "pricePKR": 799,
+      "comparePricePKR": 999,
+      "priceUSD": 10.99,
+      "stockQuantity": 65,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 5,
+      "reviewCount": 184,
+      "images": [
+        "/images/booklet/page-5.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-5.jpg"
+    },
+    {
+      "id": "majoon-shabab-e-sultani",
+      "sku": "IFA-MUQ-004",
+      "name": "Majoon Shabab E Sultani",
+      "hindiName": "माजून शबाब-ए-सुल्तानी",
+      "urduName": "معجون شبابِ سلطانی",
+      "romanUrduName": "Majoon Shabab E Sultani",
+      "slug": "majoon-shabab-e-sultani",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "मर्दाना ताक़त को बहाल करता है, सुरअते इंज़ाल (शीघ्रपतन) खत्म करके टाइमिंग और जोश बढ़ाता है।",
+      "longDescription": "माजून शबाब-ए-सुल्तानी उन पुरुषों के लिए विशेष है जो नसों की कमज़ोरी, ढीलापन और टाइमिंग की समस्या से जूझ रहे हैं। यह वीर्य स्तम्भन शक्ति को बढ़ाता है, सुरअते इंज़ाल की शिकायत को जड़ से खत्म करता है और शादीशुदा ज़िन्दगी में नया जोश और उमंग भर देता है।",
+      "therapeuticIndications": [
+        "Premature Ejaculation (सुरअते इंज़ाल)",
+        "Involuntary Seminal Discharge (वीर्य का पतलापन)",
+        "Nocturnal Emissions (स्वप्नदोष)",
+        "Low Endurance & Timing (कम टाइमिंग)",
+        "Nervine Debility (नसों की कमज़ोरी)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Pistacia lentiscus",
+          "commonName": "Mastagi Roomi",
+          "partUsed": "Resin",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Cinnamomum zeylanicum",
+          "commonName": "Darchini (Cinnamon)",
+          "partUsed": "Bark",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Syzygium aromaticum",
+          "commonName": "Laung (Clove)",
+          "partUsed": "Flower Buds",
+          "proportion": "10%"
+        },
+        {
+          "botanicalName": "Salep Orchid",
+          "commonName": "Salab Misri",
+          "partUsed": "Tuber",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Carthamus tinctorius",
+          "commonName": "Kusum Beej",
+          "partUsed": "Seeds",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Mountain Honey",
+          "commonName": "Shudh Shahad",
+          "partUsed": "Base",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5-10 ग्राम",
+        "timing": "रात को सोते समय",
+        "anupana": "गुनगुने दूध के साथ",
+        "contraindications": [
+          "तली-भुनी और खट्टी चीज़ों से परहेज़ रखें।"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "250 gm",
+        "containerType": "Aura Black Jar"
+      },
+      "pricePKR": 750,
+      "comparePricePKR": 950,
+      "priceUSD": 9.99,
+      "stockQuantity": 70,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 132,
+      "images": [
+        "/images/booklet/page-6.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-6.jpg"
+    },
+    {
+      "id": "horse-power-goli",
+      "sku": "IFA-MUQ-005",
+      "name": "Horse Power Goli",
+      "hindiName": "हॉर्स पॉवर गोली",
+      "urduName": "ہارس پاور گولی",
+      "romanUrduName": "Horse Power Goli",
+      "slug": "horse-power-goli",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Only For Men — जोश और बेपनाह टाइमिंग बढ़ाकर वैवाहिक जीवन को खुशगवार बनाने वाली हर्बल गोली।",
+      "longDescription": "हॉर्स पॉवर गोली पुरुषों में असीमित ऊर्जा, कठोरता और घंटों तक चलने वाली टाइमिंग प्रदान करती है। यह नसों को मजबूत करके स्तंभन दोष को समाप्त करती है। पूरी तरह प्राकृतिक और सुरक्षित हर्बल गोली जो बिना किसी साइड इफ़ेक्ट के तुरंत असर दिखाती है।",
+      "therapeuticIndications": [
+        "Extreme Timing Enhancement (टाइमिंग में इज़ाफ़ा)",
+        "Instant Hardness & Rigidity (सख्ती व कड़ापन)",
+        "Pleasant Married Life (संतुष्ट वैवाहिक जीवन)",
+        "Combatting Fatigue & Low Vigor (थकान मुक्ति)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Shilajit Purified",
+          "commonName": "Shuddha Shilajit",
+          "partUsed": "Mineral Pitch",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Withania somnifera",
+          "commonName": "Ashwagandha",
+          "partUsed": "Extract",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Anacyclus pyrethrum",
+          "commonName": "Akarkara",
+          "partUsed": "Root Extract",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Myristica fragrans",
+          "commonName": "Jaiphal Extract",
+          "partUsed": "Nut",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Bhasma Blend",
+          "commonName": "Lauh & Vanga Bhasma",
+          "partUsed": "Calx",
+          "proportion": "10%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "1 गोली",
+        "timing": "रात को सोते समय या सम्भोग से 1-2 घंटा पूर्व",
+        "anupana": "गुनगुने दूध के साथ",
+        "contraindications": [
+          "हृदय रोगी या हाई बीपी के मरीज़ चिकित्सक से पूछकर लें।"
+        ]
+      },
+      "form": "Hab",
+      "packaging": {
+        "size": "40 goli",
+        "containerType": "Amber Bottle"
+      },
+      "pricePKR": 590,
+      "comparePricePKR": 750,
+      "priceUSD": 7.99,
+      "stockQuantity": 110,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 165,
+      "images": [
+        "/images/booklet/page-7.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-7.jpg"
+    },
+    {
+      "id": "herbal-muqavvi-gold-cap",
+      "sku": "IFA-MUQ-006",
+      "name": "Herbal Muqavvi Gold Cap",
+      "hindiName": "हर्बल मुक़व्वी गोल्ड कैप्सूल",
+      "urduName": "ہر بل مقوی گولڈ کیپسول",
+      "romanUrduName": "Herbal Muqavvi Gold Cap",
+      "slug": "herbal-muqavvi-gold-cap",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Full Hardness, Increases Timing, Sexual Powerful — शारीरिक व नसों की कमज़ोरी दूर करने वाला कैप्सूल।",
+      "longDescription": "हर्बल मुक़व्वी गोल्ड कैप्सूल विशेष रूप से पुरुषों में जोश, उमंग और टाइमिंग को बढ़ाने में अत्यंत उपयोगी है। यह हर प्रकार की शारीरिक व नसों की कमज़ोरी को दूर करके नई ताक़त और ऊर्जा देता है। शादीशुदा ज़िन्दगी को खुशहाल बनाने के लिए एक सुरक्षित, प्रमाणित हर्बल फॉर्मूला।",
+      "therapeuticIndications": [
+        "Penile Nerve Weakness (नसों की कमज़ोरी)",
+        "Full Hardness & Rigidity (पूर्ण सख्ती)",
+        "Prolonged Timing (बढ़ा हुआ समय)",
+        "Restoring Vital Stamina (ताकत की बहाली)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Chlorophytum borivilianum",
+          "commonName": "Safed Musli Extract",
+          "partUsed": "Root",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Mucuna pruriens",
+          "commonName": "Kaunch Extract",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Tribulus terrestris",
+          "commonName": "Gokshura",
+          "partUsed": "Extract",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Asphaltum punjabianum",
+          "commonName": "Shilajit",
+          "partUsed": "Exudate",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Swarna Makshik",
+          "commonName": "Gold Ore Calx",
+          "partUsed": "Bhasma",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "1 कैप्सूल",
+        "timing": "सुबह व शाम",
+        "anupana": "हल्के गर्म दूध के साथ",
+        "contraindications": [
+          "खाली पेट लेने से बचें।"
+        ]
+      },
+      "form": "Hab",
+      "packaging": {
+        "size": "40 Cap",
+        "containerType": "Gold Seal Bottle"
+      },
+      "pricePKR": 599,
+      "comparePricePKR": 799,
+      "priceUSD": 7.99,
+      "stockQuantity": 95,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 88,
+      "images": [
+        "/images/booklet/page-8.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-8.jpg"
+    },
+    {
+      "id": "tila-sanda",
+      "sku": "IFA-MUQ-007",
+      "name": "Original Tila Sanda",
+      "hindiName": "ओरिजिनल तिला सांडा",
+      "urduName": "اصلی طلاء سانڈا",
+      "romanUrduName": "Original Tila Sanda",
+      "slug": "tila-sanda",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Ayurvedic Massage Oil For Men — हस्तमैथुन से आई कमज़ोरी, पतलापन व ढीलापन दूर करने वाला तेल।",
+      "longDescription": "ओरिजिनल तिला सांडा हस्तमैथुन या पुरानी गलत आदतों से लिंग की नसों में आई कमज़ोरी, ढीलापन, टेढ़ापन और पतलेपन को दूर करता है। यह रक्त संचार को तेज़ करके नसों में नई जान फूंकता है, लिंग को लम्बा, मोटा और सुडौल बनाने में बेहद मददगार है। केवल पुरुषों के बाहरी उपयोग के लिए। (नोट: अधिक आकार वाले इसका इस्तेमाल न करें)।",
+      "therapeuticIndications": [
+        "Erectile Nerve Laxity (नसों का ढीलापन)",
+        "Curvature & Shrinkage (टेढ़ापन व छोटापन)",
+        "Poor Blood Flow (रक्त संचार की कमी)",
+        "Restoring Tissue Tone (ऊतकों की मजबूती)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Uromastyx extract traditional oil",
+          "commonName": "Sanda Tail Base",
+          "partUsed": "Traditional Extract",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Sesamum indicum",
+          "commonName": "Til Tel (Sesame Oil)",
+          "partUsed": "Seed Oil",
+          "proportion": "35%"
+        },
+        {
+          "botanicalName": "Syzygium aromaticum",
+          "commonName": "Laung Tail (Clove Oil)",
+          "partUsed": "Bud Essential Oil",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Myristica fragrans",
+          "commonName": "Jaiphal Tail",
+          "partUsed": "Nut Oil",
+          "proportion": "10%"
+        },
+        {
+          "botanicalName": "Celastrus paniculatus",
+          "commonName": "Malkangni Oil",
+          "partUsed": "Seed Oil",
+          "proportion": "10%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "6-8 बूँदें",
+        "timing": "रात को सोते समय 5-10 मिनट हल्के हाथों से मालिश करें",
+        "anupana": "केवल बाहरी उपयोग (शिश्न के अगले हिस्से को छोड़कर)",
+        "contraindications": [
+          "कटे-फटे या छाले वाले स्थान पर न लगाएं।"
+        ]
+      },
+      "form": "Raughan",
+      "packaging": {
+        "size": "30 ml",
+        "containerType": "Spray Dropper Amber Bottle"
+      },
+      "pricePKR": 750,
+      "comparePricePKR": 950,
+      "priceUSD": 9.99,
+      "stockQuantity": 105,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 147,
+      "images": [
+        "/images/booklet/page-9.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-9.jpg"
+    },
+    {
+      "id": "tila-sultani",
+      "sku": "IFA-MUQ-008",
+      "name": "Tila Sultani",
+      "hindiName": "तिला सुल्तानी",
+      "urduName": "طلاء سلطانی",
+      "romanUrduName": "Tila Sultani",
+      "slug": "tila-sultani",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "One the Night, No Limits. Just Pleasure — नसों में जान, कठोरता और तनाव पैदा करने वाला शाही तिला।",
+      "longDescription": "हस्तमैथुन से हुई कमज़ोरी में अत्यंत फायदेमंद। ढीलापन, छोटापन और पतलापन दूर करके लिंग की नसों को ताक़त और मज़बूती देता है। जोश, सख्ती और उत्तेजना बढ़ाने में बेहद सहायक है। प्राकृतिक जड़ी-बूटियों का सुरक्षित तेल जो तुरंत अवशोषित होकर असर दिखाता है।",
+      "therapeuticIndications": [
+        "Penile Flaccidity (ढीलापन)",
+        "Weak Morning Erection (तनाव में कमी)",
+        "Nerve Desensitization (संवेदनहीनता)",
+        "Tissue Reinvigoration (ऊतक मजबूती)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Cinnamomum camphora",
+          "commonName": "Kafoor (Camphor)",
+          "partUsed": "Distillate",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Pistacia lentiscus",
+          "commonName": "Raughan Mastagi",
+          "partUsed": "Resin Infusion",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Anacyclus pyrethrum",
+          "commonName": "Akarkara Oil",
+          "partUsed": "Root Extract",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Olea europaea",
+          "commonName": "Zaitoon Tail (Olive Oil)",
+          "partUsed": "Cold Pressed Fruit Oil",
+          "proportion": "40%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5-6 बूँदें",
+        "timing": "रात को हल्के हाथ से आगे की सुपारी छोड़कर मालिश करें",
+        "anupana": "केवल बाहरी उपयोग (External Use)",
+        "contraindications": [
+          "एलर्जी होने पर धोकर उपयोग बंद करें।"
+        ]
+      },
+      "form": "Raughan",
+      "packaging": {
+        "size": "15 ml",
+        "containerType": "Dropper Bottle"
+      },
+      "pricePKR": 249,
+      "comparePricePKR": 350,
+      "priceUSD": 3.49,
+      "stockQuantity": 130,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.7,
+      "reviewCount": 92,
+      "images": [
+        "/images/booklet/page-10.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-10.jpg"
+    },
+    {
+      "id": "zulfe-hayat-hair-oil",
+      "sku": "IFA-JIL-001",
+      "name": "Zulfe Hayat Hair Oil",
+      "hindiName": "ज़ुल्फ़-ए-हयात हेयर ऑयल",
+      "urduName": "زلف حیات ہیئر آئل",
+      "romanUrduName": "Zulfe Hayat Hair Oil",
+      "slug": "zulfe-hayat-hair-oil",
+      "categoryId": "jild",
+      "categoryName": "Dermatological & Skin Alchemy",
+      "shortDescription": "बालों की नई ज़िन्दगी — झड़ते बालों का असरदार हल, बालों को लंबा, घना, काला व चमकदार बनाए।",
+      "longDescription": "झड़ते बालों का कुदरती एतमाद के साथ मुकम्मल इलाज। बालों को लंबा, घना, मजबूत, काला और मुलायम बनाने में मददगार। रूसी (Dandruff), बाल झड़ना और बालों की कमज़ोरी को खत्म करता है। टूटते व रूखे बालों के लिए अमृत समान। सिर को ठंडक पहुँचाकर मानसिक तनाव, सिरदर्द और अनिद्रा (नींद न आना) में तुरंत राहत देता है। जड़ों को पोषण देकर नए बाल उगाता है।",
+      "therapeuticIndications": [
+        "Severe Hair Fall (बाल झड़ना)",
+        "Chronic Dandruff & Flakes (रूसी व खुजली)",
+        "Premature Greying (असमय सफेद होना)",
+        "Split Ends & Roughness (दो मुंहे व रूखे बाल)",
+        "Stress & Tension Headache (सिरदर्द व अनिद्रा)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Emblica officinalis",
+          "commonName": "Amla",
+          "partUsed": "Fresh Fruit",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Eclipta alba",
+          "commonName": "Bhringraj",
+          "partUsed": "Whole Plant",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Bacopa monnieri",
+          "commonName": "Brahmi",
+          "partUsed": "Leaves",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Acacia concinna",
+          "commonName": "Shikakai",
+          "partUsed": "Pods",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Sesamum indicum oil",
+          "commonName": "Til Ka Tel",
+          "partUsed": "Pure Oil Base",
+          "proportion": "25%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "आवश्यकतानुसार 5-10 मिली",
+        "timing": "रात को सोने से पहले या नहाने से 1 घंटा पहले जड़ों में हल्के हाथ से मालिश करें",
+        "anupana": "नियमित साप्ताहिक उपयोग",
+        "contraindications": [
+          "आंखों में जाने से बचाएं।"
+        ]
+      },
+      "form": "Raughan",
+      "packaging": {
+        "size": "200 ml",
+        "containerType": "Flip-Top Golden Bottle"
+      },
+      "pricePKR": 390,
+      "comparePricePKR": 490,
+      "priceUSD": 5.49,
+      "stockQuantity": 150,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 215,
+      "images": [
+        "/images/booklet/page-11.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-11.jpg"
+    },
+    {
+      "id": "beauty-hair-shampoo",
+      "sku": "IFA-JIL-002",
+      "name": "Beauty Hair Shampoo",
+      "hindiName": "ब्यूटी हेयर शैम्पू",
+      "urduName": "بیوٹی ہیئر شیمپو",
+      "romanUrduName": "Beauty Hair Shampoo",
+      "slug": "beauty-hair-shampoo",
+      "categoryId": "jild",
+      "categoryName": "Dermatological & Skin Alchemy",
+      "shortDescription": "Strong Hair • Silky Shine • Healthy Scalp — प्राकृतिक जड़ी-बूटियों के अर्क से समृद्ध शैम्पू।",
+      "longDescription": "ब्यूटी हेयर शैम्पू बालों और सिर की त्वचा को सौम्यता से साफ करने में मददगार है। यह रूसी, खुश्की और अतिरिक्त चिकनाई को दूर करता है। बालों को रेशमी, मुलायम और चमकदार बनाता है तथा रूखे और बेजान बालों में नई जान फूंकता है। बालों की कुदरती खूबसूरती को बरकरार रखने वाला अनोखा हर्बल शैम्पू।",
+      "therapeuticIndications": [
+        "Scalp Cleansing & Oil Control (सिर की सफाई)",
+        "Anti-Dandruff Action (खुश्की का खात्मा)",
+        "Promotes Hair Growth (बालों की बढ़ोत्तरी)",
+        "Silky Smooth Texture (मुलायम व चमकदार बाल)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Sapindus mukorossi",
+          "commonName": "Reetha Extract",
+          "partUsed": "Fruit Shell",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Acacia concinna",
+          "commonName": "Shikakai Extract",
+          "partUsed": "Pods",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Aloe barbadensis",
+          "commonName": "Ghritkumari (Aloe Vera)",
+          "partUsed": "Leaf Gel",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Allium cepa",
+          "commonName": "Red Onion Extract",
+          "partUsed": "Bulb",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Hibiscus rosa-sinensis",
+          "commonName": "Gudhal Flower",
+          "partUsed": "Petals",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5-10 मिलीलीटर",
+        "timing": "गीले बालों पर लगाकर 2-3 मिनट झाग बनाएं फिर सादे पानी से धो लें",
+        "anupana": "हफ्ते में 2-3 बार प्रयोग करें",
+        "contraindications": [
+          "केवल बाहरी बालों के प्रक्षालन हेतु।"
+        ]
+      },
+      "form": "Raughan",
+      "packaging": {
+        "size": "200 ml",
+        "containerType": "Dispenser Bottle"
+      },
+      "pricePKR": 280,
+      "comparePricePKR": 350,
+      "priceUSD": 3.99,
+      "stockQuantity": 140,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 4.8,
+      "reviewCount": 74,
+      "images": [
+        "/images/booklet/page-12.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-12.jpg"
+    },
+    {
+      "id": "green-tea",
+      "sku": "IFA-HAZ-002",
+      "name": "Green Tea Organic Leaf",
+      "hindiName": "ग्रीन टी ऑर्गेनिक लीफ",
+      "urduName": "گرین ٹی",
+      "romanUrduName": "Green Tea",
+      "slug": "green-tea",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "Fat Free Slim Body • Cholesterol Free • Antioxidant — वज़न घटाने और डिटॉक्स की श्रेष्ठ चाय।",
+      "longDescription": "ऑर्गेनिक ग्रीन टी वज़न घटाने, शरीर को डीटॉक्स करने, रोग प्रतिरोधक क्षमता बढ़ाने और कोलेस्ट्रॉल नियंत्रित करने में अत्यंत गुणकारी है। यह मेटाबॉलिज्म को तेज़ करके अतिरिक्त कैलोरी जलाने में मदद करती है, मानसिक तनाव कम करती है और पूरे शरीर को तरोताज़ा व ऊर्जावान रखती है।",
+      "therapeuticIndications": [
+        "Natural Weight Loss & Slimming (वज़न घटाना)",
+        "Full Body Detoxification (विषैले तत्व निकालना)",
+        "High Antioxidant Shield (रोग प्रतिरोधक क्षमता)",
+        "Lowers Bad Cholesterol (कोलेस्ट्रॉल नियंत्रण)",
+        "Metabolism Booster (मेटाबॉलिज्म सुधार)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Camellia sinensis",
+          "commonName": "Organic Unfermented Green Leaf",
+          "partUsed": "Whole Dried Tender Leaves",
+          "proportion": "70%"
+        },
+        {
+          "botanicalName": "Ocimum sanctum",
+          "commonName": "Krishna Tulsi",
+          "partUsed": "Leaves",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Cymbopogon citratus",
+          "commonName": "Lemongrass",
+          "partUsed": "Foliage",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "1 चम्मच (2-3 ग्राम)",
+        "timing": "उबलते पानी में 2-3 मिनट ढककर रखें, फिर छानकर दिन में 2 बार पिएं",
+        "anupana": "स्वाद अनुसार नींबू, शहद या इलायची मिला सकते हैं",
+        "contraindications": [
+          "खाली पेट अधिक कड़क चाय पीने से बचें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "100 gm",
+        "containerType": "Kraft Eco Ziplock Pouch"
+      },
+      "pricePKR": 499,
+      "comparePricePKR": 650,
+      "priceUSD": 6.99,
+      "stockQuantity": 110,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 104,
+      "images": [
+        "/images/booklet/page-13.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-13.jpg"
+    },
+    {
+      "id": "herbal-digester-7g-syrup",
+      "sku": "IFA-HAZ-003",
+      "name": "Herbal Digester 7G Syrup",
+      "hindiName": "हर्बल डाइजेस्टर-7 जी सीरप",
+      "urduName": "ہر بل ڈائجسٹرا جی سیرپ",
+      "romanUrduName": "Herbal Digester 7G Syrup",
+      "slug": "herbal-digester-7g-syrup",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "गैस, कब्ज़, तेज़ाबियत, खट्टी डकारें, पेट का भारीपन और सीने की जलन में रामबाण पाचक सीरप।",
+      "longDescription": "हर्बल डाइजेस्टर 7-जी सीरप पेट के सात मुख्य रोगों—गैस, कब्ज़, एसिडिटी, खट्टी डकार, अफारा, पेट दर्द और सीने की जलन पर एक साथ काम करता है। यह भोजन को तेज़ी से पचाकर आंतों और अमाशय को शक्ति प्रदान करता है। 40 से 60 दिनों के नियमित सेवन से पाचन शक्ति नए जैसी हो जाती है।",
+      "therapeuticIndications": [
+        "Chronic Hyperacidity (तेज़ाबियत)",
+        "Sour Belching & Heartburn (खट्टी डकारें व जलन)",
+        "Abdominal Heaviness (पेट का भारीपन)",
+        "Chronic Flatulence & Gas (गैस)",
+        "Dyspepsia & Colic Pain (बदहज़मी व मरोड़)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Trachyspermum ammi",
+          "commonName": "Ajwain Desi",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Foeniculum vulgare",
+          "commonName": "Saunf (Fennel)",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Mentha piperita",
+          "commonName": "Pudina Satva",
+          "partUsed": "Leaves",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Terminalia chebula",
+          "commonName": "Harad",
+          "partUsed": "Fruit Rind",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Plumbago zeylanica",
+          "commonName": "Chitrak Mool",
+          "partUsed": "Root",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Syrup Base",
+          "commonName": "Natural Demulcent Base",
+          "partUsed": "Vehicle",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 मिलीलीटर",
+        "timing": "खाना खाने के 15 मिनट बाद दिन में दो बार",
+        "anupana": "ताज़ा पानी के साथ",
+        "contraindications": [
+          "मधुमेह के रोगी चिकित्सक की सलाह से लें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "200 ml",
+        "containerType": "Amber Glass Bottle"
+      },
+      "pricePKR": 159,
+      "comparePricePKR": 199,
+      "priceUSD": 2.49,
+      "stockQuantity": 160,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 95,
+      "images": [
+        "/images/booklet/page-14.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-14.jpg"
+    },
+    {
+      "id": "sharbat-liver-hayat",
+      "sku": "IFA-HAZ-004",
+      "name": "Sharbat Liver Hayat",
+      "hindiName": "शरबत लीवर हयात",
+      "urduName": "شربت لیور حیات",
+      "romanUrduName": "Sharbat Liver Hayat",
+      "slug": "sharbat-liver-hayat",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "Healthy Liver, Natural Detox, Better Digestion — फैटी लीवर, पीलिया व हेपेटाइटिस का सुरक्षा कवच।",
+      "longDescription": "शरबत लीवर हयात एक बेहतरीन प्राकृतिक यूनानी टॉनिक है, जो लिवर को मज़बूती देता है और उसकी कार्यक्षमता को बढ़ाता है। यह न सिर्फ खून को साफ करता है बल्कि शरीर से विषैले और हानिकारक तत्वों को बाहर निकालता है। इसके सेवन से भूख बढ़ती है, पाचन सुधरता है और फैटी लिवर व पीलिया जैसी बीमारियाँ दूर होती हैं।",
+      "therapeuticIndications": [
+        "Fatty Liver Grade 1 & 2 (फैटी लीवर)",
+        "Jaundice & Hepatitis Recovery (पीलिया)",
+        "Blood Purification & Acne Clear (खून की सफाई)",
+        "Enlarged Liver & Spleen (तिल्ली व जिगर बढ़ना)",
+        "Loss of Appetite & Chronic Gas (भूख की कमी)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Cichorium intybus",
+          "commonName": "Kasni (Chicory)",
+          "partUsed": "Seeds & Root",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Solanum nigrum",
+          "commonName": "Makoh",
+          "partUsed": "Berries",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Tephrosia purpurea",
+          "commonName": "Sarphoka",
+          "partUsed": "Whole Herb",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Andrographis paniculata",
+          "commonName": "Kalmegh",
+          "partUsed": "Leaves",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Berberis aristata",
+          "commonName": "Daruhald (Darhald)",
+          "partUsed": "Root Extract",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-20 मिलीलीटर",
+        "timing": "सुबह खाली पेट और शाम को भोजन से पहले",
+        "anupana": "ताज़ा पानी या अर्क कासनी के साथ",
+        "contraindications": [
+          "अत्यधिक तीखे व शराब आदि से पूर्ण परहेज़ करें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "200 ml",
+        "containerType": "Emerald Green Bottle"
+      },
+      "pricePKR": 159,
+      "comparePricePKR": 210,
+      "priceUSD": 2.49,
+      "stockQuantity": 180,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 220,
+      "images": [
+        "/images/booklet/page-15.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-15.jpg"
+    },
+    {
+      "id": "sharbat-sehatmand",
+      "sku": "IFA-QUA-001",
+      "name": "Sharbat Sehatmand",
+      "hindiName": "शरबत सेहतमंद",
+      "urduName": "شربت صحت مند",
+      "romanUrduName": "Sharbat Sehatmand",
+      "slug": "sharbat-sehatmand",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "खुशहाल जिंदगी की पहली घूंट — शारीरिक कमज़ोरी, थकान दूर करे और खून व इम्युनिटी बढ़ाए।",
+      "longDescription": "शरबत सेहतमंद पूरे परिवार के लिए एक संपूर्ण स्वास्थ्यवर्धक अमृत टॉनिक है। यह शारीरिक कमज़ोरी, थकान और सुस्ती को दूर करके शरीर में नई चुस्ती लाता है। मानसिक तनाव घटाकर गहरी नींद दिलाता है, खून को साफ करके शरीर की रोग प्रतिरोधक क्षमता को अभेद्य बनाता है। पेट और आंतों की सेहत सुधारकर भरपूर ऊर्जा देता है।",
+      "therapeuticIndications": [
+        "Physical Debility & Fatigue (शारीरिक कमजोरी व थकान)",
+        "General Anemia (रक्त की कमी)",
+        "Mental Stress & Sleep Deprivation (मानसिक तनाव व अनिद्रा)",
+        "Immune Deficiency (कमजोर रोग प्रतिरोधक क्षमता)",
+        "Digestive Sluggishness (आंतों की कमजोरी)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Punica granatum",
+          "commonName": "Anar (Pomegranate Puree)",
+          "partUsed": "Fruit Juice",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Vitis vinifera",
+          "commonName": "Angoor / Munakka",
+          "partUsed": "Fruit Extract",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Withania somnifera",
+          "commonName": "Ashwagandha",
+          "partUsed": "Root Extract",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Asparagus racemosus",
+          "commonName": "Shatavari",
+          "partUsed": "Root",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Apple Extract & Honey",
+          "commonName": "Seb Ka Sirka & Shahad",
+          "partUsed": "Nectar",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-20 मिलीलीटर",
+        "timing": "सुबह और शाम",
+        "anupana": "एक गिलास ताज़ा पानी या दूध में मिलाकर",
+        "contraindications": [
+          "कोई साइड इफ़ेक्ट नहीं, सभी उम्र के लिए उपयुक्त।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "200 ml",
+        "containerType": "Amber Glass Bottle"
+      },
+      "pricePKR": 159,
+      "comparePricePKR": 210,
+      "priceUSD": 2.49,
+      "stockQuantity": 150,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 5,
+      "reviewCount": 310,
+      "images": [
+        "/images/booklet/page-16.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-16.jpg"
+    },
+    {
+      "id": "piles-go-syrup",
+      "sku": "IFA-HAZ-005",
+      "name": "Piles Go Syrup",
+      "hindiName": "पाइल्स गो सीरप",
+      "urduName": "پائلس گو سیرپ",
+      "romanUrduName": "Piles Go Syrup",
+      "slug": "piles-go-syrup",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "Herbal Treatment For Piles & Fissures — बवासीर के मस्सों, दर्द, जलन और खून को रोकने में रामबाण।",
+      "longDescription": "पाइल्स गो सीरप खूनी और बादी दोनों प्रकार की बवासीर में तुरंत राहत देता है। यह मलाशय के मस्सों को सुखाता है, असहनीय दर्द, जलन और खुजली को समाप्त करता है और शौच के समय आने वाले खून को रोकता है। पुरानी कब्ज़ को दूर करके आंतों के मार्ग को चिकना और स्वस्थ बनाता है।",
+      "therapeuticIndications": [
+        "Bleeding Piles (खूनी बवासीर)",
+        "Blind / Dry Piles (बादी बवासीर)",
+        "Anal Fissures (गुदा मार्ग की दरारें)",
+        "Severe Pain & Burning (दर्द व जलन)",
+        "Hard Dry Bowels (कठोर मल व कब्ज़)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Berberis aristata",
+          "commonName": "Rasaunt (Extract)",
+          "partUsed": "Stem Resin",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Mesua ferrea",
+          "commonName": "Nagkesar",
+          "partUsed": "Stamens",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Azadirachta indica",
+          "commonName": "Neem Beej",
+          "partUsed": "Seeds",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Terminalia chebula",
+          "commonName": "Choti Harad",
+          "partUsed": "Fruit",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Amorphophallus campanulatus",
+          "commonName": "Suran / Jimikand",
+          "partUsed": "Corm",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "15-20 मिलीलीटर",
+        "timing": "सुबह और शाम भोजन के बाद",
+        "anupana": "गुनगुने पानी के साथ",
+        "contraindications": [
+          "गरम मसाले, लाल मिर्च और बैंगन आदि का परहेज़ करें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Large Therapeutic Bottle"
+      },
+      "pricePKR": 390,
+      "comparePricePKR": 490,
+      "priceUSD": 5.49,
+      "stockQuantity": 125,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 167,
+      "images": [
+        "/images/booklet/page-17.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-17.jpg"
+    },
+    {
+      "id": "cystocut-syrup",
+      "sku": "IFA-QUA-002",
+      "name": "Cystocut Syrup",
+      "hindiName": "सिस्टोकूट सीरप",
+      "urduName": "سسٹوکٹ سیرپ",
+      "romanUrduName": "Cystocut Syrup",
+      "slug": "cystocut-syrup",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "हर प्रकार की रसौली (पानी या मास) का खात्मा — PCOD, बच्चेदानी व पिस्तान की गांठ में अचूक।",
+      "longDescription": "सिस्टोकूट सीरप महिलाओं के गर्भाशय (बच्चेदानी), पिस्तान (ब्रेस्ट), चर्बी और ओवेरियन सिस्ट (PCOD) की गांठों को प्राकृतिक रूप से घोलकर समाप्त करने का सिद्ध फॉर्मूला है। यह हार्मोन असंतुलन, अनियमित माहवारी, पेट दर्द व मरोड़ और अनावश्यक मोटापे को नियंत्रित करने में बेहद मुफीद है।",
+      "therapeuticIndications": [
+        "Uterine Fibroids (बच्चेदानी की गांठ/रसौली)",
+        "Polycystic Ovarian Disease PCOD/PCOS",
+        "Breast Lumps & Fibroadenoma (पिस्तान की गांठ)",
+        "Hormonal Imbalance & Irregular Periods",
+        "Lower Abdominal Cramping & Pelvic Pain"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Bauhinia variegata",
+          "commonName": "Kanchnar Bark",
+          "partUsed": "Stem Bark",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Commiphora mukul",
+          "commonName": "Shuddha Guggulu",
+          "partUsed": "Purified Resin",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Triphala Extract",
+          "commonName": "Amla, Harad, Baheda",
+          "partUsed": "Pericarp",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Crataeva nurvala",
+          "commonName": "Varun Bark",
+          "partUsed": "Bark",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Saraca asoca",
+          "commonName": "Ashoka Bark",
+          "partUsed": "Bark",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 मिलीलीटर",
+        "timing": "सुबह व शाम",
+        "anupana": "गुनगुने पानी के साथ (केवल चिकित्सक की देखरेख में उपयोग करें)",
+        "contraindications": [
+          "गर्भावस्था के दौरान इसका प्रयोग न करें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Therapeutic Bottle"
+      },
+      "pricePKR": 359,
+      "comparePricePKR": 450,
+      "priceUSD": 4.99,
+      "stockQuantity": 95,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 140,
+      "images": [
+        "/images/booklet/page-18.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-18.jpg"
+    },
+    {
+      "id": "leuconil-syrup",
+      "sku": "IFA-QUA-003",
+      "name": "Leuconil Syrup (Leuco Nil)",
+      "hindiName": "लिको निल सीरप",
+      "urduName": "لیکونل سیرپ",
+      "romanUrduName": "Leuconil Syrup",
+      "slug": "leuconil-syrup",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "महिलाओं की सेहत का भरोसेमंद साथी — सफेद पानी (ल्यूकोरिया), कमर दर्द व थकावट का संपूर्ण इलाज।",
+      "longDescription": "लिको निल सीरप महिलाओं के सफेद पानी (Leucorrhoea) की समस्या को जड़ से खत्म करता है। यह गर्भाशय को मजबूत बनाता है, कमर और पेल्विक दर्द से मुक्ति दिलाता है, हार्मोनल संतुलन को सुधारता है और कमजोरी व थकान दूर करके पूरे महीने चुस्त व ताजगी से भरपूर रखता है।",
+      "therapeuticIndications": [
+        "Chronic Leucorrhoea (श्वेत प्रदर / सफेद पानी)",
+        "Lumbar Backache (कमर व रीढ़ का दर्द)",
+        "Pelvic Inflammatory Weakness (पेल्विक कमजोरी)",
+        "Vaginal Itching & Burning (जलन व खुजली)",
+        "Loss of Energy & Restlessness (थकान)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Saraca asoca",
+          "commonName": "Ashoka Bark",
+          "partUsed": "Stem Bark",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Symplocos racemosa",
+          "commonName": "Lodhra",
+          "partUsed": "Bark",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Asparagus racemosus",
+          "commonName": "Shatavari",
+          "partUsed": "Root",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Butea monosperma",
+          "commonName": "Palash Gond / Kamarkas",
+          "partUsed": "Gum",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Acacia arabica",
+          "commonName": "Babul Gond",
+          "partUsed": "Resin",
+          "proportion": "10%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 मिलीलीटर",
+        "timing": "सुबह व शाम",
+        "anupana": "ताज़ा पानी या दूध के साथ",
+        "contraindications": [
+          "माहवारी के पहले 2-3 दिन रोक सकते हैं।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Therapeutic Bottle"
+      },
+      "pricePKR": 310,
+      "comparePricePKR": 399,
+      "priceUSD": 4.49,
+      "stockQuantity": 115,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 122,
+      "images": [
+        "/images/booklet/page-19.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-19.jpg"
+    },
+    {
+      "id": "femi-health-tonic",
+      "sku": "IFA-QUA-004",
+      "name": "Femi Health Tonic",
+      "hindiName": "फेमी हेल्थ टॉनिक",
+      "urduName": "فیمی ہیلتھ ٹانک",
+      "romanUrduName": "Femi Health Tonic",
+      "slug": "femi-health-tonic",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "Complete Uterine Tonic — कमर पेडू का दर्द, खून की कमी, हाथ-पैरों की जलन दूर कर सौंदर्य निखारे।",
+      "longDescription": "फेमी हेल्थ टॉनिक महिलाओं के संपूर्ण स्वास्थ्य के लिए एक सर्वोत्कृष्ट टॉनिक है। कमर, पेडू और नलों का दर्द, खून की कमी, भूख न लगना, मानसिक व शारीरिक थकान, बेचैनी और हथेली-तलवों की जलन को दूर करता है। महिलाओं को स्वस्थ, फुर्तीला और आकर्षक बनाकर पूरे महीने एक्टिव रखता है।",
+      "therapeuticIndications": [
+        "Hypogastric & Pelvic Pain (पेड़ू व नलों का दर्द)",
+        "Burning Palms & Soles (हथेली व तलवों की जलन)",
+        "Anemia & Pale Complexion (रक्त की कमी व पीलापन)",
+        "Hormonal Balance & Glowing Skin (सौंदर्य निखार)",
+        "Post-Delivery Recovery (प्रसव के बाद की दुर्बलता)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Dashmool Blend",
+          "commonName": "Ten Sacred Roots",
+          "partUsed": "Roots",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Aloe vera juice",
+          "commonName": "Kumari Asava Base",
+          "partUsed": "Pulp",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Withania somnifera",
+          "commonName": "Ashwagandha",
+          "partUsed": "Root Extract",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Berberis aristata",
+          "commonName": "Daruharidra",
+          "partUsed": "Bark",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Lauh Bhasma",
+          "commonName": "Iron Calx",
+          "partUsed": "Purified Mineral",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10 मिलीलीटर",
+        "timing": "सुबह व शाम",
+        "anupana": "हल्के गर्म पानी में मिलाकर सेवन करें",
+        "contraindications": [
+          "नियमित 3 महीने सेवन सर्वोत्तम परिणाम देता है।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Therapeutic Bottle"
+      },
+      "pricePKR": 310,
+      "comparePricePKR": 399,
+      "priceUSD": 4.49,
+      "stockQuantity": 105,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 153,
+      "images": [
+        "/images/booklet/page-20.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-20.jpg"
+    },
+    {
+      "id": "sugar-guard-syrup",
+      "sku": "IFA-HAZ-006",
+      "name": "Sugar Guard Syrup",
+      "hindiName": "शुगर गार्ड सीरप",
+      "urduName": "شوگر گارڈ سیرپ",
+      "romanUrduName": "Sugar Guard Syrup",
+      "slug": "sugar-guard-syrup",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "Natural Support for Healthy Blood Sugar — रक्त शर्करा को नियंत्रित करने वाला प्राकृतिक हर्बल सीरप।",
+      "longDescription": "शुगर गार्ड सीरप खून में शुगर के स्वस्थ स्तर को बनाए रखने में अत्यंत सहायक है। यह ग्लूकोज मेटाबॉलिज्म और पैंक्रियाज के इंसुलिन स्राव को कुदरती रूप से सक्रिय करता है। बार-बार पेशाब आना, मुंह सूखना, अत्यधिक प्यास और डायबिटिक कमजोरी को दूर करके संपूर्ण ऊर्जा बनाए रखता है।",
+      "therapeuticIndications": [
+        "Type-2 Diabetes Management (शुगर नियंत्रण)",
+        "Frequent Urination & Polyuria (बार-बार पेशाब)",
+        "Fatigue & Diabetic Weakness (कमज़ोरी)",
+        "Pancreatic Function Support (अग्न्याशय पोषण)",
+        "Regulates Sugar Spikes After Meals"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Momordica charantia",
+          "commonName": "Karela (Bitter Gourd)",
+          "partUsed": "Fruit Juice",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Syzygium cumini",
+          "commonName": "Jamun Seeds",
+          "partUsed": "Dried Seed",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Gymnema sylvestre",
+          "commonName": "Gurmar (Sugar Destroyer)",
+          "partUsed": "Leaves",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Withania coagulans",
+          "commonName": "Paneer Dodi",
+          "partUsed": "Flower Fruit",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Tinospora cordifolia",
+          "commonName": "Giloy",
+          "partUsed": "Stem",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10-15 मिलीलीटर",
+        "timing": "सुबह खाली पेट और शाम को भोजन से 30 मिनट पहले",
+        "anupana": "ताज़ा पानी के साथ",
+        "contraindications": [
+          "शुगर की नियमित जांच करते रहें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Therapeutic Bottle"
+      },
+      "pricePKR": 299,
+      "comparePricePKR": 399,
+      "priceUSD": 4.29,
+      "stockQuantity": 135,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 178,
+      "images": [
+        "/images/booklet/page-21.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-21.jpg"
+    },
+    {
+      "id": "fat-zaail-syrup",
+      "sku": "IFA-HAZ-007",
+      "name": "Fat Zaail Syrup",
+      "hindiName": "फैट ज़ाइल सीरप",
+      "urduName": "فیٹ زائل سیرپ",
+      "romanUrduName": "Fat Zaail Syrup",
+      "slug": "fat-zaail-syrup",
+      "categoryId": "hazim",
+      "categoryName": "Digestive & Gastrointestinal Care",
+      "shortDescription": "Natural Support for Weight Management — जमी हुई जिद्दी चर्बी और पेट का मोटापा पिघलाने वाला सीरप।",
+      "longDescription": "फैट ज़ाइल सीरप प्राकृतिक रूप से शरीर पर जमी हुई फालतू चर्बी को पिघलाकर वज़न संतुलित रखता है। यह मेटाबॉलिज्म को तेज़ करता है, पाचन तंत्र को बेहतर बनाकर पेट और कमर की अतिरिक्त चर्बी को समाप्त करता है। शरीर को चुस्त व सक्रिय बनाकर सुस्ती खत्म करता है, भूख को नियंत्रित करता है और विषैले टॉक्सिन्स बाहर निकालता है।",
+      "therapeuticIndications": [
+        "Stubborn Belly Fat Reduction (पेट की जिद्दी चर्बी)",
+        "Natural Weight Management (वजन नियंत्रण)",
+        "Boosts Metabolic Rate (मेटाबॉलिज्म गति)",
+        "Appetite Control & Anti-Craving (भूख नियंत्रण)",
+        "Detox & Sluggishness Removal (सुस्ती मुक्ति)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Garcinia cambogia",
+          "commonName": "Vrikshamla",
+          "partUsed": "Fruit Rind",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Commiphora mukul",
+          "commonName": "Shuddha Guggulu",
+          "partUsed": "Resin",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Piper longum",
+          "commonName": "Pippali",
+          "partUsed": "Fruit",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Zingiber officinale",
+          "commonName": "Sonth",
+          "partUsed": "Rhizome",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Apple Cider Vinegar Pure",
+          "commonName": "Seb Ka Sirka",
+          "partUsed": "Fermented Extract",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "15 मिलीलीटर",
+        "timing": "सुबह खाली पेट और रात को भोजन के 1 घंटे बाद",
+        "anupana": "एक गिलास गुनगुने पानी में मिलाकर (नींबू का रस भी मिला सकते हैं)",
+        "contraindications": [
+          "मीठी और तैलीय चीज़ों से परहेज़ रखें।"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "500 ml",
+        "containerType": "Therapeutic Bottle"
+      },
+      "pricePKR": 380,
+      "comparePricePKR": 480,
+      "priceUSD": 5.29,
+      "stockQuantity": 110,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 134,
+      "images": [
+        "/images/booklet/page-22.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-22.jpg"
+    },
+    {
+      "id": "safuf-zakawat-e-his",
+      "sku": "IFA-MUQ-009",
+      "name": "Safuf Zakawat-e-His",
+      "hindiName": "सफूफ ज़कावत-ए-हिस",
+      "urduName": "سفوف ذکاوت حس",
+      "romanUrduName": "Safuf Zakawat-e-His",
+      "slug": "safuf-zakawat-e-his",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "Only For Men — वीर्य को गाढ़ा करता है, मज़ी (चिपचिपा पानी) रोकता है और मर्दाना ताक़त बढ़ाता है।",
+      "longDescription": "सफूफ ज़कावत-ए-हिस नसों की अति-संवेदनशीलता (Zakawat-e-His) का यूनानी इलाज है। ख्याल या तनाव आने पर चिपचिपा पानी निकलने, धात, जिरयान, एहतिलाम और सुरअते इंज़ाल में विशेष लाभकारी है। यह वीर्य को मक्खन की तरह गाढ़ा करता है, कमर दर्द खत्म करता है और कुव्वत-ए-बाह व मर्दाना ताक़त को कई गुना बढ़ाता है।",
+      "therapeuticIndications": [
+        "Penile Hypersensitivity (ज़कावत-ए-हिस)",
+        "Prostatic Fluid Leakage (मज़ी व चिपचिपा पानी)",
+        "Spermatorrhoea (धात व जिरयान)",
+        "Thin Watery Semen (वीर्य का पतलापन)",
+        "Chronic Lower Back Pain (कमर दर्द)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Acacia arabica gum",
+          "commonName": "Gond Kikar",
+          "partUsed": "Purified Gum",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Plantago ovata",
+          "commonName": "Ispaghol Musallam",
+          "partUsed": "Husk & Seed",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Trapa bispinosa",
+          "commonName": "Singhara Khushk",
+          "partUsed": "Dried Nut",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Myristica fragrans",
+          "commonName": "Tukhm Kahu & Jaiphal",
+          "partUsed": "Seeds",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Kushta Qala'i",
+          "commonName": "Purified Tin Calx",
+          "partUsed": "Kushta",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "3 से 5 ग्राम सफूफ",
+        "timing": "सुबह व शाम",
+        "anupana": "ठंडे दूध या ताज़े पानी के साथ",
+        "contraindications": [
+          "गर्म मसालों और उत्तेजक ख्यालात से परहेज़ करें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "100 gm",
+        "containerType": "Aura White Jar"
+      },
+      "pricePKR": 290,
+      "comparePricePKR": 380,
+      "priceUSD": 3.99,
+      "stockQuantity": 145,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 189,
+      "images": [
+        "/images/booklet/page-23.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-23.jpg"
+    },
+    {
+      "id": "shifa-e-banjhpan-powder",
+      "sku": "IFA-QUA-005",
+      "name": "Shifa E Banjhpan Powder",
+      "hindiName": "शिफा-ए-बांझपन पाऊडर",
+      "urduName": "شفائے بانجھپن پاؤڈر",
+      "romanUrduName": "Shifa E Banjhpan Powder",
+      "slug": "shifa-e-banjhpan-powder",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "बेऔलाद ख्वातीन के लिए बेहतरीन नुस्खा — मातृत्व का सुख दिलाने में सहायक कुदरती हर्बल सप्लीमेंट।",
+      "longDescription": "शिफा-ए-बांझपन पाऊडर उन महिलाओं के लिए आशा की नई किरण है जो संतान सुख से वंचित हैं या कई इलाजों के बाद निराश हो चुकी हैं। यह गर्भाशय के विकारों को दूर करता है, डिंब ग्रंथियों (Ovaries) को पुष्ट करके अंडों के निर्माण और गुणवत्ता को बढ़ाता है और गर्भधारण के लिए उपयुक्त वातावरण तैयार करता है।",
+      "therapeuticIndications": [
+        "Female Infertility & Conception Support (बांझपन)",
+        "Ovarian Weakness & Ovulation Issues (अंडा न बनना)",
+        "Uterine Lining Weakness (गर्भाशय की दुर्बलता)",
+        "Recurrent Miscarriage Prevention (गर्भस्राव रोकथाम)",
+        "Restoring Natural Hormonal Cycle"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Shivlingi Beej",
+          "commonName": "Bryonia laciniosa",
+          "partUsed": "Seeds",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Putranjiva roxburghii",
+          "commonName": "Putrajeevak",
+          "partUsed": "Seed Kernel",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Asparagus racemosus",
+          "commonName": "Shatavari Extract",
+          "partUsed": "Root",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Ficus benghalensis",
+          "commonName": "Bargad Jata / Kopal",
+          "partUsed": "Aerial Roots",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5 ग्राम पाऊडर",
+        "timing": "सुबह व शाम",
+        "anupana": "हल्के गुनगुने गाय के दूध के साथ",
+        "contraindications": [
+          "माहवारी खत्म होने के बाद से नियमित सेवन शुरू करें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "200 gm",
+        "containerType": "Sterile White Jar"
+      },
+      "pricePKR": 795,
+      "comparePricePKR": 999,
+      "priceUSD": 10.99,
+      "stockQuantity": 75,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 5,
+      "reviewCount": 94,
+      "images": [
+        "/images/booklet/page-24.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-24.jpg"
+    },
+    {
+      "id": "shifa-e-rasoli",
+      "sku": "IFA-QUA-006",
+      "name": "Shifa E Rasoli Powder",
+      "hindiName": "शिफा-ए-रसोली पाऊडर",
+      "urduName": "شفائے رسولی پاؤڈر",
+      "romanUrduName": "Shifa E Rasoli Powder",
+      "slug": "shifa-e-rasoli",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "शरीर की अंदरूनी व बाहरी हर तरह की रसौली (गांठ) के लिए निहायत मुफीद प्राकृतिक पाऊडर।",
+      "longDescription": "शिफा-ए-रसौली पाऊडर बिना ऑपरेशन के रसौलियों और गांठों को पिघलाने में अत्यंत कारगर औषधि है। यह गर्भाशय के फाइब्रॉयड, सिस्ट, स्तन की गांठों, लिपोमा (चर्बी की गांठ) और ग्रंथियों की सूजन को धीरे-धीरे घुलाकर शरीर से बाहर निकाल देता है। महिलाओं के समग्र स्वास्थ्य और रसौली से होने वाले दर्द में अत्यंत लाभकारी।",
+      "therapeuticIndications": [
+        "All Types of Tumors & Cysts (हर प्रकार की रसौली)",
+        "Uterine Fibroids & Ovarian Cysts (बच्चेदानी की गांठ)",
+        "Lipoma & Fatty Nodules (चर्बी की गांठ)",
+        "Lymph Gland Swelling (गिल्टी व सूजन)",
+        "Abdominal Lump Pain (पेट व नलों में खिंचाव)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Bauhinia variegata",
+          "commonName": "Kanchnar Chall",
+          "partUsed": "Bark",
+          "proportion": "35%"
+        },
+        {
+          "botanicalName": "Curcuma longa",
+          "commonName": "Shuddha Haldi / Haridra",
+          "partUsed": "Rhizome",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Kushta Sadaf & Marwareed",
+          "commonName": "Pearl Oyster Calx",
+          "partUsed": "Kushta",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Piper nigrum & Pippali",
+          "commonName": "Trikatu Churna",
+          "partUsed": "Spice Blend",
+          "proportion": "25%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "3 ग्राम पाऊडर",
+        "timing": "खाली पेट सुबह और शाम",
+        "anupana": "आधा गिलास सौंफ (या सादा सोडा) के पानी के साथ",
+        "contraindications": [
+          "कच्चा दूध और बादी चीज़ों का परहेज़ रखें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "200 gm",
+        "containerType": "Cyan Lid White Jar"
+      },
+      "pricePKR": 795,
+      "comparePricePKR": 999,
+      "priceUSD": 10.99,
+      "stockQuantity": 80,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 81,
+      "images": [
+        "/images/booklet/page-25.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-25.jpg"
+    },
+    {
+      "id": "safuf-likorya-khas",
+      "sku": "IFA-QUA-007",
+      "name": "Safuf Likorya Khas",
+      "hindiName": "सफूफ ल्योकोरिया खास",
+      "urduName": "سفوف لیکوریا خاص",
+      "romanUrduName": "Safuf Likorya Khas",
+      "slug": "safuf-likorya-khas",
+      "categoryId": "quwwat-e-mudafiat",
+      "categoryName": "Immune & Constitutional Defense",
+      "shortDescription": "महिला स्वास्थ्य की प्राकृतिक देखभाल — ल्यूकोरिया, गुप्त अंगों की खुजली व जलन में तुरंत राहत।",
+      "longDescription": "सफूफ ल्योकोरिया खास महिलाओं के सफेद पानी और उससे पैदा होने वाली पुरानी कमज़ोरी का शास्त्रीय इलाज है। यह महिलाओं के स्वास्थ्य को सुधारकर ऊर्जा और चुस्ती बहाल करता है, शारीरिक बेचैनी, कमर दर्द और पेल्विक खिंचाव को दूर करके संपूर्ण आंतरिक स्वच्छता व आराम प्रदान करता है।",
+      "therapeuticIndications": [
+        "Relief From White Discharge (सफेद पानी से मुक्ति)",
+        "Removes Bacterial & Fungal Infection (संक्रमण निवारक)",
+        "Relief From Abdominal & Back Pain (कमर व पेट दर्द)",
+        "Eliminates Itching & Burning (खुजली व जलन खत्म)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Areca catechu",
+          "commonName": "Chikni Supari",
+          "partUsed": "Nuts",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Quercus infectoria",
+          "commonName": "Mazu Phal (Oak Gall)",
+          "partUsed": "Galls",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Nelumbo nucifera",
+          "commonName": "Kamal Gatta",
+          "partUsed": "Seeds",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Gond Dhak",
+          "commonName": "Kamarkas",
+          "partUsed": "Resin",
+          "proportion": "25%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5 ग्राम पाऊडर",
+        "timing": "सुबह खाली पेट और शाम को भोजन से 1 घंटे पहले",
+        "anupana": "हल्के मीठे दूध या ताज़े पानी के साथ",
+        "contraindications": [
+          "माहवारी के दिनों में न लें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "200 gm",
+        "containerType": "Feminine Care Jar"
+      },
+      "pricePKR": 450,
+      "comparePricePKR": 580,
+      "priceUSD": 6.29,
+      "stockQuantity": 115,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 97,
+      "images": [
+        "/images/booklet/page-26.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-26.jpg"
+    },
+    {
+      "id": "safuf-ahtalam",
+      "sku": "IFA-MUQ-010",
+      "name": "Safuf Ahtalam",
+      "hindiName": "सफूफ एहतलाम",
+      "urduName": "سفوف احتلام",
+      "romanUrduName": "Safuf Ahtalam",
+      "slug": "safuf-ahtalam",
+      "categoryId": "muqawwi",
+      "categoryName": "Vitality & General Tonics",
+      "shortDescription": "धात, जिरयान और स्वप्नदोष (Nightfall) को रोककर वीर्य को गाढ़ा व टाइमिंग बढ़ाने वाला सफूफ।",
+      "longDescription": "सफूफ एहतलाम उन नौजवानों और पुरुषों के लिए वरदान है जो बार-बार स्वप्नदोष (Nightfall), पेशाब के साथ या बाद में धात जाने और वीर्य के पतलेपन की समस्या से परेशान हैं। यह शरीर की अंदरूनी गर्मी को शांत करता है, वीर्य को गाढ़ा करता है और वीर्य स्तम्भन शक्ति व टाइमिंग को बढ़ाता है।",
+      "therapeuticIndications": [
+        "Frequent Nocturnal Emission (बार-बार स्वप्नदोष)",
+        "Spermatorrhoea & Semen Leak (धात व जिरयान)",
+        "Semen Viscosity & Density (वीर्य को गाढ़ा करना)",
+        "Improves Retention & Latency (टाइमिंग में बढ़ोत्तरी)",
+        "Overcoming Nervous Exhaustion (शारीरिक कमजोरी)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Trapa bispinosa",
+          "commonName": "Maghz Singhara",
+          "partUsed": "Dried Nut",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Coriandrum sativum",
+          "commonName": "Dhania Khushk",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Pistacia vera",
+          "commonName": "Gul-e-Pista",
+          "partUsed": "Flowers",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Glycyrrhiza glabra",
+          "commonName": "Mulethi",
+          "partUsed": "Root",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Papaver somniferum seed",
+          "commonName": "Khashkhash",
+          "partUsed": "Seeds",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5 ग्राम पाऊडर",
+        "timing": "सुबह खाली पेट और रात को सोने से पहले",
+        "anupana": "ठंडे मीठे दूध या ताज़े पानी के साथ",
+        "contraindications": [
+          "रात को देर से भोजन न करें, पेट साफ रखें।"
+        ]
+      },
+      "form": "Safoof",
+      "packaging": {
+        "size": "200 gm",
+        "containerType": "Gold Lid Jar"
+      },
+      "pricePKR": 450,
+      "comparePricePKR": 580,
+      "priceUSD": 6.29,
+      "stockQuantity": 130,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 156,
+      "images": [
+        "/images/booklet/page-27.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-27.jpg"
+    },
+    {
+      "id": "daad-kash-marham",
+      "sku": "IFA-JIL-003",
+      "name": "Daad Kash Marham",
+      "hindiName": "दाद कश मरहम",
+      "urduName": "داد کش مرہم",
+      "romanUrduName": "Daad Kash Marham",
+      "slug": "daad-kash-marham",
+      "categoryId": "jild",
+      "categoryName": "Dermatological & Skin Alchemy",
+      "shortDescription": "दाद का दुश्मन खुजली का खात्मा — पुराने से पुराने जिद्दी दाद, खाज, खुजली और फंगल इन्फेक्शन का काल।",
+      "longDescription": "दाद कश मरहम खास तौर पर पुराने से पुराने दाद (Ringworm) को जड़ से खत्म करने के लिए तैयार की गई है। इसके इस्तेमाल से खारिश, जलन और खुजली में तुरंत आराम मिलता है। यह फंगस और बैक्टीरिया का खात्मा करके दाद को फैलने से रोकती है और त्वचा की लाली व सूजन को कम करके उसे साफ, मुलायम और स्वस्थ बनाती है।",
+      "therapeuticIndications": [
+        "Stubborn Ringworm (जिद्दी दाद)",
+        "Severe Itching & Pruritus (तीव्र खाज-खुजली)",
+        "Fungal Infections (फंगल इन्फेक्शन)",
+        "Eczema & Rashes (एक्जिमा व लाल चकत्ते)",
+        "Skin Redness & Burning (त्वचा की लाली व सूजन)"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Cassia tora",
+          "commonName": "Chakvad Beej",
+          "partUsed": "Seeds Extract",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Azadirachta indica oil",
+          "commonName": "Neem Oil",
+          "partUsed": "Seed Oil",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Curcuma longa",
+          "commonName": "Haldi Extract",
+          "partUsed": "Rhizome",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Gandhak Shuddha",
+          "commonName": "Purified Sulphur",
+          "partUsed": "Mineral",
+          "proportion": "15%"
+        },
+        {
+          "botanicalName": "Aloe vera & Ointment Base",
+          "commonName": "Ghritkumari & Beeswax",
+          "partUsed": "Base",
+          "proportion": "20%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "आवश्यकतानुसार पर्याप्त मात्रा",
+        "timing": "प्रभावित स्थान को गुनगुने पानी से धोकर सुखाएं और दिन में 2 बार लगाएं",
+        "anupana": "केवल बाहरी उपयोग के लिए (External Use Only)",
+        "contraindications": [
+          "आंखों और मुंह से दूर रखें।"
+        ]
+      },
+      "form": "Marham",
+      "packaging": {
+        "size": "30 gm",
+        "containerType": "Topical Ointment Jar"
+      },
+      "pricePKR": 199,
+      "comparePricePKR": 250,
+      "priceUSD": 2.99,
+      "stockQuantity": 175,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 245,
+      "images": [
+        "/images/booklet/page-28.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-28.jpg"
+    },
+    {
+      "id": "sharbat-toot-siah",
+      "sku": "IFA-SUA-001",
+      "name": "Sharbat Toot Siah",
+      "hindiName": "शरबत तूत सियाह",
+      "urduName": "شربت توت سیاہ",
+      "romanUrduName": "Sharbat Toot Siah",
+      "slug": "sharbat-toot-siah",
+      "categoryId": "sual",
+      "categoryName": "Respiratory & Throat Wellness",
+      "shortDescription": "Deep mulberry syrup soothing inflamed pharynx, hoarseness, and stubborn throat tickle.",
+      "longDescription": "Pressed from ripened black mulberries (Morus nigra) and boiled to rich viscosity, providing rapid astringent relief for throat and bronchial passages.",
+      "therapeuticIndications": [
+        "Pharyngitis",
+        "Loss of voice / hoarseness",
+        "Tonsillar irritation",
+        "Dry hacking cough"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Morus nigra",
+          "commonName": "Toot Siah (Black Mulberry)",
+          "partUsed": "Fresh Concentrated Fruit",
+          "proportion": "60%"
+        },
+        {
+          "botanicalName": "Cane sugar & water",
+          "commonName": "Shera Qand",
+          "partUsed": "Syrup Base",
+          "proportion": "40%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "10ml to 20ml (2 to 4 teaspoons)",
+        "timing": "Sip slowly 3 times daily; do not drink water immediately afterward",
+        "anupana": "Directly undiluted or in lukewarm water",
+        "contraindications": [
+          "Diabetic precautions"
+        ]
+      },
+      "form": "Sharbat",
+      "packaging": {
+        "size": "240ml Bottle",
+        "containerType": "Pharmaceutical Glass Bottle"
+      },
+      "pricePKR": 650,
+      "comparePricePKR": 750,
+      "priceUSD": 7.5,
+      "stockQuantity": 60,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "reviewCount": 52,
+      "images": [
+        "/images/booklet/page-30.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-30.jpg"
+    },
+    {
+      "id": "laooq-sapistan",
+      "sku": "IFA-SUA-002",
+      "name": "Laooq Sapistan",
+      "hindiName": "लऊक सपिस्तां",
+      "urduName": "لعوق سپستاں",
+      "romanUrduName": "Laooq Sapistan",
+      "slug": "laooq-sapistan",
+      "categoryId": "sual",
+      "categoryName": "Respiratory & Throat Wellness",
+      "shortDescription": "Demulcent herbal linctus liquefying thick phlegm and relieving chest congestion.",
+      "longDescription": "Rich in mucilaginous fruits of Cordia myxa and marshmallow root, this linctus coats the respiratory mucosa with protective moisture.",
+      "therapeuticIndications": [
+        "Bronchial congestion",
+        "Productive cough",
+        "Catarrhal irritation",
+        "Pleuritic discomfort"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Cordia myxa",
+          "commonName": "Sapistan (Assyrian Plum)",
+          "partUsed": "Dried Fruit",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Althaea officinalis",
+          "commonName": "Khatmi (Marshmallow)",
+          "partUsed": "Roots and Seeds",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Glycyrrhiza glabra",
+          "commonName": "Asl-us-Soos (Licorice)",
+          "partUsed": "Root Extract",
+          "proportion": "20%"
+        },
+        {
+          "botanicalName": "Honey & Sugar",
+          "commonName": "Qiwam",
+          "partUsed": "Base",
+          "proportion": "30%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5g to 10g licked slowly",
+        "timing": "Morning and evening",
+        "anupana": "Follow with warm water infusion of fennel or aniseed",
+        "contraindications": [
+          "Excessive chronic fluid accumulation without doctor consultation"
+        ]
+      },
+      "form": "Majun",
+      "packaging": {
+        "size": "150g Jar",
+        "containerType": "Amber Glass Jar"
+      },
+      "pricePKR": 850,
+      "comparePricePKR": 1000,
+      "priceUSD": 9.5,
+      "stockQuantity": 28,
+      "isAvailable": true,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 4.7,
+      "reviewCount": 19,
+      "images": [
+        "/images/booklet/page-30.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-30.jpg"
+    },
+    {
+      "id": "hab-e-suranjan",
+      "sku": "IFA-MAF-001",
+      "name": "Hab-e-Suranjan",
+      "hindiName": "हब्ब-ए-सुरंजान",
+      "urduName": "حب سرنجاں",
+      "romanUrduName": "Hab-e-Suranjan",
+      "slug": "hab-e-suranjan",
+      "categoryId": "mafasil",
+      "categoryName": "Joints & Musculoskeletal Relief",
+      "shortDescription": "Traditional colchic pills alleviating acute gout, joint swelling, and sciatica.",
+      "longDescription": "Combines the natural analgesic power of sweet Suranjan with aloe and ginger to eliminate joint inflammatory humors.",
+      "therapeuticIndications": [
+        "Gouty arthritis",
+        "Joint swelling & redness",
+        "Sciatic nerve shooting pain",
+        "Lumbago"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Colchicum autumnale",
+          "commonName": "Suranjan Shirin (Sweet Meadow Saffron)",
+          "partUsed": "Corm",
+          "proportion": "40%"
+        },
+        {
+          "botanicalName": "Aloe barbadensis",
+          "commonName": "Elwa (Purified Aloe resin)",
+          "partUsed": "Resin",
+          "proportion": "30%"
+        },
+        {
+          "botanicalName": "Zingiber officinale",
+          "commonName": "Zanjabeel (Dry Ginger)",
+          "partUsed": "Rhizome",
+          "proportion": "30%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "1 to 2 pills",
+        "timing": "After meals twice daily",
+        "anupana": "Warm water",
+        "contraindications": [
+          "Pregnancy and lactation",
+          "Severe kidney impairment"
+        ]
+      },
+      "form": "Hab",
+      "packaging": {
+        "size": "50 Pills",
+        "containerType": "Glass Bottle with Tamper Seal"
+      },
+      "pricePKR": 950,
+      "comparePricePKR": 1150,
+      "priceUSD": 10.99,
+      "stockQuantity": 40,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "reviewCount": 36,
+      "images": [
+        "/images/booklet/page-30.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-30.jpg"
+    },
+    {
+      "id": "raughan-suranjan",
+      "sku": "IFA-MAF-002",
+      "name": "Raughan-e-Suranjan",
+      "hindiName": "रोग़न-ए-सुरंजान",
+      "urduName": "روغن سرنجاں",
+      "romanUrduName": "Raughan-e-Suranjan",
+      "slug": "raughan-suranjan",
+      "categoryId": "mafasil",
+      "categoryName": "Joints & Musculoskeletal Relief",
+      "shortDescription": "Penetrative thermal liniment soothing chronic joint rigidity, sprains, and back pain.",
+      "longDescription": "Macerated colchicum and wintergreen steeped in cold-pressed sesame oil to deliver warmth directly to deep articular cartilage.",
+      "therapeuticIndications": [
+        "Stiff morning joints",
+        "Rheumatic pains",
+        "Muscle spasms",
+        "Cervical spondylosis"
+      ],
+      "herbalIngredients": [
+        {
+          "botanicalName": "Colchicum luteum",
+          "commonName": "Suranjan Talkh (Bitter Colchicum)",
+          "partUsed": "Corms",
+          "proportion": "25%"
+        },
+        {
+          "botanicalName": "Sesamum indicum oil",
+          "commonName": "Raughan-e-Kunjad (Sesame Oil)",
+          "partUsed": "Cold Pressed Seed Oil",
+          "proportion": "60%"
+        },
+        {
+          "botanicalName": "Gaultheria procumbens",
+          "commonName": "Raughan-e-Gandhpura (Wintergreen)",
+          "partUsed": "Essential Oil",
+          "proportion": "15%"
+        }
+      ],
+      "dosageInstructions": {
+        "amount": "5ml to 10ml applied topically",
+        "timing": "Massage gently into affected areas for 10 minutes at night",
+        "anupana": "External application only; wrap with soft warm flannel",
+        "contraindications": [
+          "Do not apply on broken or abraded skin",
+          "Strictly not for oral ingestion"
+        ]
+      },
+      "form": "Raughan",
+      "packaging": {
+        "size": "100ml Bottle",
+        "containerType": "Amber Glass Bottle with Dropper"
+      },
+      "pricePKR": 850,
+      "comparePricePKR": 1000,
+      "priceUSD": 9.99,
+      "stockQuantity": 50,
+      "isAvailable": true,
+      "isFeatured": true,
+      "isBestSeller": false,
+      "rating": 4.8,
+      "reviewCount": 41,
+      "images": [
+        "/images/booklet/page-30.jpg"
+      ],
+      "primaryImage": "/images/booklet/page-30.jpg"
+    }
+  ],
+  "banners": [
+    {
+      "id": "banner-hero-classical-wellness",
+      "headline": "Timeless Unani Wisdom for Contemporary Living",
+      "subheadline": "Handcrafted apothecary preparations from centuries-old herbal compendiums.",
+      "badgeText": "Classical Heritage Collection",
+      "ctaText": "Explore Remedies",
+      "ctaLink": "/catalog",
+      "imageUrl": "/banners/hero-desktop.jpg",
+      "gradientOverlay": "mauve-reserve",
+      "textAlignment": "left",
+      "placement": "hero",
+      "isActive": true,
+      "priorityOrder": 1
+    },
+    {
+      "id": "banner-hero-vitality",
+      "headline": "The Noble Art of Restorative Vitality",
+      "subheadline": "Pure saffron, pearls, and potent botanicals to rekindle natural vigor.",
+      "badgeText": "Royal Restoratives",
+      "ctaText": "Discover Muqawwi",
+      "ctaLink": "/catalog/muqawwi",
+      "imageUrl": "/banners/hero-vitality.jpg",
+      "gradientOverlay": "steel-night",
+      "textAlignment": "center",
+      "placement": "hero",
+      "isActive": true,
+      "priorityOrder": 2
+    },
+    {
+      "id": "banner-announcement-ramadan",
+      "headline": "Complimentary Arq-e-Gulab with orders over PKR 5,000 | Worldwide DHL Express Available",
+      "subheadline": "",
+      "badgeText": "Special Announcement",
+      "ctaText": "Order Now",
+      "ctaLink": "/catalog",
+      "imageUrl": "",
+      "gradientOverlay": "none",
+      "textAlignment": "center",
+      "placement": "announcement_bar",
+      "isActive": true,
+      "priorityOrder": 1
+    }
+  ]
+}

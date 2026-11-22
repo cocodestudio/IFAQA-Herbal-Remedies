@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-ifaqa-plum: #3E3239;
+  --color-ifaqa-blackberry: #6B5560;
+  --color-ifaqa-mauve: #9E8189;
+  --color-ifaqa-sand: #C7A9A3;
+  --color-ifaqa-cashmere: #E8D2C4;
+  --color-ifaqa-linen: #F7EFE7;
+  --color-ifaqa-mauve-start: #B2949D;
+  --color-ifaqa-mauve-end: #6B5F6F;
+  --color-ifaqa-steel-start: #88A2BF;
+  --color-ifaqa-steel-end: #141318;
+  --ease-emil: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* GLOBAL TEXT COPY PROTECTION (User requested: text copy none across the site) */
+html, body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
+
+/* ANTI-PILL ARCHITECTURAL SAFETY NET: Prohibit circular pills on interactive & status elements */
+button,
+.badge,
+[data-badge],
+.tag,
+.chip,
+.pill,
+.status-indicator {
+  border-radius: 0px !important;
+}
+
+/* 4 BESPOKE ARCHITECTURAL BADGE UTILITIES - SAFE PADDING (NO CLIPPING) */
+.notched-badge {
+  border: 1px solid rgba(199, 169, 163, 0.8);
+  background-color: #F7EFE7;
+  color: #3E3239;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 0px !important;
+  white-space: nowrap;
+}
+
+.chamfer-badge {
+  /* Subtle 4px chamfer cut so text is never truncated */
+  clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px), 0% 4px);
+  border-radius: 0px !important;
+  white-space: nowrap;
+}
+
+.ruled-badge {
+  border-left: 2px solid #6B5560;
+  background-color: rgba(199, 169, 163, 0.25);
+  color: #3E3239;
+  border-radius: 0px !important;
+  white-space: nowrap;
+}
+
+.diamond-badge {
+  background-color: #3E3239;
+  color: #F7EFE7;
+  border-radius: 0px !important;
+  white-space: nowrap;
+}
+
+/* Luxury Card Elevation & Micro-interactions */
+.luxury-glass {
+  background: rgba(247, 239, 231, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(199, 169, 163, 0.35);
+}
+
+.shadow-luxury-card {
+  box-shadow: 0 4px 20px -2px rgba(62, 50, 57, 0.08), 0 2px 6px -1px rgba(62, 50, 57, 0.04);
+}
+
+.shadow-luxury-lifted {
+  box-shadow: 0 16px 36px -4px rgba(62, 50, 57, 0.16), 0 6px 14px -2px rgba(62, 50, 57, 0.08);
+}
+
+/* Custom Scrollbar for Luxury Aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F7EFE7;
+}
+::-webkit-scrollbar-thumb {
+  background: #C7A9A3;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9E8189;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
