@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --color-ifaqa-plum: #3E3239;
-  --color-ifaqa-blackberry: #6B5560;
-  --color-ifaqa-mauve: #9E8189;
-  --color-ifaqa-sand: #C7A9A3;
-  --color-ifaqa-cashmere: #E8D2C4;
-  --color-ifaqa-linen: #F7EFE7;
-  --color-ifaqa-mauve-start: #B2949D;
-  --color-ifaqa-mauve-end: #6B5F6F;
-  --color-ifaqa-steel-start: #88A2BF;
-  --color-ifaqa-steel-end: #141318;
+  --color-ifaqa-plum: #0B2D22;
+  --color-ifaqa-blackberry: #165A45;
+  --color-ifaqa-mauve: #C5A059;
+  --color-ifaqa-sand: #DFBA73;
+  --color-ifaqa-cashmere: #F5F0E6;
+  --color-ifaqa-linen: #FAF8F5;
+  --color-ifaqa-mauve-start: #165A45;
+  --color-ifaqa-mauve-end: #0B2D22;
+  --color-ifaqa-steel-start: #0E3B2D;
+  --color-ifaqa-steel-end: #061811;
   --ease-emil: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -32,6 +32,12 @@ input, textarea, [contenteditable="true"] {
   user-select: auto !important;
 }
 
+/* Text Selection: Imperial Emerald with Burnished Gold Text */
+::selection {
+  background-color: #0B2D22;
+  color: #DFBA73;
+}
+
 /* ANTI-PILL ARCHITECTURAL SAFETY NET: Prohibit circular pills on interactive & status elements */
 button,
 .badge,
@@ -45,9 +51,9 @@ button,
 
 /* 4 BESPOKE ARCHITECTURAL BADGE UTILITIES - SAFE PADDING (NO CLIPPING) */
 .notched-badge {
-  border: 1px solid rgba(199, 169, 163, 0.8);
-  background-color: #F7EFE7;
-  color: #3E3239;
+  border: 1px solid rgba(223, 186, 115, 0.8);
+  background-color: #FAF5EC;
+  color: #0B2D22;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   border-radius: 0px !important;
@@ -62,33 +68,34 @@ button,
 }
 
 .ruled-badge {
-  border-left: 2px solid #6B5560;
-  background-color: rgba(199, 169, 163, 0.25);
-  color: #3E3239;
+  border-left: 2px solid #C5A059;
+  background-color: rgba(223, 186, 115, 0.18);
+  color: #0B2D22;
   border-radius: 0px !important;
   white-space: nowrap;
 }
 
 .diamond-badge {
-  background-color: #3E3239;
-  color: #F7EFE7;
+  background-color: #0B2D22;
+  color: #FAF8F5;
+  border: 1px solid rgba(223, 186, 115, 0.4);
   border-radius: 0px !important;
   white-space: nowrap;
 }
 
 /* Luxury Card Elevation & Micro-interactions */
 .luxury-glass {
-  background: rgba(247, 239, 231, 0.85);
+  background: rgba(250, 248, 245, 0.88);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(199, 169, 163, 0.35);
+  border: 1px solid rgba(223, 186, 115, 0.4);
 }
 
 .shadow-luxury-card {
-  box-shadow: 0 4px 20px -2px rgba(62, 50, 57, 0.08), 0 2px 6px -1px rgba(62, 50, 57, 0.04);
+  box-shadow: 0 4px 20px -2px rgba(11, 45, 34, 0.08), 0 2px 6px -1px rgba(11, 45, 34, 0.04);
 }
 
 .shadow-luxury-lifted {
-  box-shadow: 0 16px 36px -4px rgba(62, 50, 57, 0.16), 0 6px 14px -2px rgba(62, 50, 57, 0.08);
+  box-shadow: 0 16px 36px -4px rgba(11, 45, 34, 0.16), 0 6px 14px -2px rgba(197, 160, 89, 0.18);
 }
 
 /* Custom Scrollbar for Luxury Aesthetic */
@@ -97,13 +104,13 @@ button,
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F7EFE7;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C7A9A3;
+  background: #DFBA73;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9E8189;
+  background: #C5A059;
 }
 
 @keyframes shimmer {

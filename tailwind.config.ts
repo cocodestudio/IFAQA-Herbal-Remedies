@@ -9,38 +9,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'ifaqa-plum': '#3E3239',
-        'ifaqa-blackberry': '#6B5560',
-        'ifaqa-mauve': '#9E8189',
-        'ifaqa-sand': '#C7A9A3',
-        'ifaqa-cashmere': '#E8D2C4',
-        'ifaqa-linen': '#F7EFE7',
+        'ifaqa-plum': '#0B2D22',        // Deep Imperial Forest Emerald (Primary Brand)
+        'ifaqa-blackberry': '#165A45',  // Vibrant Botanical Spruce (Secondary/Interactive)
+        'ifaqa-mauve': '#C5A059',       // Royal Antique Burnished Gold (Accent/Badges)
+        'ifaqa-sand': '#DFBA73',        // Champagne Gold Hairline (Borders/Dividers)
+        'ifaqa-cashmere': '#F5F0E6',    // Warm Silk Parchment (Container Base)
+        'ifaqa-linen': '#FAF8F5',       // Luminous Alabaster Pearl (Clean Canvas)
         ifaqa: {
-          plum: '#3E3239',
-          blackberry: '#6B5560',
-          mauve: '#9E8189',
-          sand: '#C7A9A3',
-          cashmere: '#E8D2C4',
-          linen: '#F7EFE7',
-          mauveStart: '#B2949D',
-          mauveEnd: '#6B5F6F',
-          steelStart: '#88A2BF',
-          steelEnd: '#141318',
+          plum: '#0B2D22',
+          blackberry: '#165A45',
+          mauve: '#C5A059',
+          sand: '#DFBA73',
+          cashmere: '#F5F0E6',
+          linen: '#FAF8F5',
+          emerald: '#0B2D22',
+          spruce: '#165A45',
+          gold: '#C5A059',
+          goldLight: '#FAF5EC',
+          goldDark: '#99752D',
+          onyx: '#0F1714',
+          ruby: '#B91C1C',
+          mauveStart: '#165A45',
+          mauveEnd: '#0B2D22',
+          steelStart: '#0E3B2D',
+          steelEnd: '#061811',
         },
       },
       backgroundImage: {
-        'gradient-mauve-reserve': 'linear-gradient(135deg, #B2949D 0%, #6B5F6F 100%)',
-        'gradient-steel-night': 'linear-gradient(145deg, #88A2BF 0%, #141318 100%)',
+        'gradient-mauve-reserve': 'linear-gradient(135deg, #165A45 0%, #0B2D22 100%)',
+        'gradient-steel-night': 'linear-gradient(145deg, #0E3B2D 0%, #061811 100%)',
+        'gradient-royal-gold': 'linear-gradient(135deg, #C5A059 0%, #DFBA73 50%, #99752D 100%)',
+        'gradient-emerald-silk': 'linear-gradient(180deg, #FAF8F5 0%, #F5F0E6 100%)',
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Cinzel', 'Georgia', 'serif'],
+        serif: ['Cinzel', 'Playfair Display', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         urdu: ['Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'serif'],
       },
       boxShadow: {
-        'luxury-card': '0 10px 30px -5px rgba(62, 50, 57, 0.12), 0 4px 12px -2px rgba(62, 50, 57, 0.06)',
-        'luxury-lifted': '0 20px 40px -10px rgba(62, 50, 57, 0.22), 0 8px 16px -4px rgba(62, 50, 57, 0.12)',
-        'specular-glow': 'inset 0 1px 1px 0 rgba(247, 239, 231, 0.4), 0 8px 24px -4px rgba(178, 148, 157, 0.25)',
+        'luxury-card': '0 8px 24px -4px rgba(11, 45, 34, 0.08), 0 2px 8px -2px rgba(11, 45, 34, 0.04)',
+        'luxury-lifted': '0 20px 40px -8px rgba(11, 45, 34, 0.16), 0 6px 16px -2px rgba(197, 160, 89, 0.18)',
+        'specular-glow': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), 0 8px 24px -4px rgba(197, 160, 89, 0.25)',
       },
       transitionTimingFunction: {
         'emil-out': 'cubic-bezier(0.16, 1, 0.3, 1)',

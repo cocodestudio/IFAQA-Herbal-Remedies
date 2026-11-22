@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HerbalRemedy } from '@/lib/types';
 import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
@@ -21,6 +21,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { addToCart } = useCart();
   const { t, getRemedyTitle, getRemedySubtitle } = useLanguage();
 
@@ -44,7 +45,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
     setGlare({
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
-      opacity: 0.14,
+      opacity: 0.12,
     });
   };
 
@@ -104,7 +105,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
             opacity: glare.opacity,
-            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(247, 239, 231, 0.22), transparent 70%)`,
+            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(223, 186, 115, 0.22), transparent 70%)`,
             mixBlendMode: 'overlay',
           }}
         />
@@ -112,7 +113,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
         <div>
           {/* Luxury Product Presentation Area */}
           <div
-            className="relative h-44 sm:h-48 w-full bg-gradient-to-b from-ifaqa-linen/70 to-ifaqa-cashmere/20 border border-ifaqa-sand/40 flex flex-col items-center justify-center overflow-hidden mb-4 transition-transform duration-250 p-4 group-hover:border-ifaqa-plum/40"
+            className="relative h-44 sm:h-48 w-full bg-gradient-to-b from-[#FAF8F5] to-[#F5F0E6] border border-ifaqa-sand/50 flex flex-col items-center justify-center overflow-hidden mb-4 transition-transform duration-250 p-3 group-hover:border-ifaqa-plum/40"
             style={{
               transform: isHovered ? 'translateZ(20px)' : 'translateZ(0px)',
             }}
@@ -122,22 +123,36 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
 
             {/* Top Right Tag - ONLY Tag on the Card (As Requested by User) */}
             <div className="absolute top-2.5 right-2.5 z-20">
-              <ArchitecturalBadge variant="diamond" className="bg-ifaqa-plum text-ifaqa-linen shadow-sm text-[10px] font-bold">
-                {remedy.isBestSeller ? t('bestSellerBadge') : remedy.form}
-              </ArchitecturalBadge>
+              <span className="inline-block px-2.5 py-1 text-[10px] font-serif font-bold uppercase tracking-wider bg-ifaqa-plum text-ifaqa-sand border border-ifaqa-sand/40 shadow-sm">
+                {remedy.isBestSeller ? '★ Best Seller' : remedy.form}
+              </span>
             </div>
 
-            <div className="text-center z-10">
-              <div className="w-12 h-12 mx-auto mb-2 bg-ifaqa-plum text-ifaqa-sand flex items-center justify-center border border-ifaqa-sand/50 shadow-sm group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6" />
+            {/* Booklet Product Image or High-End Herbal Emblem */}
+            {remedy.primaryImage && !imageError ? (
+              <div className="relative w-full h-full flex items-center justify-center p-1">
+                <Image
+                  src={remedy.primaryImage}
+                  alt={displayTitle}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 300px"
+                  onError={() => setImageError(true)}
+                  className="object-contain filter contrast-[1.02] group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <span className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum block">
-                {remedy.form} • {remedy.packaging?.size || 'Standard Dispensing'}
-              </span>
-              <span className="text-[11px] font-sans font-medium text-ifaqa-blackberry mt-0.5 block">
-                {remedy.sku}
-              </span>
-            </div>
+            ) : (
+              <div className="text-center z-10">
+                <div className="w-12 h-12 mx-auto mb-2 bg-ifaqa-plum text-ifaqa-sand flex items-center justify-center border border-ifaqa-sand/50 shadow-sm group-hover:scale-110 transition-transform">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <span className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum block">
+                  {remedy.form} • {remedy.packaging?.size || 'Standard Dispensing'}
+                </span>
+                <span className="text-[11px] font-sans font-medium text-ifaqa-blackberry mt-0.5 block">
+                  {remedy.sku}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Titles & Botanical Subtitle */}
@@ -148,35 +163,38 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
             >
               {displayTitle}
             </h3>
-            <p className="text-xs text-ifaqa-blackberry font-medium mt-1 font-sans">
+            <p className="text-xs text-ifaqa-blackberry font-semibold mt-1 font-sans">
               {displaySubtitle}
             </p>
           </div>
 
           {/* Short Description */}
-          <p className="text-xs text-ifaqa-plum/90 line-clamp-2 mt-2 leading-relaxed font-sans">
+          <p className="text-xs text-ifaqa-plum/90 line-clamp-2 mt-2 leading-relaxed font-sans font-normal">
             {remedy.shortDescription}
           </p>
 
           {/* Indications Preview */}
           <div className="flex flex-wrap gap-1.5 mt-3">
             {(remedy.therapeuticIndications || []).slice(0, 2).map((ind, idx) => (
-              <ArchitecturalBadge key={idx} variant="ruled" className="text-[10px]">
+              <span
+                key={idx}
+                className="inline-block text-[10px] px-2 py-0.5 font-sans font-medium bg-[#FAF5EC] text-ifaqa-plum border-l-2 border-ifaqa-mauve"
+              >
                 {ind}
-              </ArchitecturalBadge>
+              </span>
             ))}
           </div>
         </div>
 
         {/* Pricing & Add to Cart Footer (INR Single Currency Only) */}
-        <div className="mt-5 pt-3.5 border-t border-ifaqa-sand/40 flex items-center justify-between gap-3 bg-ifaqa-linen/40 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 p-4">
+        <div className="mt-5 pt-3.5 border-t border-ifaqa-sand/40 flex items-center justify-between gap-3 bg-[#FAF8F5]/80 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 p-4">
           <div className="min-w-0">
             <div className="flex items-baseline gap-2">
               <span className="font-serif text-lg sm:text-xl font-bold text-ifaqa-plum leading-tight">
                 {formatPriceINR(remedy.pricePKR)}
               </span>
               {remedy.comparePricePKR && (
-                <span className="text-xs text-ifaqa-blackberry line-through font-mono">
+                <span className="text-xs text-ifaqa-blackberry/70 line-through font-mono">
                   {formatPriceINR(remedy.comparePricePKR)}
                 </span>
               )}
@@ -195,18 +213,18 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
             className={`px-3.5 sm:px-4 py-2 text-xs font-serif font-bold uppercase tracking-wider shrink-0 select-none flex items-center gap-1.5 ${
               justAdded
                 ? 'bg-emerald-800 text-white'
-                : 'bg-ifaqa-plum text-ifaqa-linen hover:bg-ifaqa-blackberry'
-            } active:scale-[0.97] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm`}
+                : 'bg-ifaqa-plum text-white hover:bg-ifaqa-blackberry hover:text-[#FAF5EC] border border-ifaqa-sand/40'
+            } active:scale-[0.97] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md`}
           >
             {justAdded ? (
               <>
-                <Check className="w-3.5 h-3.5" />
-                <span>{t('addedToCart')}</span>
+                <Check className="w-3.5 h-3.5 text-white" />
+                <span className="text-white font-bold">{t('addedToCart')}</span>
               </>
             ) : isAvailable ? (
-              t('addToCart')
+              <span className="text-white font-bold">{t('addToCart')}</span>
             ) : (
-              t('outOfStock')
+              <span className="text-white/70 font-bold">{t('outOfStock')}</span>
             )}
           </button>
         </div>

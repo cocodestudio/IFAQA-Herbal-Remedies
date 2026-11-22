@@ -22,9 +22,9 @@ export function Button3D({
   };
 
   const variantStyles = {
-    primary: 'bg-ifaqa-plum text-white hover:bg-ifaqa-blackberry shadow-md hover:shadow-lg',
-    secondary: 'bg-ifaqa-linen text-ifaqa-plum border border-ifaqa-sand/60 hover:bg-ifaqa-cashmere/50 shadow-sm',
-    accent: 'bg-gradient-to-br from-[#B2949D] to-[#6B5F6F] text-white shadow-md hover:opacity-95',
+    primary: 'bg-ifaqa-plum text-white hover:bg-ifaqa-blackberry border border-ifaqa-sand/40 shadow-md hover:shadow-lg',
+    secondary: 'bg-[#FAF5EC] text-ifaqa-plum border border-ifaqa-sand hover:bg-ifaqa-cashmere/70 shadow-sm',
+    accent: 'bg-gradient-to-br from-[#C5A059] to-[#99752D] text-[#0B2D22] font-bold shadow-md hover:brightness-105 border border-[#DFBA73]',
     outline: 'border-2 border-white text-white hover:bg-white hover:text-ifaqa-plum',
     ghost: 'text-ifaqa-plum hover:bg-ifaqa-sand/20',
   };
