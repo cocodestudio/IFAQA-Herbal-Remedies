@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import seedData from '@/lib/seed-data.json';
 import { getRemedyBySlug, getRemediesByCategory } from '@/lib/remedies-service';
 import { HerbalRemedy } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
@@ -37,9 +38,25 @@ export default function RemedyDetailPage() {
   const params = useParams();
   const rawSlug = typeof params?.slug === 'string' ? params.slug.trim() : '';
 
-  const [remedy, setRemedy] = useState<HerbalRemedy | null>(null);
-  const [relatedRemedies, setRelatedRemedies] = useState<HerbalRemedy[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [remedy, setRemedy] = useState<HerbalRemedy | null>(() => {
+    if (!rawSlug) return null;
+    const clean = rawSlug.toLowerCase().trim();
+    return (seedData.remedies as unknown as HerbalRemedy[]).find(
+      r => r.slug === clean || r.id === clean
+    ) || null;
+  });
+  const [relatedRemedies, setRelatedRemedies] = useState<HerbalRemedy[]>(() => {
+    if (!rawSlug) return [];
+    const clean = rawSlug.toLowerCase().trim();
+    const matched = (seedData.remedies as unknown as HerbalRemedy[]).find(
+      r => r.slug === clean || r.id === clean
+    );
+    if (!matched) return [];
+    return (seedData.remedies as unknown as HerbalRemedy[])
+      .filter(r => r.categoryId === matched.categoryId && r.id !== matched.id)
+      .slice(0, 4);
+  });
+  const [loading, setLoading] = useState(() => !remedy);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'dosage' | 'faq' | 'reviews'>('overview');
   const [addedToast, setAddedToast] = useState(false);
@@ -51,7 +68,6 @@ export default function RemedyDetailPage() {
 
   useEffect(() => {
     async function load() {
-      setLoading(true);
       const data = await getRemedyBySlug(rawSlug);
       if (!data) {
         setLoading(false);
@@ -67,9 +83,17 @@ export default function RemedyDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center text-ifaqa-blackberry font-serif text-sm font-medium">
-        <RefreshCw className="w-6 h-6 animate-spin mr-2 text-ifaqa-plum" />
-        Loading product details...
+      <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 select-none">
+        <div className="relative w-12 h-12 flex items-center justify-center mb-3">
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-ifaqa-plum border-r-ifaqa-mauve animate-spin" />
+          <div
+            className="w-5 h-5 rounded-full border border-dashed border-ifaqa-sand animate-spin"
+            style={{ animationDirection: 'reverse' }}
+          />
+        </div>
+        <span className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum">
+          Loading Formulation...
+        </span>
       </div>
     );
   }

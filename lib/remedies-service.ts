@@ -12,24 +12,57 @@ export const isFallbackMode = (): boolean => {
   return false;
 };
 
+// In-Memory Fast Cache for Instant 0ms Page Navigation & Seamless Transitions
+let cachedRemedies: HerbalRemedy[] | null = null;
+let remediesTimestamp = 0;
+
+let cachedCategories: AilmentCategory[] | null = null;
+let categoriesTimestamp = 0;
+
+let cachedBanners: PromotionalBanner[] | null = null;
+let bannersTimestamp = 0;
+
+const CACHE_TTL_MS = 120 * 1000; // 2 minutes
+
 export async function getRemedies(): Promise<HerbalRemedy[]> {
+  const now = Date.now();
+  if (cachedRemedies && cachedRemedies.length > 0 && (now - remediesTimestamp) < CACHE_TTL_MS) {
+    return cachedRemedies;
+  }
+
   if (!isFallbackMode() && db) {
     try {
       const snap = await getDocs(collection(db, 'remedies'));
       if (!snap.empty) {
-        return snap.docs.map(d => ({ ...d.data(), id: d.id } as HerbalRemedy));
+        cachedRemedies = snap.docs.map(d => ({ ...d.data(), id: d.id } as HerbalRemedy));
+        remediesTimestamp = now;
+        return cachedRemedies;
       }
     } catch (e) {
       console.warn("Firestore remedies fetch failed, using seed data fallback:", e);
     }
   }
-  return seedData.remedies as unknown as HerbalRemedy[];
+  cachedRemedies = seedData.remedies as unknown as HerbalRemedy[];
+  remediesTimestamp = now;
+  return cachedRemedies;
 }
 
 export async function getRemedyBySlug(slug: string): Promise<HerbalRemedy | null> {
-  const all = await getRemedies();
   const cleanSlug = (slug || '').toLowerCase().trim();
-  return all.find(r => r.slug === cleanSlug || r.id === cleanSlug) || null;
+  // Fast-path: instant in-memory cache lookup
+  if (cachedRemedies) {
+    const match = cachedRemedies.find(r => r.slug === cleanSlug || r.id === cleanSlug);
+    if (match) return match;
+  }
+  // Synchronous fallback lookup from seed dataset
+  const quick = (seedData.remedies as unknown as HerbalRemedy[]).find(
+    r => r.slug === cleanSlug || r.id === cleanSlug
+  );
+  if (quick && (isFallbackMode() || !db)) {
+    return quick;
+  }
+  const all = await getRemedies();
+  return all.find(r => r.slug === cleanSlug || r.id === cleanSlug) || quick || null;
 }
 
 export async function getRemediesByCategory(categoryId: string): Promise<HerbalRemedy[]> {
@@ -39,19 +72,28 @@ export async function getRemediesByCategory(categoryId: string): Promise<HerbalR
 }
 
 export async function getCategories(): Promise<AilmentCategory[]> {
+  const now = Date.now();
+  if (cachedCategories && cachedCategories.length > 0 && (now - categoriesTimestamp) < CACHE_TTL_MS) {
+    return cachedCategories;
+  }
+
   if (!isFallbackMode() && db) {
     try {
       const snap = await getDocs(collection(db, 'ailments'));
       if (!snap.empty) {
         const categories = snap.docs.map(d => ({ ...d.data(), id: d.id } as AilmentCategory));
-        return categories.sort((a, b) => a.displayOrder - b.displayOrder);
+        cachedCategories = categories.sort((a, b) => a.displayOrder - b.displayOrder);
+        categoriesTimestamp = now;
+        return cachedCategories;
       }
     } catch (e) {
       console.warn("Firestore categories fetch failed, using seed data fallback:", e);
     }
   }
   const categories = seedData.categories as unknown as AilmentCategory[];
-  return [...categories].sort((a, b) => a.displayOrder - b.displayOrder);
+  cachedCategories = [...categories].sort((a, b) => a.displayOrder - b.displayOrder);
+  categoriesTimestamp = now;
+  return cachedCategories;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<AilmentCategory | null> {
@@ -61,19 +103,28 @@ export async function getCategoryBySlug(slug: string): Promise<AilmentCategory |
 }
 
 export async function getBanners(): Promise<PromotionalBanner[]> {
+  const now = Date.now();
+  if (cachedBanners && cachedBanners.length > 0 && (now - bannersTimestamp) < CACHE_TTL_MS) {
+    return cachedBanners;
+  }
+
   if (!isFallbackMode() && db) {
     try {
       const snap = await getDocs(collection(db, 'banners'));
       if (!snap.empty) {
         const banners = snap.docs.map(d => ({ ...d.data(), id: d.id } as PromotionalBanner));
-        return banners.filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+        cachedBanners = banners.filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+        bannersTimestamp = now;
+        return cachedBanners;
       }
     } catch (e) {
       console.warn("Firestore banners fetch failed, using seed data fallback:", e);
     }
   }
   const banners = seedData.banners as unknown as PromotionalBanner[];
-  return [...banners].filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+  cachedBanners = [...banners].filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+  bannersTimestamp = now;
+  return cachedBanners;
 }
 
 export function filterRemedies(

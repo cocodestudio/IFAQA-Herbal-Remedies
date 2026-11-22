@@ -22,6 +22,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const { addToCart } = useCart();
   const { t, getRemedyTitle, getRemedySubtitle } = useLanguage();
 
@@ -51,6 +52,10 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    // Instant prefetch: loads route in background for 0ms transitions on click
+    if (remedy.slug) {
+      router.prefetch(`/remedy/${remedy.slug}`);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -73,7 +78,9 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
     }
   };
 
-  const handleCardClick = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Show immediate micro-loading state on card
+    setIsNavigating(true);
     router.push(`/remedy/${remedy.slug}`);
   };
 
@@ -98,8 +105,20 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
             ? 'transform 100ms ease-out, box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1)'
             : 'transform 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1)',
         }}
-        className="relative overflow-hidden bg-white border border-ifaqa-sand/60 p-5 sm:p-6 flex flex-col justify-between h-full shadow-luxury-card hover:shadow-luxury-lifted active:scale-[0.99] transition-transform duration-150"
+        className={`relative overflow-hidden bg-white border ${
+          isNavigating ? 'border-ifaqa-mauve ring-2 ring-ifaqa-mauve/40' : 'border-ifaqa-sand/60'
+        } p-5 sm:p-6 flex flex-col justify-between h-full shadow-luxury-card hover:shadow-luxury-lifted active:scale-[0.99] transition-all duration-150`}
       >
+        {/* Instant Navigation Feedback Indicator Overlay */}
+        {isNavigating && (
+          <div className="absolute inset-0 z-30 bg-white/75 backdrop-blur-[2px] flex items-center justify-center animate-in fade-in duration-100">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0B2D22] text-[#DFBA73] border border-[#DFBA73]/60 shadow-lg">
+              <div className="w-3.5 h-3.5 border-2 border-[#DFBA73]/30 border-t-[#DFBA73] rounded-full animate-spin" />
+              <span className="text-[10px] font-serif font-bold uppercase tracking-widest">Opening...</span>
+            </div>
+          </div>
+        )}
+
         {/* Specular Light Sheen Overlay */}
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
