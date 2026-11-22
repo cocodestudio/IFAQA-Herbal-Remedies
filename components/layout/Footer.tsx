@@ -25,15 +25,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14 pb-14 border-b border-ifaqa-blackberry/90">
           {/* Column 1: Master Framed Heritage Emblem */}
           <div className="space-y-4">
-            <div className="relative w-52 h-32 border-2 border-ifaqa-sand/60 p-2.5 bg-ifaqa-linen/10 overflow-hidden shadow-sm">
-              <Image
-                src="/images/logo-framed.jpg"
-                alt="IFAQA Herbal Remedies Classical Heritage Stamp"
-                width={208}
-                height={128}
-                className="w-full h-full object-contain filter contrast-105"
-              />
-            </div>
+            <Link href="/" className="inline-block group">
+              <div className="inline-flex items-center justify-center p-2.5 bg-white border border-ifaqa-sand/60 shadow-md">
+                <Image
+                  src="/images/logo-framed.jpg"
+                  alt="IFAQA Herbal Remedies Classical Heritage Stamp"
+                  width={180}
+                  height={64}
+                  priority
+                  className="h-10 md:h-12 w-auto object-contain"
+                />
+              </div>
+            </Link>
             <p className="text-xs text-ifaqa-sand font-serif font-bold italic tracking-wide">
               IFAQA HERBAL REMEDIES • DESI DAWAKHANA
             </p>

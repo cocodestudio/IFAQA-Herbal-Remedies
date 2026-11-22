@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import seedData from '@/lib/seed-data.json';
 import { getRemedies, getCategories, getBanners } from '@/lib/remedies-service';
 import { HerbalRemedy, AilmentCategory, PromotionalBanner } from '@/lib/types';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
@@ -10,9 +11,11 @@ import { useLanguage } from '@/context/LanguageContext';
 import { ArrowRight, Sparkles, BookOpen, ShieldCheck, HeartHandshake, Award } from 'lucide-react';
 
 export default function HomePage() {
-  const [remedies, setRemedies] = useState<HerbalRemedy[]>([]);
-  const [categories, setCategories] = useState<AilmentCategory[]>([]);
-  const [banners, setBanners] = useState<PromotionalBanner[]>([]);
+  const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
+  const [categories, setCategories] = useState<AilmentCategory[]>(() => seedData.categories as unknown as AilmentCategory[]);
+  const [banners, setBanners] = useState<PromotionalBanner[]>(() =>
+    (seedData.banners as unknown as PromotionalBanner[]).filter(banner => banner.placement === 'hero')
+  );
   const [currentSlide, setCurrentSlide] = useState(0);
   const { t, getCategoryTitle } = useLanguage();
 
@@ -23,9 +26,9 @@ export default function HomePage() {
         getCategories(),
         getBanners(),
       ]);
-      setRemedies(r);
-      setCategories(c);
-      setBanners(b.filter(banner => banner.placement === 'hero'));
+      if (r && r.length > 0) setRemedies(r);
+      if (c && c.length > 0) setCategories(c);
+      if (b && b.length > 0) setBanners(b.filter(banner => banner.placement === 'hero'));
     }
     loadData();
   }, []);
