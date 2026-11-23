@@ -11,7 +11,7 @@ import { Smartphone, ShieldCheck, KeyRound, ArrowRight } from 'lucide-react';
 export function PhoneOtpModal() {
   const { isPhoneModalOpen, closePhoneModal, signInWithTestAccount } = useAuth();
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
-  const [phone, setPhone] = useState('+92 300 0000000');
+  const [phone, setPhone] = useState('+91 98765 43210');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -69,12 +69,12 @@ export function PhoneOtpModal() {
     <Modal
       isOpen={isPhoneModalOpen}
       onClose={resetAndClose}
-      title="Patron Identity & Verification"
+      title="Sign In with Mobile Number"
       maxWidth="md"
     >
       <div className="space-y-5">
         <div className="flex items-center gap-2 mb-2">
-          <ArchitecturalBadge variant="notched">Classical Unani Apothecary</ArchitecturalBadge>
+          <ArchitecturalBadge variant="notched">100% Genuine Herbal Care</ArchitecturalBadge>
           <ArchitecturalBadge variant="diamond">Secure Auth</ArchitecturalBadge>
         </div>
 

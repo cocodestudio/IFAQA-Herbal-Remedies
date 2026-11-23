@@ -36,8 +36,8 @@ export function ShippingProgressBar({
           )}
           <span>
             {isUnlocked
-              ? 'Complimentary Express Courier Unlocked!'
-              : `Add ${formatRemaining} more for Free Doorstep Delivery`}
+              ? 'Free Express Delivery Unlocked!'
+              : `Add ${formatRemaining} more for Free Delivery`}
           </span>
         </span>
         <span className="text-[11px] font-mono text-ifaqa-plum font-bold">

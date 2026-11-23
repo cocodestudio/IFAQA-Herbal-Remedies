@@ -126,20 +126,20 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 2. Therapeutic Disciplines Grid - Edge-to-Edge Container */}
+      {/* 2. Therapeutic Categories Grid - Edge-to-Edge Container */}
       <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="flex flex-col sm:flex-row items-baseline justify-between mb-8 pb-4 border-b border-ifaqa-sand/40">
           <div>
-            <ArchitecturalBadge variant="notched">Apothecary Disciplines</ArchitecturalBadge>
+            <ArchitecturalBadge variant="notched">{t('filter')}</ArchitecturalBadge>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum mt-1">
-              Therapeutic Systems
+              {t('categoriesTitle')}
             </h2>
           </div>
           <Link
             href="/catalog"
             className="text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-blackberry hover:text-ifaqa-plum mt-2 sm:mt-0 flex items-center gap-1 group"
           >
-            <span>View All Categories</span>
+            <span>{t('allFormulations')}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -156,7 +156,7 @@ export default function HomePage() {
                   {category.romanName || category.id}
                 </span>
                 <ArchitecturalBadge variant="chamfer">
-                  {category.remedyCount} {category.remedyCount === 1 ? 'Remedy' : 'Remedies'}
+                  {category.remedyCount} {category.remedyCount === 1 ? 'Product' : 'Products'}
                 </ArchitecturalBadge>
               </div>
               <h3 className="font-serif text-lg font-bold text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors">
@@ -166,7 +166,7 @@ export default function HomePage() {
                 {category.description}
               </p>
               <div className="mt-4 pt-3 border-t border-ifaqa-sand/30 flex items-center justify-between text-xs font-serif font-bold text-ifaqa-blackberry group-hover:text-ifaqa-plum">
-                <span>Explore Formulations</span>
+                <span>{t('explorePharmacopoeia')}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
@@ -174,13 +174,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Featured & Master Classical Remedies */}
+      {/* 3. Featured & Popular Remedies */}
       <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="flex flex-col sm:flex-row items-baseline justify-between mb-8 pb-4 border-b border-ifaqa-sand/40">
           <div>
-            <ArchitecturalBadge variant="notched">Master Dispensary Formulations</ArchitecturalBadge>
+            <ArchitecturalBadge variant="notched">{t('genuineQuality')}</ArchitecturalBadge>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum mt-1">
-              {t('featuredRemedies')}
+              {t('featuredTitle')}
             </h2>
           </div>
           <Link
@@ -199,7 +199,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. Classical Heritage Trust Banner */}
+      {/* 4. Natural Trust & Quality Banner */}
       <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="bg-[#FAF5EC] border-2 border-ifaqa-sand/70 p-8 sm:p-12 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
@@ -208,10 +208,10 @@ export default function HomePage() {
                 <BookOpen className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-base font-bold text-ifaqa-plum">
-                Canonical Greco-Arab Manuscripts
+                {t('trustPillar1Title')}
               </h3>
               <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed">
-                Compounded strictly according to traditional Unani-Tibb & classical Ayurvedic scriptures without modern synthetic shortcuts.
+                {t('trustPillar1Desc')}
               </p>
             </div>
 
@@ -220,10 +220,10 @@ export default function HomePage() {
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-base font-bold text-ifaqa-plum">
-                100% Pure Wildcrafted Herbs
+                {t('trustPillar2Title')}
               </h3>
               <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed">
-                Hand-harvested botanicals, pure saffron, calcined minerals, and natural honeys rigorously screened for empirical potency.
+                {t('trustPillar2Desc')}
               </p>
             </div>
 
@@ -232,10 +232,10 @@ export default function HomePage() {
                 <Award className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-base font-bold text-ifaqa-plum">
-                All-India & Global Dispensary
+                {t('trustPillar3Title')}
               </h3>
               <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed">
-                Freshly sealed batch bottles shipped with speed and care to all pincodes across India and international destinations.
+                {t('trustPillar3Desc')}
               </p>
             </div>
           </div>

@@ -28,7 +28,7 @@ export default function CartPage() {
       <div className="border-b border-ifaqa-sand/60 pb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <ArchitecturalBadge variant="notched">Dispensary Order</ArchitecturalBadge>
+            <ArchitecturalBadge variant="notched">{t('genuineQuality')}</ArchitecturalBadge>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ifaqa-plum">
             {t('cart')} ({itemCount} {itemCount === 1 ? 'item' : 'items'})

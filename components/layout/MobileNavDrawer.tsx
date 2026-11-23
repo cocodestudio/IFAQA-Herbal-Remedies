@@ -36,23 +36,20 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 md:hidden flex select-none transition-all duration-300 ${
-        isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
-      }`}
+      className={`fixed inset-0 z-50 md:hidden flex select-none transition-all duration-300 ${isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+        }`}
     >
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-[#0B2D22]/70 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`fixed inset-0 bg-[#0B2D22]/70 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
         onClick={onClose}
       />
 
       {/* Drawer */}
       <div
-        className={`relative w-4/5 max-w-sm bg-ifaqa-linen border-r-2 border-ifaqa-sand/60 h-full flex flex-col justify-between z-10 shadow-2xl overflow-y-auto transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`relative w-4/5 max-w-sm bg-ifaqa-linen border-r-2 border-ifaqa-sand/60 h-full flex flex-col justify-between z-10 shadow-2xl overflow-y-auto transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div>
           {/* Header */}
@@ -109,10 +106,10 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
             </button>
           </div>
 
-          {/* Secondary Pharmacopoeia Categories */}
+          {/* Secondary Categories */}
           <nav className="p-4 space-y-1">
             <div className="text-[10px] font-mono uppercase tracking-widest text-ifaqa-blackberry font-bold mb-2 px-3">
-              Pharmacopoeia Disciplines
+              {t('categoriesTitle')}
             </div>
             {categories.map((cat) => (
               <Link
@@ -161,7 +158,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               className="flex items-center justify-center gap-2 w-full py-2.5 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-wider text-center hover:bg-ifaqa-blackberry transition-colors shadow-md"
             >
               <User className="w-4 h-4 text-ifaqa-sand" />
-              <span>Patron Sign In</span>
+              <span>{t('signIn')}</span>
             </Link>
           )}
 

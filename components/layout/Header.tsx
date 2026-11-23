@@ -124,7 +124,7 @@ export function Header() {
                 {langMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border-2 border-ifaqa-sand/60 shadow-xl z-50 py-1.5 animate-in fade-in slide-in-from-top-2 duration-150">
                     <div className="px-3 py-1.5 border-b border-ifaqa-sand/30 text-[10px] uppercase font-mono tracking-wider text-ifaqa-blackberry font-bold">
-                      Select Language
+                      {t('languageSelect')}
                     </div>
                     {languageOptions.map((opt) => {
                       const isSelected = language === opt.code;
@@ -155,11 +155,11 @@ export function Header() {
                 )}
               </div>
 
-              {/* Dedicated Patron Sign In / Account Page Link */}
+              {/* Dedicated Customer Sign In / Account Page Link */}
               <Link
                 href="/sign-in"
                 className="p-2 text-ifaqa-plum hover:text-ifaqa-blackberry hover:bg-ifaqa-sand/20 transition-all flex items-center gap-1.5"
-                title={isAuthenticated ? `Logged in: ${user?.phoneNumber}` : "Patron Sign In"}
+                title={isAuthenticated ? `Logged in: ${user?.phoneNumber}` : t('signIn')}
                 aria-label="Account details"
               >
                 {isAuthenticated ? (
@@ -168,7 +168,7 @@ export function Header() {
                   <User className="w-5 h-5 text-ifaqa-plum" />
                 )}
                 <span className="hidden lg:inline text-[11px] font-serif uppercase tracking-wider font-bold">
-                  {isAuthenticated ? 'Account' : t('signIn')}
+                  {isAuthenticated ? t('account') : t('signIn')}
                 </span>
               </Link>
 

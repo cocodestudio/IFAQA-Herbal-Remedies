@@ -2,23 +2,25 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import { CheckoutForm } from '@/components/checkout/CheckoutForm';
 import { OrderSummaryCard } from '@/components/checkout/OrderSummaryCard';
 import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { Lock, ArrowLeft } from 'lucide-react';
 
 export default function CheckoutPage() {
+  const { t } = useLanguage();
   return (
     <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-12 overflow-x-hidden space-y-8 select-none">
       {/* Header */}
       <div className="border-b border-ifaqa-sand/60 pb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <ArchitecturalBadge variant="notched">Dispensary Checkout</ArchitecturalBadge>
+            <ArchitecturalBadge variant="notched">{t('checkout')}</ArchitecturalBadge>
             <ArchitecturalBadge variant="diamond">256-Bit SSL Secured</ArchitecturalBadge>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ifaqa-plum">
-            Order Placement & Dispatch
+            {t('checkout')}
           </h1>
         </div>
         <Link

@@ -37,19 +37,19 @@ export function DosageGuide({ dosage }: DosageGuideProps) {
         </div>
       </div>
 
-      {/* Traditional Anupana Carrier Vehicle */}
+      {/* Recommended Consumption Guide */}
       <div className="p-5 bg-ifaqa-linen border border-ifaqa-sand/60">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum">
-            Traditional Anupana (Bio-Enhancing Vehicle)
+            How to Take (Recommended with)
           </h4>
-          <ArchitecturalBadge variant="diamond">Bio-Enhancer</ArchitecturalBadge>
+          <ArchitecturalBadge variant="diamond">Usage Guide</ArchitecturalBadge>
         </div>
-        <p className="font-serif text-base text-ifaqa-plum font-semibold italic">
+        <p className="font-serif text-base text-ifaqa-plum font-semibold">
           {dosage.anupana}
         </p>
         <p className="text-[11px] text-ifaqa-mauve font-sans mt-2 leading-relaxed">
-          In classical Unani-Tibb canon, the Anupana (carrier liquid) directs active botanical principles directly to target organ tissues (*Aza-e-Raeesa*), accelerating absorption and clinical efficacy.
+          Taking this herbal remedy with the recommended liquid (such as warm water, milk, or honey) helps your body absorb the natural botanical nutrients for maximum benefit.
         </p>
       </div>
 

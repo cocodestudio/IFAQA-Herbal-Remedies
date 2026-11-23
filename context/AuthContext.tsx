@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const customer: CustomerAuthUser = {
               uid: fbUser.uid,
               phoneNumber: fbUser.phoneNumber || '',
-              displayName: fbUser.displayName || 'IFAQA Patron',
+              displayName: fbUser.displayName || 'IFAQA Customer',
               role: 'customer',
             };
             setUser(customer);
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const customer: CustomerAuthUser = {
       uid: `cust_${cleanPhone.replace(/[^0-9]/g, '').slice(-8)}`,
       phoneNumber: cleanPhone,
-      displayName: 'Distinguished Patron',
+      displayName: 'Customer',
       role: 'customer',
     };
     setUser(customer);

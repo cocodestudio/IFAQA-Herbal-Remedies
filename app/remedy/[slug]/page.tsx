@@ -378,7 +378,7 @@ export default function RemedyDetailPage() {
               <div className="text-ifaqa-blackberry font-medium">Ailment Target:</div>
               <div className="font-bold text-ifaqa-plum">{displayCategory}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">Dosage Vehicle (Anupana):</div>
+              <div className="text-ifaqa-blackberry font-medium">How to Consume:</div>
               <div className="font-bold text-ifaqa-plum">{remedy.dosageInstructions?.anupana || 'Lukewarm Water'}</div>
 
               <div className="text-ifaqa-blackberry font-medium">Country of Origin:</div>
@@ -452,7 +452,7 @@ export default function RemedyDetailPage() {
                 : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
             }`}
           >
-            Patient Ratings & Reviews (1,248)
+            Customer Reviews (1,248)
           </button>
         </div>
 

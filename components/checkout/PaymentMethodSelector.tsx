@@ -21,21 +21,21 @@ export function PaymentMethodSelector({ selected, onChange, currency }: PaymentM
     {
       id: 'cash_on_delivery',
       title: 'Cash on Delivery (COD)',
-      description: 'Pay cash directly upon delivery to courier across Pakistan.',
+      description: 'Pay cash or UPI directly upon delivery at your doorstep.',
       icon: <Banknote className="w-5 h-5 text-ifaqa-mauve" />,
       availableCurrencies: ['PKR'],
     },
     {
       id: 'bank_transfer',
-      title: 'Direct Bank Transfer / Raast',
-      description: 'Transfer directly to IFAQA Herbal Remedies Meezan / HBL accounts.',
+      title: 'Direct Bank Transfer / NEFT / IMPS',
+      description: 'Transfer directly to IFAQA Herbal Remedies official bank account.',
       icon: <Building2 className="w-5 h-5 text-ifaqa-mauve" />,
       availableCurrencies: ['PKR'],
     },
     {
       id: 'credit_card',
-      title: 'International Credit / Debit Card',
-      description: 'Encrypted Visa / Mastercard processing for domestic & overseas patrons.',
+      title: 'Online Payment (UPI, Cards, Net Banking)',
+      description: 'Secure, encrypted checkout via UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards.',
       icon: <CreditCard className="w-5 h-5 text-ifaqa-mauve" />,
       availableCurrencies: ['PKR', 'USD'],
     },
@@ -44,7 +44,7 @@ export function PaymentMethodSelector({ selected, onChange, currency }: PaymentM
   return (
     <div className="space-y-3">
       <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum mb-3">
-        Payment Canon & Settlement
+        Payment Method
       </h3>
 
       <div className="grid grid-cols-1 gap-3">

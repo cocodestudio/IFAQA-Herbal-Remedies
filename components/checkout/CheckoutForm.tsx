@@ -144,7 +144,7 @@ export function CheckoutForm() {
               type="tel"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="+92 300 1234567"
+              placeholder="+91 98765 43210"
               className="w-full px-3.5 py-2.5 bg-ifaqa-linen/50 border border-ifaqa-sand/60 text-ifaqa-plum text-xs font-mono focus:outline-none focus:border-ifaqa-plum focus:ring-1 focus:ring-ifaqa-plum"
               required
             />
@@ -152,13 +152,13 @@ export function CheckoutForm() {
 
           <div className="md:col-span-2">
             <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-              Patron Email Address (Optional for Order Updates)
+              Email Address (For Order Tracking & Invoices)
             </label>
             <input
               type="email"
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
-              placeholder="patron@ifaqa-remedies.com"
+              placeholder="customer@email.com"
               className="w-full px-3.5 py-2.5 bg-ifaqa-linen/50 border border-ifaqa-sand/60 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:ring-1 focus:ring-ifaqa-plum"
             />
           </div>

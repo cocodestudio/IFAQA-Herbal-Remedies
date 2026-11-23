@@ -62,7 +62,7 @@ export function CartDrawer() {
                 {t('cart')}
               </h3>
               <p className="text-[10px] font-mono text-ifaqa-blackberry font-bold">
-                {itemCount} {itemCount === 1 ? 'Formulation' : 'Formulations'} Added
+                {itemCount} {itemCount === 1 ? t('itemInCart') : t('itemsInCart')}
               </p>
             </div>
           </div>
@@ -89,10 +89,10 @@ export function CartDrawer() {
               </div>
               <div className="space-y-1">
                 <p className="font-serif text-base font-bold text-ifaqa-plum">
-                  Your Apothecary Cart Is Empty
+                  {t('cartEmptyTitle')}
                 </p>
                 <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed max-w-xs font-medium">
-                  Browse our classical pharmacopoeia to discover empirical remedies compounded for your health needs.
+                  {t('cartEmptyDesc')}
                 </p>
               </div>
               <div className="pt-2">
@@ -101,7 +101,7 @@ export function CartDrawer() {
                   onClick={closeCart}
                   className="px-6 py-2.5 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-widest inline-flex items-center gap-2 hover:bg-ifaqa-blackberry transition-colors shadow-md"
                 >
-                  <span>Explore Pharmacopoeia</span>
+                  <span>{t('shopProducts')}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-ifaqa-sand" />
                 </Link>
               </div>
@@ -118,14 +118,14 @@ export function CartDrawer() {
           <div className="p-5 border-t-2 border-ifaqa-sand/60 bg-white space-y-4 shadow-lg">
             <div className="space-y-1.5 pb-2 border-b border-ifaqa-sand/30">
               <div className="flex items-center justify-between text-xs font-sans">
-                <span className="text-ifaqa-blackberry font-bold uppercase tracking-wider">Subtotal:</span>
+                <span className="text-ifaqa-blackberry font-bold uppercase tracking-wider">{t('subtotal')}:</span>
                 <span className="font-mono text-xl font-bold text-ifaqa-plum">
                   {formatPriceINR(subtotalPKR)}
                 </span>
               </div>
               <p className="text-[10px] text-ifaqa-blackberry/80 font-sans flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-800" />
-                <span>GST included • 100% Genuine botanical formulations</span>
+                <span>{t('gstIncluded')}</span>
               </p>
             </div>
 
@@ -136,7 +136,7 @@ export function CartDrawer() {
                 className="block w-full"
               >
                 <Button3D variant="primary" size="lg" className="w-full font-bold shadow-md justify-center">
-                  <span>Proceed to Checkout</span>
+                  <span>{t('proceedToCheckout')}</span>
                   <ArrowRight className="w-4 h-4 ml-1.5 inline-block text-ifaqa-sand" />
                 </Button3D>
               </Link>
@@ -145,7 +145,7 @@ export function CartDrawer() {
                 onClick={closeCart}
                 className="block w-full text-center py-2 text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold hover:text-ifaqa-blackberry transition-colors underline"
               >
-                View Full Dispensary Cart
+                {t('viewFullCart')}
               </Link>
             </div>
           </div>
