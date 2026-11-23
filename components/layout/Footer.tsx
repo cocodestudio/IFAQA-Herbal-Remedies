@@ -152,22 +152,22 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Navigation */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-sans text-ifaqa-linen/80">
-          <p>© {new Date().getFullYear()} IFAQA Herbal Remedies. All rights reserved. Registered Desi Dawakhana.</p>
-          <div className="flex items-center gap-4 sm:gap-5 flex-wrap">
-            <Link href="/" className="hover:text-ifaqa-sand transition-colors">{t('home')}</Link>
-            <span className="text-ifaqa-sand/40">•</span>
-            <Link href="/about" className="hover:text-ifaqa-sand transition-colors">{t('about')}</Link>
-            <span className="text-ifaqa-sand/40">•</span>
-            <Link href="/contact" className="hover:text-ifaqa-sand transition-colors">{t('contact')}</Link>
-            <span className="text-ifaqa-sand/40">•</span>
-            <Link href="/privacy-policy" className="hover:text-ifaqa-sand transition-colors">{t('privacyPolicy')}</Link>
-            <span className="text-ifaqa-sand/40">•</span>
-            <Link href="/cart" className="hover:text-ifaqa-sand transition-colors">{t('cart')}</Link>
-            <span className="text-ifaqa-sand/40">•</span>
-            <Link href="/checkout" className="hover:text-ifaqa-sand transition-colors">{t('checkout')}</Link>
-          </div>
+        {/* Bottom Bar: Centered Copyright & CoCode Studio Credit */}
+        <div className="pt-8 flex flex-col items-center justify-center text-center space-y-2 text-xs font-sans text-ifaqa-linen/80">
+          <p>
+            © {new Date().getFullYear()} IFAQA Herbal Remedies. All rights reserved. Registered Desi Dawakhana.
+          </p>
+          <p className="text-[11px] text-ifaqa-sand/90">
+            Designed &amp; Developed by{' '}
+            <a
+              href="https://cocodestudio.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ifaqa-sand hover:underline font-bold transition-colors"
+            >
+              CoCode Studio
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -89,7 +89,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="bg-white border border-ifaqa-sand/60 divide-y divide-ifaqa-sand/30 shadow-sm">
+            <div className="bg-white border border-ifaqa-sand/60 divide-y divide-ifaqa-sand/30 shadow-sm overflow-hidden">
               {items.map((item) => (
                 <CartItemRow key={item.remedyId} item={item} />
               ))}
