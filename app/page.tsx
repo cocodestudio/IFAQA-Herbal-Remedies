@@ -82,19 +82,19 @@ export default function HomePage() {
                       {banner.subheadline}
                     </p>
 
-                    <div className="pt-3 flex flex-wrap gap-4">
+                    <div className="pt-3 flex flex-wrap gap-3 sm:gap-4">
                       <Link
                         href={banner.ctaLink || '/catalog'}
-                        className="group inline-flex items-center justify-center px-8 py-3.5 text-sm font-serif font-bold tracking-widest uppercase bg-ifaqa-mauve text-ifaqa-plum hover:bg-white hover:text-ifaqa-plum border-2 border-ifaqa-sand shadow-xl active:scale-[0.97] transition-all duration-200"
+                        className="group inline-flex items-center justify-center px-5 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm font-serif font-bold tracking-widest uppercase bg-ifaqa-mauve text-ifaqa-plum hover:bg-white hover:text-ifaqa-plum border-2 border-ifaqa-sand shadow-xl active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
                       >
                         <span className="text-ifaqa-plum font-bold">{banner.ctaText || t('explorePharmacopoeia')}</span>
                         <ArrowRight className="w-4 h-4 ml-2 inline-block text-ifaqa-plum" />
                       </Link>
                       <Link
                         href="/catalog"
-                        className="group inline-flex items-center justify-center px-8 py-3.5 text-sm font-serif font-bold tracking-widest uppercase bg-transparent text-white hover:bg-white/10 border-2 border-white/80 shadow-md active:scale-[0.97] transition-all duration-200"
+                        className="group inline-flex items-center justify-center px-5 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm font-serif font-bold tracking-widest uppercase bg-transparent text-white hover:bg-white/10 border-2 border-white/80 shadow-md active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
                       >
-                        <span className="text-white font-bold">All-India & Global Catalog</span>
+                        <span className="text-white font-bold">All-India Catalog</span>
                       </Link>
                     </div>
                   </div>
@@ -159,7 +159,7 @@ export default function HomePage() {
                   {category.remedyCount} {category.remedyCount === 1 ? 'Product' : 'Products'}
                 </ArchitecturalBadge>
               </div>
-              <h3 className="font-serif text-lg font-bold text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors">
+              <h3 className="font-serif text-base sm:text-lg font-bold text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors truncate">
                 {getCategoryTitle(category)}
               </h3>
               <p className="text-xs text-ifaqa-plum/85 font-sans mt-2 line-clamp-2 leading-relaxed">

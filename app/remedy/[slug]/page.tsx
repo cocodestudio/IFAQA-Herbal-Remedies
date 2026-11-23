@@ -13,6 +13,7 @@ import { BotanicalIngredientsTable } from '@/components/remedy/BotanicalIngredie
 import { DosageGuide } from '@/components/remedy/DosageGuide';
 import { RemedyGallery } from '@/components/remedy/RemedyGallery';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
+import { PDPSkeleton } from '@/components/ui/ShimmerSkeleton';
 import { formatPriceINR } from '@/lib/formatters';
 import {
   ShoppingBag,
@@ -82,20 +83,7 @@ export default function RemedyDetailPage() {
   }, [rawSlug]);
 
   if (loading) {
-    return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 select-none">
-        <div className="relative w-12 h-12 flex items-center justify-center mb-3">
-          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-ifaqa-plum border-r-ifaqa-mauve animate-spin" />
-          <div
-            className="w-5 h-5 rounded-full border border-dashed border-ifaqa-sand animate-spin"
-            style={{ animationDirection: 'reverse' }}
-          />
-        </div>
-        <span className="font-serif text-xs font-bold uppercase tracking-widest text-ifaqa-plum">
-          Consulting Pharmacopoeia...
-        </span>
-      </div>
-    );
+    return <PDPSkeleton />;
   }
 
   if (!remedy) {
@@ -191,6 +179,77 @@ export default function RemedyDetailPage() {
               <span className="text-[11px] font-serif font-bold text-ifaqa-plum block">Desi Dawakhana</span>
               <span className="text-[10px] text-ifaqa-blackberry font-sans block">Empirical Canon</span>
             </div>
+          </div>
+
+          {/* 100% Herbal Purity & Quality Assurance Certificate Box */}
+          <div className="bg-white border border-ifaqa-sand/60 p-5 space-y-3.5 shadow-sm">
+            <div className="flex items-center justify-between border-b border-ifaqa-sand/40 pb-2.5">
+              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-ifaqa-plum flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-800" />
+                <span>Purity & Quality Assurance</span>
+              </h4>
+              <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
+                Batch Verified
+              </span>
+            </div>
+            <ul className="space-y-2.5 text-xs font-sans text-ifaqa-plum/90 font-medium">
+              <li className="flex items-start gap-2.5">
+                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
+                <span><strong>Pure Wildcrafted Botanicals:</strong> Hand-harvested roots, seeds, and natural resins compounded at peak seasonal potency.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
+                <span><strong>Zero Heavy Metals & Steroids:</strong> 100% chemical-free formulation with zero synthetic binders or artificial preservatives.</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
+                <span><strong>Classical Scriptural Method:</strong> Handcrafted under canonical dawakhana standards for maximum bioavailability.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Packaging, Storage & Delivery Guarantee */}
+          <div className="bg-[#FAF5EC] border border-ifaqa-sand/60 p-5 space-y-3 shadow-sm text-xs font-sans">
+            <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-ifaqa-plum flex items-center gap-2 border-b border-ifaqa-sand/40 pb-2">
+              <Sparkles className="w-4 h-4 text-[#C5A059]" />
+              <span>Storage & Dispatch Information</span>
+            </h4>
+            <div className="grid grid-cols-2 gap-y-2 gap-x-4 pt-1">
+              <div>
+                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Storage Advice:</span>
+                <span className="font-bold text-ifaqa-plum">Cool, dry place away from sunlight</span>
+              </div>
+              <div>
+                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Shelf Life:</span>
+                <span className="font-bold text-ifaqa-plum">24 Months (Fresh Batch)</span>
+              </div>
+              <div>
+                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Dispatch Time:</span>
+                <span className="font-bold text-ifaqa-plum">Within 24 Hours</span>
+              </div>
+              <div>
+                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Origin:</span>
+                <span className="font-bold text-ifaqa-plum">Made in India</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Patient Support Helpline Banner */}
+          <div className="bg-white border border-ifaqa-sand/60 p-4 shadow-sm flex items-center justify-between gap-3">
+            <div className="space-y-0.5">
+              <span className="text-[11px] font-serif font-bold text-ifaqa-plum uppercase tracking-wider block">
+                Need Dosage Consultation?
+              </span>
+              <span className="text-[10px] text-ifaqa-blackberry font-sans block">
+                Speak directly with an IFAQA Ayurvedic & Unani practitioner.
+              </span>
+            </div>
+            <Link
+              href="/contact"
+              className="px-3 py-1.5 bg-ifaqa-plum text-ifaqa-linen text-[11px] font-serif font-bold uppercase tracking-wider hover:bg-ifaqa-blackberry transition-colors shrink-0 whitespace-nowrap"
+            >
+              Consult Now
+            </Link>
           </div>
         </div>
 
@@ -403,7 +462,7 @@ export default function RemedyDetailPage() {
 
       {/* In-Depth Detailed Sections (Tabs) - Amazon / Flipkart Extended Details */}
       <div className="pt-8 border-t-2 border-ifaqa-sand/60">
-        <div className="flex border-b border-ifaqa-sand/60 overflow-x-auto gap-2">
+        <div className="flex border-b border-ifaqa-sand/60 overflow-x-auto no-scrollbar gap-2">
           <button
             onClick={() => setActiveTab('overview')}
             className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { X, ShoppingBag, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { CartItemRow } from './CartItemRow';
-import { ShippingProgressBar } from './ShippingProgressBar';
 import { Button3D } from '@/components/ui/Button3D';
 import { formatPriceINR } from '@/lib/formatters';
 import { useLanguage } from '@/context/LanguageContext';
@@ -75,9 +74,12 @@ export function CartDrawer() {
           </button>
         </div>
 
-        {/* Free Shipping Tier Progress */}
-        <div className="p-4 bg-[#FAF5EC] border-b border-ifaqa-sand/30">
-          <ShippingProgressBar subtotal={subtotalPKR} />
+        {/* Reassurance Banner */}
+        <div className="px-5 py-2.5 bg-[#FAF5EC] border-b border-ifaqa-sand/40 flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-[#165A45] shrink-0" />
+          <span className="text-[11px] font-sans font-medium text-ifaqa-plum">
+            100% Genuine Herbal Medicines • Safe Tamper-Proof Packaging
+          </span>
         </div>
 
         {/* Cart Item List */}

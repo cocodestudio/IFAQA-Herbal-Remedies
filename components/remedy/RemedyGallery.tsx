@@ -21,8 +21,8 @@ export function RemedyGallery({ primaryImage, images = [], remedyName, urduName 
 
   return (
     <div className="space-y-4 select-none">
-      {/* Primary Display Box */}
-      <div className="relative aspect-[4/3] sm:aspect-square w-full bg-white border-2 border-ifaqa-sand/60 p-4 sm:p-6 flex flex-col items-center justify-center overflow-hidden shadow-luxury-card group">
+      {/* Primary Display Box (Borderless as requested) */}
+      <div className="relative aspect-[4/3] sm:aspect-square w-full bg-white p-4 sm:p-6 flex flex-col items-center justify-center overflow-hidden shadow-luxury-card group">
         {/* Subtle Ambient Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5] to-[#F5F0E6]/50 pointer-events-none" />
 

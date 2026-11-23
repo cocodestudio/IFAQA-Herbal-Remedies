@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { CartItemRow } from '@/components/cart/CartItemRow';
-import { ShippingProgressBar } from '@/components/cart/ShippingProgressBar';
 import { Button3D } from '@/components/ui/Button3D';
 import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { formatPriceINR } from '@/lib/formatters';
@@ -78,8 +77,16 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Cart Item Rows (8 cols) */}
           <div className="lg:col-span-8 space-y-4">
-            <div className="bg-white border border-ifaqa-sand/60 p-4 sm:p-6 shadow-sm">
-              <ShippingProgressBar subtotal={subtotalPKR} />
+            <div className="bg-[#FAF5EC] border border-ifaqa-sand/60 px-5 py-3 shadow-sm flex items-center gap-3">
+              <ShieldCheck className="w-5 h-5 text-emerald-800 shrink-0" />
+              <div>
+                <p className="text-xs font-serif font-bold text-ifaqa-plum">
+                  100% Authentic Herbal Medicines
+                </p>
+                <p className="text-[11px] text-ifaqa-blackberry font-sans">
+                  Direct dispatch in secure, tamper-proof packaging across India and worldwide.
+                </p>
+              </div>
             </div>
 
             <div className="bg-white border border-ifaqa-sand/60 divide-y divide-ifaqa-sand/30 shadow-sm">

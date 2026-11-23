@@ -8,8 +8,11 @@ import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
 import { SearchBar } from '@/components/catalog/SearchBar';
 import { FilterSidebar } from '@/components/catalog/FilterSidebar';
 import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
+import { CatalogSkeletonGrid } from '@/components/ui/ShimmerSkeleton';
 import { useLanguage } from '@/context/LanguageContext';
-import { SlidersHorizontal, RefreshCw } from 'lucide-react';
+import { SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const ITEMS_PER_PAGE = 9;
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -18,6 +21,7 @@ function CatalogContent() {
   const [remedies, setRemedies] = useState<HerbalRemedy[]>([]);
   const [categories, setCategories] = useState<AilmentCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const { t, getCategoryTitle } = useLanguage();
 
   // Filter states
@@ -38,6 +42,11 @@ function CatalogContent() {
     load();
   }, []);
 
+  // Reset to page 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, search, inStockOnly, selectedForm]);
+
   const filteredRemedies = useMemo(() => {
     return filterRemedies(remedies, {
       category: selectedCategory,
@@ -46,6 +55,26 @@ function CatalogContent() {
       form: selectedForm,
     });
   }, [remedies, selectedCategory, search, inStockOnly, selectedForm]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredRemedies.length / ITEMS_PER_PAGE));
+
+  const paginatedRemedies = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredRemedies.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredRemedies, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    if (typeof window !== 'undefined') {
+      const gridElem = document.getElementById('catalog-grid-top');
+      if (gridElem) {
+        gridElem.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 180, behavior: 'smooth' });
+      }
+    }
+  };
 
   const activeCategoryObj = categories.find(
     c => c.slug === selectedCategory || c.id === selectedCategory
@@ -71,7 +100,7 @@ function CatalogContent() {
         <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans mt-2 max-w-3xl leading-relaxed font-medium">
           {activeCategoryObj
             ? activeCategoryObj.description
-            : "Explore our canonical collection of electuaries, distillates, and herbal compounds compounded according to ancient Greco-Arab and South Asian canons."}
+            : "Explore our canonical collection of pure herbal compounds, electuaries, and botanical preparations formulated strictly according to traditional standards."}
         </p>
       </div>
 
@@ -106,12 +135,9 @@ function CatalogContent() {
         </div>
 
         {/* Catalog Grid Area */}
-        <div className="flex-1 w-full min-w-0">
+        <div id="catalog-grid-top" className="flex-1 w-full min-w-0">
           {loading ? (
-            <div className="h-64 flex items-center justify-center text-ifaqa-blackberry font-serif text-sm font-medium">
-              <RefreshCw className="w-5 h-5 animate-spin mr-2 text-ifaqa-plum" />
-              Loading classical formulations...
-            </div>
+            <CatalogSkeletonGrid count={ITEMS_PER_PAGE} />
           ) : filteredRemedies.length === 0 ? (
             /* Bespoke Luxury Empty State */
             <div className="p-12 text-center bg-white border border-ifaqa-sand/60 space-y-4 shadow-sm my-6">
@@ -122,7 +148,7 @@ function CatalogContent() {
                 No Classical Remedies Found
               </h3>
               <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans max-w-md mx-auto leading-relaxed font-medium">
-                Our compounding specialists are preparing new batches. Try adjusting your botanical query or ailment filter.
+                Our compounding specialists are preparing new batches. Try adjusting your search query or filter.
               </p>
               <div className="pt-2">
                 <button
@@ -140,8 +166,11 @@ function CatalogContent() {
             </div>
           ) : (
             <div>
+              {/* Results status header */}
               <div className="text-xs font-mono text-ifaqa-blackberry font-semibold mb-4 flex items-center justify-between">
-                <span>Displaying {filteredRemedies.length} authentic {filteredRemedies.length === 1 ? 'formulation' : 'formulations'}</span>
+                <span>
+                  Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredRemedies.length)} of {filteredRemedies.length} authentic {filteredRemedies.length === 1 ? 'product' : 'products'}
+                </span>
                 {selectedCategory !== 'all' && (
                   <button
                     onClick={() => setSelectedCategory('all')}
@@ -152,12 +181,59 @@ function CatalogContent() {
                 )}
               </div>
 
-              {/* Responsive Grid - Fills Full Width */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-6">
-                {filteredRemedies.map((remedy) => (
+              {/* Responsive Grid with equal card heights */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-fr">
+                {paginatedRemedies.map((remedy) => (
                   <RemedyCard3D key={remedy.id} remedy={remedy} />
                 ))}
               </div>
+
+              {/* Luxury Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-10 pt-6 border-t border-ifaqa-sand/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs font-mono text-ifaqa-blackberry font-medium">
+                    Page {currentPage} of {totalPages} ({filteredRemedies.length} total products)
+                  </span>
+
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-3.5 py-1.5 text-xs font-serif font-bold uppercase tracking-wider border border-ifaqa-sand/60 bg-white hover:bg-ifaqa-sand/20 text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1"
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span>Prev</span>
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        aria-label={`Go to page ${page}`}
+                        aria-current={currentPage === page ? 'page' : undefined}
+                        className={`w-8 h-8 text-xs font-mono font-bold flex items-center justify-center border transition-all ${
+                          currentPage === page
+                            ? 'bg-[#0B2D22] text-[#DFBA73] border-[#0B2D22] shadow-md font-extrabold'
+                            : 'bg-white text-ifaqa-plum border-ifaqa-sand/60 hover:bg-ifaqa-sand/20'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="px-3.5 py-1.5 text-xs font-serif font-bold uppercase tracking-wider border border-ifaqa-sand/60 bg-white hover:bg-ifaqa-sand/20 text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1"
+                      aria-label="Next page"
+                    >
+                      <span>Next</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -168,14 +244,7 @@ function CatalogContent() {
 
 export default function CatalogPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="w-full max-w-[1720px] mx-auto px-4 py-16 text-center text-ifaqa-blackberry font-serif text-sm font-medium">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-ifaqa-plum" />
-          <span>Opening Classical Pharmacopoeia...</span>
-        </div>
-      }
-    >
+    <Suspense fallback={<CatalogSkeletonGrid count={9} />}>
       <CatalogContent />
     </Suspense>
   );
