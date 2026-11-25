@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { CartItemRow } from '@/components/cart/CartItemRow';
 import { Button3D } from '@/components/ui/Button3D';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { formatPriceINR } from '@/lib/formatters';
 import { useLanguage } from '@/context/LanguageContext';
-import { ShoppingBag, ArrowRight, Trash2, ArrowLeft, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowRight, Trash2, ArrowLeft, ShieldCheck, Truck, Leaf } from 'lucide-react';
 
 export default function CartPage() {
   const {
@@ -22,133 +21,120 @@ export default function CartPage() {
   const { t } = useLanguage();
 
   return (
-    <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-12 overflow-x-hidden space-y-8 select-none">
-      {/* Header */}
-      <div className="border-b border-ifaqa-sand/60 pb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12 space-y-8 select-none">
+      {/* Page Header */}
+      <div className="border-b border-ifaqa-plum/10 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <ArchitecturalBadge variant="notched">{t('genuineQuality')}</ArchitecturalBadge>
-          </div>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ifaqa-plum">
-            {t('cart')} ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+          <p className="text-xs font-sans text-[#5A6962] mb-1">
+            {t('genuineQuality')}
+          </p>
+          <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum tabular-nums">
+            {t('cart')} ({itemCount} {itemCount === 1 ? t('itemInCart') : t('itemsInCart')})
           </h1>
         </div>
         <div className="flex items-center gap-4">
           <Link
             href="/catalog"
-            className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry font-bold flex items-center gap-1.5"
+            className="text-sm font-sans font-medium text-ifaqa-plum hover:underline inline-flex items-center gap-1.5"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Continue Shopping</span>
+            <ArrowLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+            <span>Continue shopping</span>
           </Link>
           {items.length > 0 && (
             <button
               onClick={clearCart}
-              className="text-xs font-serif text-ifaqa-blackberry hover:text-red-700 underline font-medium flex items-center gap-1"
+              className="text-sm font-sans text-[#5A6962] hover:text-red-700 inline-flex items-center gap-1 transition-colors"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Clear Cart</span>
+              <Trash2 className="w-4 h-4" strokeWidth={1.5} />
+              <span>Clear cart</span>
             </button>
           )}
         </div>
       </div>
 
       {items.length === 0 ? (
-        <div className="p-16 text-center bg-white border border-ifaqa-sand/60 space-y-5 shadow-sm max-w-lg mx-auto my-12">
-          <div className="w-20 h-20 mx-auto bg-ifaqa-linen flex items-center justify-center text-4xl border border-ifaqa-sand/50 shadow-sm">
-            🌿
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-ifaqa-plum/10 shadow-luxury-card space-y-5 max-w-lg mx-auto my-8">
+          <div className="w-12 h-12 rounded-xl mx-auto bg-ifaqa-cashmere flex items-center justify-center text-[#5A6962]">
+            <Leaf className="w-5 h-5" strokeWidth={1.5} />
           </div>
-          <h2 className="font-serif text-2xl font-bold text-ifaqa-plum">
-            Your Cart is Empty
-          </h2>
-          <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans leading-relaxed font-medium">
-            Explore our classical remedies catalog to find potent formulations for your specific health needs.
-          </p>
-          <div className="pt-2">
+          <div className="space-y-1.5">
+            <h2 className="font-serif font-normal text-2xl text-ifaqa-plum">
+              {t('cartEmptyTitle')}
+            </h2>
+            <p className="text-sm text-[#5A6962] font-sans leading-relaxed">
+              {t('cartEmptyDesc')}
+            </p>
+          </div>
+          <div>
             <Link href="/catalog">
-              <Button3D variant="primary" size="md" className="font-bold">
-                <span>Browse All Remedies</span>
-                <ArrowRight className="w-4 h-4 ml-1.5 inline-block" />
+              <Button3D variant="primary" size="md">
+                <span>{t('shopProducts')}</span>
+                <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
               </Button3D>
             </Link>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Cart Item Rows (8 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Items */}
           <div className="lg:col-span-8 space-y-4">
-            <div className="bg-[#FAF5EC] border border-ifaqa-sand/60 px-5 py-3 shadow-sm flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-emerald-800 shrink-0" />
-              <div>
-                <p className="text-xs font-serif font-bold text-ifaqa-plum">
-                  100% Authentic Herbal Medicines
-                </p>
-                <p className="text-[11px] text-ifaqa-blackberry font-sans">
-                  Direct dispatch in secure, tamper-proof packaging across India and worldwide.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-ifaqa-sand/60 divide-y divide-ifaqa-sand/30 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-ifaqa-plum/10 divide-y divide-ifaqa-plum/10 shadow-luxury-card overflow-hidden">
               {items.map((item) => (
                 <CartItemRow key={item.remedyId} item={item} />
               ))}
             </div>
           </div>
 
-          {/* Cart Summary Card (4 cols) */}
-          <div className="lg:col-span-4 bg-white border border-ifaqa-sand/70 p-6 sm:p-8 space-y-6 shadow-luxury-card sticky top-24">
-            <div className="flex items-center justify-between pb-4 border-b border-ifaqa-sand/40">
-              <h3 className="font-serif text-lg font-bold text-ifaqa-plum">
-                Order Summary
+          {/* Summary */}
+          <div className="lg:col-span-4 bg-white rounded-xl border border-ifaqa-plum/10 p-6 space-y-5 shadow-luxury-card lg:sticky lg:top-24">
+            <div className="pb-3 border-b border-ifaqa-plum/10">
+              <h3 className="font-sans text-base font-semibold text-ifaqa-plum">
+                Order summary
               </h3>
-              <ArchitecturalBadge variant="diamond">Dispensary Direct</ArchitecturalBadge>
             </div>
 
-            <div className="space-y-3.5 text-xs font-sans">
-              <div className="flex items-center justify-between text-ifaqa-blackberry font-medium">
-                <span>Subtotal ({itemCount} items):</span>
-                <span className="font-mono font-bold text-ifaqa-plum text-sm">
+            <div className="space-y-3 text-sm font-sans tabular-nums">
+              <div className="flex items-center justify-between text-[#5A6962]">
+                <span>{t('subtotal')} ({itemCount})</span>
+                <span className="font-medium text-ifaqa-plum">
                   {formatPriceINR(subtotalPKR)}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between text-ifaqa-blackberry font-medium">
-                <span>Pan-India Courier:</span>
-                <span className="font-mono font-bold text-ifaqa-plum">
+              <div className="flex items-center justify-between text-[#5A6962]">
+                <span>Pan-India courier</span>
+                <span className="font-medium text-ifaqa-plum">
                   {shippingFee === 0 ? (
-                    <span className="text-emerald-800 uppercase font-bold">Free</span>
+                    <span className="text-[#165A45]">Free</span>
                   ) : (
                     formatPriceINR(shippingFee)
                   )}
                 </span>
               </div>
 
-              <div className="pt-3 border-t border-ifaqa-sand/40 flex items-center justify-between">
-                <span className="font-serif text-sm font-bold text-ifaqa-plum">Total Amount:</span>
-                <span className="font-serif text-2xl font-bold text-ifaqa-plum">
+              <div className="pt-3 border-t border-ifaqa-plum/10 flex items-center justify-between">
+                <span className="font-medium text-ifaqa-plum">{t('total')}</span>
+                <span className="font-sans text-xl font-semibold text-ifaqa-plum">
                   {formatPriceINR(totalAmount)}
                 </span>
               </div>
             </div>
 
-            <div className="pt-2">
-              <Link href="/checkout" className="block w-full">
-                <Button3D variant="primary" size="lg" className="w-full font-bold shadow-md">
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4 ml-2 inline-block" />
-                </Button3D>
-              </Link>
-            </div>
+            <Link href="/checkout" className="block w-full">
+              <Button3D variant="primary" size="lg" className="w-full justify-between">
+                <span>{t('proceedToCheckout')}</span>
+                <ArrowRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+              </Button3D>
+            </Link>
 
-            <div className="pt-4 border-t border-ifaqa-sand/30 space-y-2 text-[11px] font-sans text-ifaqa-blackberry font-medium">
+            <div className="pt-4 border-t border-ifaqa-plum/10 space-y-2 text-xs text-[#5A6962]">
               <div className="flex items-center gap-2">
-                <Truck className="w-3.5 h-3.5 text-ifaqa-plum shrink-0" />
-                <span>Pan-India Doorstep Delivery to All Pincodes</span>
+                <Truck className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                <span>Direct courier dispatch across India</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-ifaqa-plum shrink-0" />
-                <span>100% Genuine Desi Dawakhana Medicines</span>
+                <ShieldCheck className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                <span>Tamper-proof sealed amber glass & jars</span>
               </div>
             </div>
           </div>

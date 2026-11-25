@@ -1,45 +1,41 @@
 'use client';
 
 import React from 'react';
-import { RemedyForm } from '@/lib/types';
 
 interface FormFilterChipsProps {
   selectedForm: string;
   onSelectForm: (form: string) => void;
 }
 
-const FORMS: Array<{ id: string; label: string; urdu: string }> = [
-  { id: 'all', label: 'All Forms', urdu: 'تمام اقسام' },
-  { id: 'Majun', label: 'Majun (Electuary)', urdu: 'معجون' },
-  { id: 'Safoof', label: 'Safoof (Powder)', urdu: 'سفوف' },
-  { id: 'Sharbat', label: 'Sharbat (Syrup)', urdu: 'شربت' },
-  { id: 'Arq', label: 'Arq (Distillate)', urdu: 'عرق' },
-  { id: 'Hab', label: 'Hab (Pills)', urdu: 'حب' },
-  { id: 'Khamira', label: 'Khamira (Ferment)', urdu: 'خمیرہ' },
-  { id: 'Kushta', label: 'Kushta (Calx)', urdu: 'کشتہ' },
-  { id: 'Raughan', label: 'Raughan (Oil)', urdu: 'روغن' },
-  { id: 'Marham', label: 'Marham (Ointment)', urdu: 'مرہم' },
+const FORMS: Array<{ id: string; label: string }> = [
+  { id: 'all', label: 'All forms' },
+  { id: 'Majun', label: 'Majun (Electuary)' },
+  { id: 'Safoof', label: 'Safoof (Powder)' },
+  { id: 'Sharbat', label: 'Sharbat (Syrup)' },
+  { id: 'Arq', label: 'Arq (Distillate)' },
+  { id: 'Hab', label: 'Hab (Tablets)' },
+  { id: 'Khamira', label: 'Khamira' },
+  { id: 'Kushta', label: 'Kushta' },
+  { id: 'Raughan', label: 'Raughan (Oil)' },
+  { id: 'Marham', label: 'Marham (Ointment)' },
 ];
 
 export function FormFilterChips({ selectedForm, onSelectForm }: FormFilterChipsProps) {
   return (
-    <div className="flex flex-wrap gap-2 py-2">
+    <div className="flex flex-wrap gap-1.5 pt-1">
       {FORMS.map((form) => {
         const isSelected = selectedForm === form.id;
         return (
           <button
             key={form.id}
             onClick={() => onSelectForm(form.id)}
-            style={{
-              transition: 'transform 150ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms ease, color 150ms ease',
-            }}
-            className={`px-3 py-1.5 text-xs font-serif tracking-wider uppercase active:scale-[0.97] transition-all ${
+            className={`px-2.5 py-1.5 rounded text-xs font-sans transition-colors active:scale-[0.98] ${
               isSelected
-                ? 'bg-ifaqa-plum text-ifaqa-linen shadow-sm border border-ifaqa-plum font-bold'
-                : 'bg-ifaqa-linen text-ifaqa-plum border border-ifaqa-sand/60 hover:bg-ifaqa-cashmere/50'
+                ? 'bg-ifaqa-plum text-ifaqa-linen font-medium'
+                : 'bg-ifaqa-linen text-[#5A6962] border border-ifaqa-plum/10 hover:bg-ifaqa-cashmere hover:text-ifaqa-plum'
             }`}
           >
-            <span>{form.label}</span>
+            {form.label}
           </button>
         );
       })}

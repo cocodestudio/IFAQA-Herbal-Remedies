@@ -16,26 +16,23 @@ export function Button3D({
   ...props
 }: Button3DProps) {
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-xs tracking-wider',
-    md: 'px-5 py-2.5 text-xs font-bold tracking-wider uppercase',
-    lg: 'px-7 py-3.5 text-sm font-bold tracking-widest uppercase',
+    sm: 'h-9 px-3.5 text-xs font-medium',
+    md: 'h-10 px-5 text-sm font-medium',
+    lg: 'h-11 sm:h-12 px-6 text-sm font-medium',
   };
 
   const variantStyles = {
-    primary: 'bg-ifaqa-plum text-white hover:bg-ifaqa-blackberry border border-ifaqa-sand/40 shadow-md hover:shadow-lg',
-    secondary: 'bg-[#FAF5EC] text-ifaqa-plum border border-ifaqa-sand hover:bg-ifaqa-cashmere/70 shadow-sm',
-    accent: 'bg-gradient-to-br from-[#C5A059] to-[#99752D] text-[#0B2D22] font-bold shadow-md hover:brightness-105 border border-[#DFBA73]',
-    outline: 'border-2 border-white text-white hover:bg-white hover:text-ifaqa-plum',
-    ghost: 'text-ifaqa-plum hover:bg-ifaqa-sand/20',
+    primary: 'bg-ifaqa-plum text-ifaqa-linen hover:bg-ifaqa-blackberry border border-ifaqa-plum shadow-sm',
+    secondary: 'bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5]',
+    accent: 'bg-ifaqa-mauve text-ifaqa-plum font-medium hover:bg-ifaqa-sand border border-ifaqa-plum/15',
+    outline: 'border border-ifaqa-plum/25 text-ifaqa-plum bg-white hover:bg-ifaqa-cashmere/60',
+    ghost: 'text-ifaqa-plum hover:bg-ifaqa-cashmere',
   };
 
   return (
     <button
       disabled={disabled}
-      style={{
-        transition: 'transform 150ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease, color 150ms ease',
-      }}
-      className={`inline-flex items-center justify-center font-serif select-none active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-lg font-sans select-none transition-[background-color,border-color,color,transform,opacity] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 whitespace-nowrap ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
       {...props}
     >
       {children}

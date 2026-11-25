@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Globe } from 'lucide-react';
+import { ArrowRight, Globe } from 'lucide-react';
 import { PromotionalBanner } from '@/lib/types';
 import { useLanguage, LanguageCode } from '@/context/LanguageContext';
 
@@ -24,40 +24,36 @@ export function AnnouncementBar({ banner }: AnnouncementBarProps) {
   ];
 
   return (
-    <div className="bg-ifaqa-plum text-ifaqa-linen text-xs font-serif tracking-wider border-b border-ifaqa-sand/30 relative z-30 overflow-hidden">
-      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex flex-col md:flex-row items-center justify-between gap-2 min-h-[36px] sm:min-h-[40px]">
-        {/* Left/Center: Promotional Headline */}
-        <div className="flex-1 flex items-center justify-center md:justify-start gap-2 text-center md:text-left">
-          <Sparkles className="w-3.5 h-3.5 text-ifaqa-sand shrink-0 hidden sm:inline-block" />
-          <span className="text-[11px] sm:text-xs text-ifaqa-linen font-medium">
+    <div className="bg-ifaqa-cashmere text-ifaqa-plum text-xs font-sans border-b border-ifaqa-plum/10 relative z-30">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-2 flex flex-col md:flex-row items-center justify-between gap-2 min-h-[36px]">
+        <div className="flex-1 flex items-center justify-center md:justify-start gap-2 text-center md:text-start">
+          <span className="text-xs text-ifaqa-plum">
             {headline}
           </span>
           {ctaLink && (
             <Link
               href={ctaLink}
-              className="inline-flex items-center gap-1 text-[11px] font-bold text-ifaqa-sand hover:text-white uppercase tracking-wider underline decoration-ifaqa-sand/60 underline-offset-4 transition-colors shrink-0 ml-1"
+              className="inline-flex items-center gap-1 text-xs font-medium text-ifaqa-plum hover:underline shrink-0 ms-1"
             >
               <span>{ctaText}</span>
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3.5 h-3.5 rtl-flip" strokeWidth={1.5} />
             </Link>
           )}
         </div>
 
-        {/* Right: Language Switcher (English [Default], Hindi, Urdu) */}
-        <div className="flex items-center gap-1.5 shrink-0 border-t md:border-t-0 pt-1 md:pt-0 border-ifaqa-sand/20">
-          <Globe className="w-3.5 h-3.5 text-ifaqa-sand shrink-0 mr-0.5" />
-          <span className="text-[10px] uppercase tracking-wider text-ifaqa-sand font-mono hidden lg:inline-block">Language:</span>
-          <div className="inline-flex items-center border border-ifaqa-sand/40 bg-ifaqa-blackberry/50">
+        <div className="flex items-center gap-1.5 shrink-0">
+          <Globe className="w-3.5 h-3.5 text-[#5A6962]" strokeWidth={1.5} />
+          <div className="inline-flex items-center rounded border border-ifaqa-plum/15 bg-white p-0.5">
             {languages.map((lang) => {
               const isSelected = language === lang.code;
               return (
                 <button
                   key={lang.code}
                   onClick={() => setLanguage(lang.code)}
-                  className={`px-2 py-0.5 text-[11px] font-sans font-medium transition-colors ${
+                  className={`px-2 py-0.5 text-xs font-sans rounded transition-colors ${
                     isSelected
-                      ? 'bg-ifaqa-sand text-ifaqa-plum font-bold'
-                      : 'text-ifaqa-linen hover:text-ifaqa-sand'
+                      ? 'bg-ifaqa-plum text-ifaqa-linen font-medium'
+                      : 'text-[#5A6962] hover:text-ifaqa-plum'
                   }`}
                   aria-label={`Switch language to ${lang.label}`}
                 >

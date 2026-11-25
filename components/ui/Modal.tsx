@@ -39,34 +39,27 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = 'md' }: Mod
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-ifaqa-plum/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-[#0B2D22]/40 backdrop-blur-[2px] transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal Shell */}
       <div
-        style={{
-          transition: 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease',
-        }}
-        className={`relative w-full ${maxWidthClasses[maxWidth]} bg-ifaqa-linen border border-ifaqa-sand/60 shadow-2xl z-10 overflow-hidden`}
+        className={`relative w-full ${maxWidthClasses[maxWidth]} bg-ifaqa-linen rounded-2xl border border-ifaqa-plum/10 shadow-luxury-lifted z-10 overflow-hidden font-sans`}
       >
-        {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-ifaqa-sand/30 bg-ifaqa-linen">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-ifaqa-plum/10 bg-white">
           {title ? (
-            <h3 className="font-serif text-lg font-bold text-ifaqa-plum tracking-wide">{title}</h3>
+            <h3 className="font-sans text-base font-semibold text-ifaqa-plum">{title}</h3>
           ) : <div />}
           <button
             onClick={onClose}
-            className="p-1 text-ifaqa-blackberry hover:text-ifaqa-plum hover:bg-ifaqa-sand/30 transition-colors"
+            className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-[#5A6962] hover:text-ifaqa-plum hover:bg-ifaqa-cashmere transition-colors"
             aria-label="Close dialog"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" strokeWidth={1.5} />
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className="p-6">
           {children}
         </div>

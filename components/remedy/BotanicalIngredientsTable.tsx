@@ -8,36 +8,36 @@ interface BotanicalIngredientsTableProps {
 export function BotanicalIngredientsTable({ ingredients }: BotanicalIngredientsTableProps) {
   if (!ingredients || ingredients.length === 0) {
     return (
-      <div className="p-4 bg-ifaqa-linen/50 border border-ifaqa-sand/30 text-xs text-ifaqa-mauve italic">
-        Botanical ingredient formulation is currently in dispensary review.
+      <div className="p-4 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/10 text-sm text-[#5A6962]">
+        Full botanical composition details are listed on the packaging label.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto border border-ifaqa-sand/40 bg-white">
-      <table className="w-full text-left border-collapse">
+    <div className="overflow-x-auto rounded-xl border border-ifaqa-plum/10 bg-white">
+      <table className="w-full text-start border-collapse">
         <thead>
-          <tr className="bg-ifaqa-linen text-ifaqa-plum border-b border-ifaqa-sand/40 text-xs font-serif uppercase tracking-wider">
-            <th className="py-3 px-4 font-bold">Botanical (Latin)</th>
-            <th className="py-3 px-4 font-bold">Common & Traditional Name</th>
-            <th className="py-3 px-4 font-bold">Part Utilized</th>
-            <th className="py-3 px-4 font-bold text-right">Proportion</th>
+          <tr className="bg-ifaqa-cashmere/70 text-[#5A6962] border-b border-ifaqa-plum/10 text-xs font-sans font-medium">
+            <th className="py-3 px-4 font-medium text-start">Botanical name</th>
+            <th className="py-3 px-4 font-medium text-start">Ingredient</th>
+            <th className="py-3 px-4 font-medium text-start">Part used</th>
+            <th className="py-3 px-4 font-medium text-end">Proportion</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-ifaqa-sand/20 text-xs font-sans">
+        <tbody className="divide-y divide-ifaqa-plum/10 text-sm font-sans">
           {ingredients.map((ing, idx) => (
-            <tr key={idx} className="hover:bg-ifaqa-linen/20 transition-colors">
-              <td className="py-3 px-4 font-serif italic text-ifaqa-plum font-semibold break-words overflow-wrap-anywhere hyphens-auto max-w-[200px]">
+            <tr key={idx} className="hover:bg-ifaqa-linen/60 transition-colors">
+              <td className="py-3 px-4 text-[#5A6962] max-w-[220px] break-words">
                 {ing.botanicalName}
               </td>
-              <td className="py-3 px-4 text-ifaqa-blackberry font-medium">
+              <td className="py-3 px-4 text-ifaqa-plum font-medium">
                 {ing.commonName}
               </td>
-              <td className="py-3 px-4 text-ifaqa-mauve">
+              <td className="py-3 px-4 text-[#5A6962]">
                 {ing.partUsed}
               </td>
-              <td className="py-3 px-4 font-mono font-bold text-ifaqa-plum text-right">
+              <td className="py-3 px-4 font-mono text-xs text-ifaqa-plum text-end tabular-nums">
                 {ing.proportion}
               </td>
             </tr>

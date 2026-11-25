@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Newsreader, Plus_Jakarta_Sans, IBM_Plex_Mono, Noto_Nastaliq_Urdu } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -10,9 +11,37 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import { LuxuryPageLoader } from '@/components/ui/LuxuryPageLoader';
 import { Suspense } from 'react';
 
+const displaySerif = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const interfaceSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const metaMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+const urduNastaliq = Noto_Nastaliq_Urdu({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-urdu',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'IFAQA Herbal Remedies | Pure Desi Dawakhana & Classical Medicines',
-  description: 'Pure, authentic handcrafted herbal and Ayurvedic/Unani classical remedies formulated for all health conditions with nationwide delivery in India & worldwide.',
+  title: 'IFAQA Herbal Remedies | Pure Unani & Ayurvedic Remedies',
+  description: 'Traditional Unani and Ayurvedic herbal powders, electuaries, and distillates prepared cleanly with natural botanicals and dispatched across India.',
 };
 
 export const viewport: Viewport = {
@@ -27,8 +56,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-ifaqa-linen text-ifaqa-plum antialiased min-h-screen flex flex-col font-sans overflow-x-hidden selection:bg-ifaqa-sand selection:text-ifaqa-plum">
+    <html
+      lang="en"
+      dir="ltr"
+      className={`${displaySerif.variable} ${interfaceSans.variable} ${metaMono.variable} ${urduNastaliq.variable}`}
+    >
+      <body className="bg-ifaqa-linen text-ifaqa-plum antialiased min-h-screen flex flex-col font-sans overflow-x-hidden selection:bg-ifaqa-plum selection:text-ifaqa-linen">
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>

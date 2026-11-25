@@ -3,14 +3,13 @@
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { Button3D } from '@/components/ui/Button3D';
-import { CheckCircle2, Printer, ArrowRight, ShieldCheck, Clock, Package, RefreshCw, Truck } from 'lucide-react';
+import { CheckCircle2, Printer, ArrowRight } from 'lucide-react';
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get('orderNumber') || 'IFA-2026-1001';
-  const orderId = searchParams.get('orderId') || 'order_ref_confirmed';
+  const orderId = searchParams.get('orderId') || 'order_confirmed';
 
   const handlePrint = () => {
     if (typeof window !== 'undefined') {
@@ -19,85 +18,80 @@ function OrderConfirmationContent() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 overflow-x-hidden space-y-8 select-none">
-      {/* Confirmation Card */}
-      <div className="bg-white border-2 border-ifaqa-sand/60 p-8 md:p-12 shadow-luxury-card text-center space-y-6">
-        <div className="w-16 h-16 mx-auto bg-emerald-50 border border-emerald-900/40 flex items-center justify-center text-emerald-800 shadow-sm">
-          <CheckCircle2 className="w-8 h-8" />
+    <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 py-12 md:py-16 select-none font-sans">
+      <div className="bg-white rounded-2xl border border-ifaqa-plum/10 p-6 sm:p-10 shadow-luxury-card text-center space-y-6">
+        <div className="w-12 h-12 rounded-xl mx-auto bg-[#E8F3EE] text-[#165A45] flex items-center justify-center">
+          <CheckCircle2 className="w-6 h-6" strokeWidth={1.5} />
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-center gap-2">
-            <ArchitecturalBadge variant="notched">Dispensary Order Confirmed</ArchitecturalBadge>
-            <ArchitecturalBadge variant="diamond">Recorded in Firestore</ArchitecturalBadge>
-          </div>
-          <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-ifaqa-plum">
-            Thank You for Entrusting IFAQA
+          <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum">
+            Order confirmed
           </h1>
-          <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans max-w-md mx-auto leading-relaxed font-medium">
-            Your classical herbal remedy order has been recorded in our dispensary repository and submitted to the Chief Compounding Specialist for dispatch.
+          <p className="text-sm text-[#5A6962] max-w-md mx-auto leading-relaxed">
+            Your order has been received at our Saharanpur dispensary and will be packed within 24 hours.
           </p>
         </div>
 
         {/* Order Reference Box */}
-        <div className="p-5 bg-ifaqa-linen border border-ifaqa-sand/70 inline-block text-left min-w-[300px] shadow-sm">
-          <span className="text-[11px] font-serif uppercase tracking-widest text-ifaqa-blackberry font-bold block">
-            Official Order Reference Number
+        <div className="p-5 rounded-xl bg-ifaqa-cashmere/70 border border-ifaqa-plum/10 inline-block text-start min-w-[260px] max-w-full">
+          <span className="text-xs font-sans text-[#5A6962] block">
+            Order reference
           </span>
-          <span className="font-mono text-2xl font-bold text-ifaqa-plum tracking-wider block mt-1">
+          <span className="font-mono text-2xl font-medium text-ifaqa-plum block mt-1 tabular-nums" dir="ltr">
             {orderNumber}
           </span>
-          <span className="text-[11px] text-ifaqa-blackberry font-mono block mt-1">
-            Tracking ID: {orderId}
+          <span className="text-xs text-[#5A6962] font-mono block mt-1 truncate" dir="ltr">
+            ID {orderId}
           </span>
         </div>
 
-        {/* Fulfillment Pipeline Timeline */}
-        <div className="pt-6 border-t border-ifaqa-sand/40 max-w-md mx-auto">
-          <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-ifaqa-plum mb-4">
-            Dispensary Fulfillment Stages
+        {/* Fulfillment Pipeline */}
+        <div className="pt-6 border-t border-ifaqa-plum/10 max-w-md mx-auto">
+          <h4 className="text-xs font-sans font-medium text-[#5A6962] mb-4">
+            Fulfillment stages
           </h4>
-          <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
-            <div className="space-y-1">
-              <div className="w-7 h-7 mx-auto bg-emerald-800 text-white flex items-center justify-center font-bold">
-                ✓
+          <div className="grid grid-cols-4 gap-2 text-center text-xs font-sans">
+            <div className="space-y-1.5">
+              <div className="w-7 h-7 rounded-lg mx-auto bg-ifaqa-plum text-ifaqa-linen flex items-center justify-center font-mono text-xs">
+                1
               </div>
-              <span className="text-emerald-900 font-bold block">Received</span>
+              <span className="text-ifaqa-plum font-medium block">Received</span>
             </div>
-            <div className="space-y-1">
-              <div className="w-7 h-7 mx-auto bg-ifaqa-sand text-ifaqa-plum flex items-center justify-center font-bold">
+            <div className="space-y-1.5">
+              <div className="w-7 h-7 rounded-lg mx-auto bg-ifaqa-cashmere text-[#5A6962] border border-ifaqa-plum/10 flex items-center justify-center font-mono text-xs">
                 2
               </div>
-              <span className="text-ifaqa-plum font-bold block">Compounding</span>
+              <span className="text-[#5A6962] block">Packed</span>
             </div>
-            <div className="space-y-1">
-              <div className="w-7 h-7 mx-auto bg-ifaqa-linen border border-ifaqa-sand/60 text-ifaqa-blackberry flex items-center justify-center font-bold">
+            <div className="space-y-1.5">
+              <div className="w-7 h-7 rounded-lg mx-auto bg-ifaqa-linen text-[#5A6962] border border-ifaqa-plum/10 flex items-center justify-center font-mono text-xs">
                 3
               </div>
-              <span className="text-ifaqa-blackberry block">Dispatched</span>
+              <span className="text-[#5A6962] block">Dispatched</span>
             </div>
-            <div className="space-y-1">
-              <div className="w-7 h-7 mx-auto bg-ifaqa-linen border border-ifaqa-sand/60 text-ifaqa-blackberry flex items-center justify-center font-bold">
+            <div className="space-y-1.5">
+              <div className="w-7 h-7 rounded-lg mx-auto bg-ifaqa-linen text-[#5A6962] border border-ifaqa-plum/10 flex items-center justify-center font-mono text-xs">
                 4
               </div>
-              <span className="text-ifaqa-blackberry block">Delivered</span>
+              <span className="text-[#5A6962] block">Delivered</span>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
             onClick={handlePrint}
-            className="w-full sm:w-auto px-6 py-2.5 bg-white border border-ifaqa-sand text-ifaqa-plum text-xs font-serif font-bold uppercase tracking-wider hover:bg-ifaqa-sand/20 transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-auto h-10 px-5 rounded-lg bg-white border border-ifaqa-plum/15 text-ifaqa-plum text-sm font-sans font-medium hover:bg-ifaqa-cashmere transition-colors inline-flex items-center justify-center gap-2"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print Receipt</span>
+            <Printer className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+            <span>Print receipt</span>
           </button>
           <Link href="/catalog" className="w-full sm:w-auto">
-            <Button3D variant="primary" size="md" className="w-full sm:w-auto font-bold shadow-md">
-              <span>Return to Pharmacopoeia</span>
-              <ArrowRight className="w-4 h-4 ml-1.5 inline-block" />
+            <Button3D variant="primary" size="md" className="w-full sm:w-auto">
+              <span>Continue shopping</span>
+              <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
             </Button3D>
           </Link>
         </div>
@@ -110,9 +104,8 @@ export default function OrderConfirmationPage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-3xl mx-auto px-4 py-16 text-center text-ifaqa-blackberry font-serif text-sm font-medium">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-ifaqa-plum" />
-          <span>Verifying order records...</span>
+        <div className="max-w-2xl mx-auto px-4 py-16 text-center text-[#5A6962] text-sm font-sans">
+          Loading order details...
         </div>
       }
     >

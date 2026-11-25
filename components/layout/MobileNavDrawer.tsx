@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { X, ShoppingBag, UserCheck, Shield, ChevronRight, User } from 'lucide-react';
+import { X, ShoppingBag, UserCheck, ChevronRight, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -15,130 +15,121 @@ interface MobileNavDrawerProps {
 export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const { openCart, itemCount } = useCart();
   const { user, isAuthenticated, signOut } = useAuth();
-  const { t } = useLanguage();
+  const { t, getCategoryTitle } = useLanguage();
 
   const primaryLinks = [
     { name: t('home'), path: '/' },
+    { name: t('catalog'), path: '/catalog' },
     { name: t('about'), path: '/about' },
     { name: t('contact'), path: '/contact' },
     { name: t('privacyPolicy'), path: '/privacy-policy' },
   ];
 
-  const categories = [
-    { name: 'All Formulations', slug: 'all', path: '/catalog' },
-    { name: 'Hazim (Digestive)', slug: 'hazim', path: '/catalog/hazim' },
-    { name: 'Muqawwi (Vitality & Tonics)', slug: 'muqawwi', path: '/catalog/muqawwi' },
-    { name: 'Sual (Respiratory & Cough)', slug: 'sual', path: '/catalog/sual' },
-    { name: 'Mafasil (Joints & Musculoskeletal)', slug: 'mafasil', path: '/catalog/mafasil' },
-    { name: 'Jild (Dermatological Health)', slug: 'jild', path: '/catalog/jild' },
-    { name: 'Quwwat-e-Mudafiat (Immunity)', slug: 'quwwat-e-mudafiat', path: '/catalog/quwwat-e-mudafiat' },
-  ];
+  const categoryIds = ['hazim', 'muqawwi', 'sual', 'mafasil', 'jild', 'quwwat-e-mudafiat'];
 
   return (
     <div
-      className={`fixed inset-0 z-50 md:hidden flex select-none transition-all duration-300 ${isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
-        }`}
+      className={`fixed inset-0 z-50 md:hidden flex select-none transition-opacity duration-200 ${
+        isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+      }`}
     >
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-[#0B2D22]/70 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'
-          }`}
+        className="fixed inset-0 bg-[#0B2D22]/40 backdrop-blur-[2px]"
         onClick={onClose}
       />
 
-      {/* Drawer */}
+      {/* Drawer anchored to inline start so RTL flips cleanly */}
       <div
-        className={`relative w-4/5 max-w-sm bg-ifaqa-linen border-r-2 border-ifaqa-sand/60 h-full flex flex-col justify-between z-10 shadow-2xl overflow-y-auto transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        className={`relative w-4/5 max-w-xs bg-ifaqa-linen border-e border-ifaqa-plum/10 h-full flex flex-col justify-between z-10 shadow-luxury-lifted overflow-y-auto transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isOpen ? 'translate-x-0' : '-translate-x-full rtl:translate-x-full'
+        }`}
       >
         <div>
-          {/* Header */}
-          <div className="p-5 border-b border-ifaqa-sand/40 flex items-center justify-between bg-white">
-            <div>
-              <span className="font-serif text-base font-bold text-ifaqa-plum tracking-wider">IFAQA</span>
-              <p className="text-[10px] text-ifaqa-blackberry uppercase tracking-widest font-mono font-semibold">
-                Desi Dawakhana Heritage
-              </p>
-            </div>
+          {/* Top header */}
+          <div className="px-5 h-16 border-b border-ifaqa-plum/10 flex items-center justify-between bg-white">
+            <span className="font-serif text-lg font-medium text-ifaqa-plum">
+              IFAQA Herbal Remedies
+            </span>
             <button
               onClick={onClose}
-              className="p-1.5 text-ifaqa-blackberry hover:text-ifaqa-plum hover:bg-ifaqa-linen transition-colors"
+              className="w-9 h-9 inline-flex items-center justify-center rounded-lg text-[#5A6962] hover:text-ifaqa-plum hover:bg-ifaqa-cashmere transition-colors"
               aria-label="Close navigation"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </div>
 
-          {/* Primary Navigation: Home, About, Contact, Privacy Policy */}
-          <nav className="p-4 space-y-1 border-b border-ifaqa-sand/40 bg-white/60">
-            <div className="text-[10px] font-mono uppercase tracking-widest text-ifaqa-blackberry font-bold mb-2 px-3">
-              Navigation
+          {/* Primary links */}
+          <nav className="p-4 space-y-1 border-b border-ifaqa-plum/10">
+            <div className="px-3 pb-2 text-xs font-sans font-medium text-[#5A6962]">
+              Menu
             </div>
             {primaryLinks.map((link) => (
               <Link
                 key={link.path}
                 href={link.path}
                 onClick={onClose}
-                className="flex items-center justify-between px-3 py-2.5 text-sm font-serif font-bold text-ifaqa-plum hover:bg-ifaqa-sand/30 hover:text-ifaqa-blackberry border-l-2 border-transparent hover:border-l-ifaqa-plum transition-all"
+                className="flex items-center justify-between h-10 px-3 rounded-lg text-sm font-sans font-medium text-ifaqa-plum hover:bg-ifaqa-cashmere transition-colors"
               >
                 <span>{link.name}</span>
-                <ChevronRight className="w-4 h-4 text-ifaqa-sand" />
+                <ChevronRight className="w-4 h-4 text-[#5A6962] rtl-flip" strokeWidth={1.5} />
               </Link>
             ))}
           </nav>
 
-          {/* Quick Cart Trigger */}
-          <div className="p-4 border-b border-ifaqa-sand/40">
+          {/* Quick cart trigger */}
+          <div className="p-4 border-b border-ifaqa-plum/10">
             <button
               onClick={() => {
                 onClose();
                 openCart();
               }}
-              className="w-full flex items-center justify-between px-4 py-2.5 bg-[#FAF5EC] border border-ifaqa-sand/60 text-ifaqa-plum font-serif text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-sm"
+              className="w-full h-10 flex items-center justify-between px-3 rounded-lg bg-ifaqa-cashmere border border-ifaqa-plum/10 text-ifaqa-plum text-sm font-sans font-medium hover:bg-[#EDE5D5] transition-colors"
             >
-              <div className="flex items-center gap-2">
-                <ShoppingBag className="w-4 h-4 text-ifaqa-plum" />
-                <span>Shopping Cart</span>
-              </div>
-              <span className="font-mono text-xs font-bold text-ifaqa-blackberry bg-ifaqa-sand/40 px-2 py-0.5">
-                {itemCount} {itemCount === 1 ? 'item' : 'items'}
+              <span className="flex items-center gap-2.5">
+                <ShoppingBag className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+                <span>{t('cart')}</span>
+              </span>
+              <span className="font-mono text-xs font-medium text-ifaqa-plum tabular-nums">
+                {itemCount}
               </span>
             </button>
           </div>
 
-          {/* Secondary Categories */}
+          {/* Categories */}
           <nav className="p-4 space-y-1">
-            <div className="text-[10px] font-mono uppercase tracking-widest text-ifaqa-blackberry font-bold mb-2 px-3">
+            <div className="px-3 pb-2 text-xs font-sans font-medium text-[#5A6962]">
               {t('categoriesTitle')}
             </div>
-            {categories.map((cat) => (
+            {categoryIds.map((slug) => (
               <Link
-                key={cat.slug}
-                href={cat.path}
+                key={slug}
+                href={`/catalog/${slug}`}
                 onClick={onClose}
-                className="block px-3 py-2 text-xs font-sans text-ifaqa-plum hover:bg-ifaqa-sand/20 hover:text-ifaqa-blackberry border-l-2 border-transparent hover:border-l-ifaqa-sand transition-all"
+                className="flex items-center h-9 px-3 rounded-lg text-sm font-sans text-[#5A6962] hover:bg-ifaqa-cashmere hover:text-ifaqa-plum transition-colors"
               >
-                {cat.name}
+                {getCategoryTitle({ id: slug, name: slug })}
               </Link>
             ))}
           </nav>
         </div>
 
-        {/* Footer Actions */}
-        <div className="p-4 border-t border-ifaqa-sand/40 bg-ifaqa-linen space-y-3">
+        {/* Account footer */}
+        <div className="p-4 border-t border-ifaqa-plum/10 bg-ifaqa-cashmere/50 space-y-2">
           {isAuthenticated && user ? (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs p-2 bg-white border border-ifaqa-sand/40">
-                <div className="flex items-center gap-1.5 text-ifaqa-plum font-mono">
-                  <UserCheck className="w-4 h-4 text-emerald-700" />
-                  <span className="truncate max-w-[140px] font-bold">{user.phoneNumber}</span>
+              <div className="flex items-center justify-between text-xs p-2.5 rounded-lg bg-white border border-ifaqa-plum/10">
+                <div className="flex items-center gap-2 text-ifaqa-plum font-mono">
+                  <UserCheck className="w-4 h-4 text-[#165A45]" strokeWidth={1.5} />
+                  <span className="truncate max-w-[140px]" dir="ltr">{user.phoneNumber}</span>
                 </div>
                 <Link
                   href="/sign-in"
                   onClick={onClose}
-                  className="text-[11px] font-serif text-ifaqa-blackberry hover:text-ifaqa-plum font-bold underline"
+                  className="text-xs font-sans text-ifaqa-plum hover:underline font-medium"
                 >
-                  Manage
+                  {t('account')}
                 </Link>
               </div>
               <button
@@ -146,25 +137,21 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
                   signOut();
                   onClose();
                 }}
-                className="w-full py-2 bg-transparent text-ifaqa-blackberry border border-ifaqa-sand/60 text-xs font-serif uppercase tracking-wider text-center hover:bg-white"
+                className="w-full h-9 rounded-lg border border-ifaqa-plum/15 text-xs font-sans font-medium text-[#5A6962] hover:text-ifaqa-plum hover:bg-white transition-colors"
               >
-                Sign Out
+                {t('signOut')}
               </button>
             </div>
           ) : (
             <Link
               href="/sign-in"
               onClick={onClose}
-              className="flex items-center justify-center gap-2 w-full py-2.5 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-wider text-center hover:bg-ifaqa-blackberry transition-colors shadow-md"
+              className="flex items-center justify-center gap-2 w-full h-10 rounded-lg bg-ifaqa-plum text-ifaqa-linen text-sm font-sans font-medium hover:bg-ifaqa-blackberry transition-colors"
             >
-              <User className="w-4 h-4 text-ifaqa-sand" />
+              <User className="w-4 h-4" strokeWidth={1.5} />
               <span>{t('signIn')}</span>
             </Link>
           )}
-
-          <div className="text-[10px] text-center text-ifaqa-blackberry font-serif font-bold tracking-widest uppercase">
-            EST. HERITAGE DAWAKHANA • INDIA
-          </div>
         </div>
       </div>
     </div>

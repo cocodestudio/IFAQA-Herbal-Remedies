@@ -1,17 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { notFound, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import seedData from '@/lib/seed-data.json';
 import { getRemedies, getCategories, filterRemedies } from '@/lib/remedies-service';
 import { HerbalRemedy, AilmentCategory } from '@/lib/types';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
 import { SearchBar } from '@/components/catalog/SearchBar';
 import { FilterSidebar } from '@/components/catalog/FilterSidebar';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
-import { CatalogSkeletonGrid } from '@/components/ui/ShimmerSkeleton';
 import { useLanguage } from '@/context/LanguageContext';
-import { SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+import { SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft, Leaf } from 'lucide-react';
 
 const VALID_CATEGORIES = ['hazim', 'muqawwi', 'sual', 'mafasil', 'jild', 'quwwat-e-mudafiat'];
 const ITEMS_PER_PAGE = 9;
@@ -22,9 +21,8 @@ export default function CategoryCatalogPage() {
 
   const isInvalidCategory = Boolean(categoryParam && !VALID_CATEGORIES.includes(categoryParam));
 
-  const [remedies, setRemedies] = useState<HerbalRemedy[]>([]);
-  const [categories, setCategories] = useState<AilmentCategory[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
+  const [categories, setCategories] = useState<AilmentCategory[]>(() => seedData.categories as unknown as AilmentCategory[]);
   const [currentPage, setCurrentPage] = useState(1);
   const { t, getCategoryTitle } = useLanguage();
 
@@ -35,17 +33,14 @@ export default function CategoryCatalogPage() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
-    async function load() {
-      setLoading(true);
+    async function refresh() {
       const [r, c] = await Promise.all([getRemedies(), getCategories()]);
-      setRemedies(r);
-      setCategories(c);
-      setLoading(false);
+      if (r && r.length > 0) setRemedies(r);
+      if (c && c.length > 0) setCategories(c);
     }
-    load();
+    refresh();
   }, []);
 
-  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, search, inStockOnly, selectedForm]);
@@ -74,88 +69,80 @@ export default function CategoryCatalogPage() {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 180, behavior: 'smooth' });
+      window.scrollTo({ top: 120, behavior: 'smooth' });
     }
   };
 
   const displayTitle = activeCategory
     ? getCategoryTitle(activeCategory)
-    : `${categoryParam.toUpperCase()} Formulations`;
+    : `${categoryParam} remedies`;
 
   if (isInvalidCategory) {
     return (
-      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-16 text-center space-y-4 select-none">
-        <ArchitecturalBadge variant="notched">Dispensary Canon</ArchitecturalBadge>
-        <h1 className="font-serif text-3xl font-bold text-ifaqa-plum">Category Not Found</h1>
-        <p className="text-ifaqa-blackberry text-sm max-w-md mx-auto">
-          The requested category is not cataloged in our herbal collection.
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-16 text-center space-y-4 select-none">
+        <p className="text-xs font-sans text-[#5A6962]">{t('catalog')}</p>
+        <h1 className="font-serif font-normal text-3xl text-ifaqa-plum">Category not found</h1>
+        <p className="text-sm text-[#5A6962] max-w-md mx-auto">
+          This health category is not listed in our catalog.
         </p>
         <Link
           href="/catalog"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-ifaqa-plum text-white font-serif text-xs uppercase tracking-widest font-bold hover:bg-ifaqa-blackberry transition-colors"
+          className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-ifaqa-plum text-ifaqa-linen text-sm font-sans font-medium hover:bg-ifaqa-blackberry transition-colors"
         >
-          View All Products
+          View all remedies
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-12 overflow-x-hidden select-none">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12 select-none">
       {/* Breadcrumb Navigation */}
-      <div className="mb-6 flex items-center gap-2 text-xs font-serif text-ifaqa-blackberry font-medium">
-        <Link href="/" className="hover:text-ifaqa-plum">Home</Link>
-        <span>/</span>
-        <Link href="/catalog" className="hover:text-ifaqa-plum">Pharmacopoeia</Link>
-        <span>/</span>
-        <span className="text-ifaqa-plum font-bold uppercase">{displayTitle}</span>
-      </div>
+      <nav aria-label="Breadcrumb" className="mb-5 flex items-center gap-2 text-xs font-sans text-[#5A6962]">
+        <Link href="/" className="hover:text-ifaqa-plum transition-colors">{t('home')}</Link>
+        <span aria-hidden="true">/</span>
+        <Link href="/catalog" className="hover:text-ifaqa-plum transition-colors">{t('catalog')}</Link>
+        <span aria-hidden="true">/</span>
+        <span className="text-ifaqa-plum font-medium">{displayTitle}</span>
+      </nav>
 
-      {/* Header Banner */}
-      <div className="mb-8 border-b border-ifaqa-sand/60 pb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <ArchitecturalBadge variant="notched">Ailment Canon</ArchitecturalBadge>
-          {activeCategory && (
-            <ArchitecturalBadge variant="chamfer">{activeCategory.romanName || activeCategory.id}</ArchitecturalBadge>
-          )}
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ifaqa-plum">
+      {/* Category Header */}
+      <div className="mb-8 border-b border-ifaqa-plum/10 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum">
             {displayTitle}
           </h1>
           <Link
             href="/catalog"
-            className="text-xs font-serif text-ifaqa-blackberry hover:text-ifaqa-plum font-bold flex items-center gap-1 mt-2 sm:mt-0"
+            className="text-sm font-sans font-medium text-ifaqa-plum hover:underline inline-flex items-center gap-1.5"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>All Categories</span>
+            <ArrowLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+            <span>All categories</span>
           </Link>
         </div>
         {activeCategory?.description && (
-          <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans mt-2 max-w-3xl leading-relaxed font-medium">
+          <p className="text-sm text-[#3E524A] font-sans mt-2 max-w-2xl leading-relaxed">
             {activeCategory.description}
           </p>
         )}
       </div>
 
       {/* Search & Mobile Filter Toggle */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-        <div className="w-full sm:max-w-lg">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+        <div className="w-full sm:max-w-md">
           <SearchBar value={search} onChange={setSearch} />
         </div>
         <button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
-          className="lg:hidden w-full sm:w-auto px-4 py-2.5 bg-white border border-ifaqa-sand text-ifaqa-plum text-xs font-serif font-bold flex items-center justify-center gap-2 shadow-sm"
+          className="lg:hidden h-10 px-4 rounded-lg bg-white border border-ifaqa-plum/15 text-ifaqa-plum text-sm font-sans font-medium inline-flex items-center justify-center gap-2"
         >
-          <SlidersHorizontal className="w-4 h-4" />
-          <span>{showMobileFilters ? "Hide Filters" : t('filter')}</span>
+          <SlidersHorizontal className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+          <span>{showMobileFilters ? 'Hide filters' : t('filter')}</span>
         </button>
       </div>
 
-      {/* Main Layout: Sidebar + Grid */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-        {/* Sidebar */}
-        <div className={`w-full lg:w-72 shrink-0 ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <div className={`w-full lg:w-[260px] shrink-0 ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <FilterSidebar
             categories={categories}
             selectedCategory={selectedCategory}
@@ -168,63 +155,53 @@ export default function CategoryCatalogPage() {
           />
         </div>
 
-        {/* Catalog Grid Area */}
         <div className="flex-1 w-full min-w-0">
-          {loading ? (
-            <CatalogSkeletonGrid count={ITEMS_PER_PAGE} />
-          ) : filteredRemedies.length === 0 ? (
-            <div className="p-12 text-center bg-white border border-ifaqa-sand/60 space-y-4 shadow-sm my-6">
-              <div className="w-16 h-16 mx-auto bg-ifaqa-linen flex items-center justify-center text-3xl border border-ifaqa-sand/40">
-                🌿
+          {filteredRemedies.length === 0 ? (
+            <div className="p-10 text-center bg-white rounded-xl border border-ifaqa-plum/10 space-y-4">
+              <div className="w-12 h-12 rounded-xl mx-auto bg-ifaqa-cashmere flex items-center justify-center text-[#5A6962]">
+                <Leaf className="w-5 h-5" strokeWidth={1.5} />
               </div>
-              <h3 className="font-serif text-xl font-bold text-ifaqa-plum">
-                No Classical Remedies Found
+              <h3 className="font-sans text-lg font-semibold text-ifaqa-plum">
+                No remedies found in this category
               </h3>
-              <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans max-w-md mx-auto leading-relaxed font-medium">
-                Our specialists are compounding remedies for this specific category.
-              </p>
-              <div className="pt-2">
-                <Link
-                  href="/catalog"
-                  className="inline-block px-6 py-2.5 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-widest hover:bg-ifaqa-blackberry transition-colors"
-                >
-                  Browse All Categories
-                </Link>
-              </div>
+              <Link
+                href="/catalog"
+                className="inline-flex items-center h-10 px-5 rounded-lg bg-ifaqa-plum text-ifaqa-linen text-sm font-sans font-medium hover:bg-ifaqa-blackberry transition-colors"
+              >
+                Browse all products
+              </Link>
             </div>
           ) : (
             <div>
-              <div className="text-xs font-mono text-ifaqa-blackberry font-semibold mb-4 flex items-center justify-between">
+              <div className="text-xs font-mono text-[#5A6962] mb-4 flex items-center justify-between gap-2 tabular-nums">
                 <span>
-                  Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredRemedies.length)} of {filteredRemedies.length} authentic {filteredRemedies.length === 1 ? 'product' : 'products'}
+                  Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredRemedies.length)} of {filteredRemedies.length} products
                 </span>
-                <Link href="/catalog" className="text-ifaqa-plum underline hover:text-ifaqa-blackberry font-serif font-bold">
-                  View all categories
+                <Link href="/catalog" className="text-xs font-sans font-medium text-ifaqa-plum hover:underline">
+                  View all
                 </Link>
               </div>
 
-              {/* Responsive Grid with equal card heights */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-fr">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
                 {paginatedRemedies.map((remedy) => (
                   <RemedyCard3D key={remedy.id} remedy={remedy} />
                 ))}
               </div>
 
-              {/* Luxury Pagination Controls */}
               {totalPages > 1 && (
-                <div className="mt-10 pt-6 border-t border-ifaqa-sand/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-xs font-mono text-ifaqa-blackberry font-medium">
-                    Page {currentPage} of {totalPages} ({filteredRemedies.length} total products)
+                <div className="mt-10 pt-6 border-t border-ifaqa-plum/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-xs font-mono text-[#5A6962] tabular-nums">
+                    Page {currentPage} of {totalPages}
                   </span>
 
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="px-3.5 py-1.5 text-xs font-serif font-bold uppercase tracking-wider border border-ifaqa-sand/60 bg-white hover:bg-ifaqa-sand/20 text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1"
+                      className="h-9 px-3 rounded-lg text-xs font-sans font-medium border border-ifaqa-plum/15 bg-white hover:bg-ifaqa-cashmere text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed transition-colors inline-flex items-center gap-1"
                       aria-label="Previous page"
                     >
-                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <ChevronLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
                       <span>Prev</span>
                     </button>
 
@@ -234,11 +211,10 @@ export default function CategoryCatalogPage() {
                         onClick={() => handlePageChange(page)}
                         aria-label={`Go to page ${page}`}
                         aria-current={currentPage === page ? 'page' : undefined}
-                        className={`w-8 h-8 text-xs font-mono font-bold flex items-center justify-center border transition-all ${
-                          currentPage === page
-                            ? 'bg-[#0B2D22] text-[#DFBA73] border-[#0B2D22] shadow-md font-extrabold'
-                            : 'bg-white text-ifaqa-plum border-ifaqa-sand/60 hover:bg-ifaqa-sand/20'
-                        }`}
+                        className={`w-9 h-9 rounded-lg text-xs font-mono font-medium flex items-center justify-center border transition-colors tabular-nums ${currentPage === page
+                            ? 'bg-ifaqa-plum text-ifaqa-linen border-ifaqa-plum'
+                            : 'bg-white text-ifaqa-plum border-ifaqa-plum/15 hover:bg-ifaqa-cashmere'
+                          }`}
                       >
                         {page}
                       </button>
@@ -247,11 +223,11 @@ export default function CategoryCatalogPage() {
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-3.5 py-1.5 text-xs font-serif font-bold uppercase tracking-wider border border-ifaqa-sand/60 bg-white hover:bg-ifaqa-sand/20 text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-colors flex items-center gap-1"
+                      className="h-9 px-3 rounded-lg text-xs font-sans font-medium border border-ifaqa-plum/15 bg-white hover:bg-ifaqa-cashmere text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed transition-colors inline-flex items-center gap-1"
                       aria-label="Next page"
                     >
                       <span>Next</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <ChevronRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
                     </button>
                   </div>
                 </div>

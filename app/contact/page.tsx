@@ -2,210 +2,224 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { Button3D } from '@/components/ui/Button3D';
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  ShieldCheck,
-  Send,
-  CheckCircle2,
-  Truck,
-  ArrowRight
-} from 'lucide-react';
+import { MapPin, Phone, Mail, ShieldCheck, Send, CheckCircle2, Truck } from 'lucide-react';
 
 export default function ContactPage() {
   const { language, t } = useLanguage();
 
   const content = {
     en: {
-      badge: 'Customer Care & Inquiries',
-      title: 'Contact Us & Customer Support',
-      subtitle: 'We are here to assist you with product questions, dosage recommendations, and order status updates.',
-      tagline: 'CUSTOMER HELPLINE • 24-HOUR RESPONSE • PAN-INDIA SUPPORT',
-      formTitle: 'Send Us a Message',
-      formSubtitle: 'Fill out the form below and our customer support team will get in touch with you within 24 hours.',
-      fullName: 'Full Name',
-      namePlaceholder: 'e.g. Rahul Sharma',
-      mobile: 'Mobile Number',
+      badge: 'Contact',
+      title: 'Contact us and customer care',
+      subtitle: 'Reach our Saharanpur team directly for product guidance, dosage clarification, or order status.',
+      formTitle: 'Send a message',
+      formSubtitle: 'We reply to customer inquiries within one business day.',
+      fullName: 'Full name',
+      namePlaceholder: 'Rahul Sharma',
+      mobile: 'Mobile number',
       mobilePlaceholder: '98765 43210',
-      email: 'Email Address (Optional)',
-      emailPlaceholder: 'you@email.com',
-      city: 'City & Pincode',
-      cityPlaceholder: 'e.g. New Delhi, 110001',
-      topic: 'Topic / Product Category',
-      message: 'Your Message / Inquiry',
-      messagePlaceholder: 'Please describe your health query, order question, or product details...',
-      privacyNotice: 'Your inquiry and personal details are always kept strictly private and safe.',
-      submitBtn: 'Send Message',
-      submittingBtn: 'Sending Your Message...',
-      successTitle: 'Message Received Successfully!',
-      successSubtitle: 'Thank you for reaching out to us.',
-      tokenLabel: 'Inquiry Reference ID:',
-      phoneLabel: 'Contact Phone:',
-      reviewTimeLabel: 'Estimated Response Time:',
-      reviewTimeValue: 'Within 24 Business Hours',
-      successNote: 'Our customer support team has received your inquiry. We will contact you via phone or SMS shortly.',
-      newInquiryBtn: 'Send Another Message',
-      shopBtn: 'Shop Products',
-      helpdeskTitle: 'Customer Support Desk',
-      helplineLabel: 'Phone Helpline',
-      helplineValue: '+91 Verified Support Desk',
-      helplineHours: 'Monday to Saturday: 9:00 AM – 8:00 PM IST',
-      emailLabel: 'Email Support',
-      emailValue: 'care@ifaqaremedies.com',
-      emailNote: 'We reply to emails within 24 business hours.',
-      addressLabel: 'Dispensary Office',
-      addressValue: 'IFAQA Herbal Remedies, Registered Dawakhana, India',
-      addressNote: 'Delivering to 19,000+ pincodes across all Indian states.',
-      speedTitle: 'Estimated Delivery Times',
-      metroSpeed: 'Metro Cities (Delhi, Mumbai, Bengaluru): 1 – 2 Days',
-      tierSpeed: 'Other Cities & Regional Districts: 2 – 4 Days',
-      remoteSpeed: 'Hill Stations & Remote Pincodes: 4 – 6 Days',
-      intlSpeed: 'International Express Courier: 5 – 8 Days',
-      faqTitle: 'Frequently Asked Questions',
-      faq1Q: 'How do I choose the right herbal product?',
-      faq1A: 'You can browse our website by health category (Digestion, Vitality, Cough & Cold, Joint Care) or send us a message above for personalized product guidance.',
-      faq2Q: 'How long will delivery take?',
-      faq2A: 'Orders are dispatched within 24 hours. Metros take 1 to 2 days, and other cities take 2 to 4 business days.',
-      faq3Q: 'Is my consultation and health query private?',
-      faq3A: 'Yes, 100%. All customer health queries and details are strictly confidential and never shared with third parties.',
-      faq4Q: 'How can I track my order?',
-      faq4A: 'Once your order is dispatched, you will receive an SMS with a live courier tracking link to track your package.',
-      ctaTitle: 'Need Immediate Product Advice?',
-      ctaSubtitle: 'Call our customer helpline directly or explore our complete catalog of natural herbal remedies.',
+      email: 'Email address (optional)',
+      emailPlaceholder: 'you@example.com',
+      city: 'City and pincode',
+      cityPlaceholder: 'Saharanpur, 247231',
+      topic: 'Topic',
+      message: 'Message',
+      messagePlaceholder: 'Write your question about a product, dosage, or order reference...',
+      privacyNotice: 'Your contact details stay confidential and are never shared.',
+      submitBtn: 'Send message',
+      submittingBtn: 'Sending message',
+      successTitle: 'Message received',
+      tokenLabel: 'Reference',
+      phoneLabel: 'Phone',
+      reviewTimeLabel: 'Response time',
+      reviewTimeValue: 'Within 24 business hours',
+      successNote: 'We have logged your message. Our team will reach out by phone shortly.',
+      newInquiryBtn: 'Send another message',
+      shopBtn: 'Browse catalog',
+      helpdeskTitle: 'Saharanpur dispensary',
+      helplineLabel: 'Phone helpline',
+      helplineValue: '+91 97298 40336',
+      helplineHours: 'Monday to Saturday, 9:00 AM to 8:00 PM IST',
+      emailLabel: 'Email',
+      emailValue: 'ifaqaherbalremedies@gmail.com',
+      addressLabel: 'Address',
+      addressValue: 'Near Mandi Wali Masjid, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.), India',
+      speedTitle: 'Typical transit times',
+      metroSpeed: 'Saharanpur & North India: 1 to 2 business days',
+      tierSpeed: 'Major metro & regional cities: 2 to 4 business days',
+      remoteSpeed: 'Remote & hill districts: 4 to 6 business days',
+      faqTitle: 'Common questions',
+      faq1Q: 'How do I select the right herbal remedy',
+      faq1A: 'Browse products by health category or send us a message above describing what you need.',
+      faq2Q: 'How long does courier dispatch take',
+      faq2A: 'Orders ship from Saharanpur within 24 hours and arrive across India in 2 to 5 business days.',
+      faq3Q: 'Is my inquiry kept confidential',
+      faq3A: 'Yes. All contact details and customer questions are handled privately by our team.',
+      faq4Q: 'How do I track my parcel',
+      faq4A: 'Your courier tracking reference is sent directly to your registered mobile number upon dispatch.',
     },
     hi: {
-      badge: 'कस्टमर केयर एवं सहायता',
-      title: 'हमसे संपर्क करें (Customer Support)',
-      subtitle: 'उत्पाद की जानकारी, सही खुराक या ऑर्डर से जुड़े किसी भी सवाल के लिए हमारी टीम आपकी सेवा में हाज़िर है।',
-      tagline: 'हेल्पलाइन • 24 घंटे में समाधान • पूरे भारत में सहायता',
+      badge: 'संपर्क करें',
+      title: 'संपर्क एवं कस्टमर सहायता',
+      subtitle: 'उत्पाद की जानकारी, खुराक सलाह या ऑर्डर अपडेट के लिए सीधे हमारी सहारनपुर टीम से संपर्क करें।',
       formTitle: 'हमें संदेश भेजें',
-      formSubtitle: 'नीचे दिया गया फ़ॉर्म भरें, हमारी कस्टमर केयर टीम 24 घंटे के भीतर आपसे संपर्क करेगी।',
+      formSubtitle: 'हम 24 कार्य घंटों के भीतर हर संदेश का जवाब देते हैं।',
       fullName: 'पूरा नाम',
-      namePlaceholder: 'उदा. राहुल शर्मा',
+      namePlaceholder: 'राहुल शर्मा',
       mobile: 'मोबाइल नंबर',
       mobilePlaceholder: '98765 43210',
       email: 'ईमेल आईडी (वैकल्पिक)',
-      emailPlaceholder: 'you@email.com',
-      city: 'शहर एवं पिनकोड',
-      cityPlaceholder: 'उदा. नई दिल्ली, 110001',
-      topic: 'समस्या या उत्पाद की श्रेणी',
-      message: 'आपका सवाल या संदेश',
-      messagePlaceholder: 'अपनी स्वास्थ्य समस्या, आवश्यक दवा या आर्डर से जुड़ा सवाल विस्तार से लिखें...',
-      privacyNotice: 'आपकी जानकारी हमेशा सुरक्षित और पूरी तरह गोपनीय रखी जाती है।',
+      emailPlaceholder: 'you@example.com',
+      city: 'शहर और पिनकोड',
+      cityPlaceholder: 'सहारनपुर, 247231',
+      topic: 'विषय या श्रेणी',
+      message: 'संदेश',
+      messagePlaceholder: 'अपना स्वास्थ्य सवाल, दवा की जानकारी या ऑर्डर नंबर लिखें...',
+      privacyNotice: 'आपकी जानकारी पूरी तरह सुरक्षित और गोपनीय रहती है।',
       submitBtn: 'संदेश भेजें',
-      submittingBtn: 'संदेश भेजा जा रहा है...',
-      successTitle: 'संदेश सफलतापूर्वक प्राप्त हुआ!',
-      successSubtitle: 'हमसे संपर्क करने के लिए धन्यवाद।',
-      tokenLabel: 'इन्क्वायरी रेफरेंस नंबर:',
-      phoneLabel: 'संपर्क मोबाइल:',
-      reviewTimeLabel: 'अनुमानित संपर्क समय:',
+      submittingBtn: 'भेजा जा रहा है',
+      successTitle: 'संदेश प्राप्त हुआ',
+      tokenLabel: 'रेफरेंस नंबर',
+      phoneLabel: 'मोबाइल',
+      reviewTimeLabel: 'अनुमानित उत्तर समय',
       reviewTimeValue: '24 कार्य घंटों के भीतर',
-      successNote: 'हमारी टीम को आपका सवाल मिल चुका है। हमारे विशेषज्ञ जल्द ही कॉल या व्हाट्सएप द्वारा आपसे संपर्क करेंगे।',
+      successNote: 'हमें आपका संदेश मिल गया है। हमारी टीम जल्द आपसे फोन पर संपर्क करेगी।',
       newInquiryBtn: 'एक और संदेश भेजें',
-      shopBtn: 'दवाइयां एवं उत्पाद देखें',
-      helpdeskTitle: 'कस्टमर केयर डेस्क',
+      shopBtn: 'उत्पाद देखें',
+      helpdeskTitle: 'सहारनपुर डिस्पेंसरी',
       helplineLabel: 'फ़ोन हेल्पलाइन',
-      helplineValue: '+91 सत्यापित सपोर्ट डेस्क',
-      helplineHours: 'सोमवार से शनिवार: सुबह 9:00 से रात 8:00 बजे तक',
-      emailLabel: 'ईमेल सपोर्ट',
-      emailValue: 'care@ifaqaremedies.com',
-      emailNote: 'ईमेल का उत्तर 24 घंटे के अंदर दिया जाता है।',
-      addressLabel: 'कार्यालय व डिस्पेंसरी',
-      addressValue: 'IFAQA हर्बल रेमेडीज़, रजिस्टर्ड दवाखाना, भारत',
-      addressNote: 'भारत के 19,000+ पिनकोड पर तेज़ डिलीवरी उपलब्ध।',
-      speedTitle: 'डिलीवरी में लगने वाला समय',
-      metroSpeed: 'मेट्रो शहर (दिल्ली, मुंबई, बेंगलुरु): 1 – 2 दिन',
-      tierSpeed: 'अन्य प्रमुख शहर एवं जिले: 2 – 4 दिन',
-      remoteSpeed: 'पहाड़ी एवं दूरदराज के क्षेत्र: 4 – 6 दिन',
-      intlSpeed: 'अंतर्राष्ट्रीय एक्सप्रेस कूरियर: 5 – 8 दिन',
-      faqTitle: 'अक्सर पूछे जाने वाले सवाल (FAQ)',
-      faq1Q: 'सही हर्बल दवा का चुनाव कैसे करें?',
-      faq1A: 'आप हमारी वेबसाइट पर कैटेगरी (पाचन, शक्ति, खांसी, जोड़ों का दर्द) के अनुसार दवाइयां देख सकते हैं या ऊपर दिए फॉर्म से सलाह ले सकते हैं।',
-      faq2Q: 'डिलीवरी में कितना समय लगता है?',
-      faq2A: 'ऑर्डर 24 घंटे में डिस्पैच हो जाता है। बड़े शहरों में 1-2 दिन और अन्य शहरों में 2-4 दिन लगते हैं।',
-      faq3Q: 'क्या मेरी स्वास्थ्य जानकारी गोपनीय रहेगी?',
-      faq3A: 'हाँ, बिल्कुल 100%। आपकी बीमारी और संपर्क विवरण पूरी तरह गोपनीय रखे जाते हैं।',
-      faq4Q: 'मैं अपना ऑर्डर कैसे ट्रैक करूँ?',
-      faq4A: 'ऑर्डर डिस्पैच होते ही आपको SMS पर लाइव कूरियर ट्रैकिंग लिंक मिल जाएगा।',
-      ctaTitle: 'तुरंत दवा की सलाह चाहिए?',
-      ctaSubtitle: 'हमारी कस्टमर हेल्पलाइन पर सीधे कॉल करें या हमारे सभी उत्पाद ऑनलाइन देखें।',
+      helplineValue: '+91 97298 40336',
+      helplineHours: 'सोमवार से शनिवार, सुबह 9:00 से रात 8:00 बजे',
+      emailLabel: 'ईमेल',
+      emailValue: 'ifaqaherbalremedies@gmail.com',
+      addressLabel: 'पता',
+      addressValue: 'नियर मंडी वाली मस्जिद, बरथा कायस्थ पाथर, सहारनपुर - 247231 (उ.प्र.)',
+      speedTitle: 'अनुमानित डिलीवरी समय',
+      metroSpeed: 'सहारनपुर व उत्तर भारत: 1 से 2 दिन',
+      tierSpeed: 'प्रमुख शहर व राज्य: 2 से 4 दिन',
+      remoteSpeed: 'दूरदराज व पहाड़ी क्षेत्र: 4 से 6 दिन',
+      faqTitle: 'अक्सर पूछे जाने वाले सवाल',
+      faq1Q: 'सही हर्बल दवा कैसे चुनें',
+      faq1A: 'आप कैटेगरी के अनुसार दवाएं देख सकते हैं या ऊपर दिए फॉर्म से मार्गदर्शन प्राप्त कर सकते हैं।',
+      faq2Q: 'ऑर्डर पहुंचने में कितना समय लगता है',
+      faq2A: 'ऑर्डर 24 घंटे में सहारनपुर से डिस्पैच हो जाते हैं और 2 से 5 दिनों में डिलीवर हो जाते हैं।',
+      faq3Q: 'क्या मेरी जानकारी गोपनीय रहेगी',
+      faq3A: 'हाँ, सभी ग्राहक विवरण पूरी तरह सुरक्षित और गोपनीय रखे जाते हैं।',
+      faq4Q: 'ऑर्डर ट्रैक कैसे करें',
+      faq4A: 'ऑर्डर डिस्पैच होते ही आपके मोबाइल नंबर पर कूरियर ट्रैकिंग लिंक भेजा जाता है।',
     },
     ur: {
-      badge: 'کسٹمر کیئر اور رابطہ',
-      title: 'ہم سے رابطہ کریں (Customer Support)',
-      subtitle: 'ادویات کی معلومات، صحیح خوراک یا آرڈر کے متعلق کسی بھی سوال کے لیے ہم حاضر ہیں۔',
-      tagline: 'ہیلپ لائن • 24 گھنٹے میں جواب • پورے ملک میں ترسیل',
-      formTitle: 'ہمیں پیغام بھیجیں',
-      formSubtitle: 'نیچے دیا گیا فارم پُر کریں، ہماری ٹیم 24 گھنٹے کے اندر آپ سے رابطہ کرے گی۔',
+      badge: 'رابطہ',
+      title: 'ہم سے رابطہ کریں',
+      subtitle: 'ادویات کی معلومات، خوراک یا آرڈر اسٹیٹس کے لیے ہماری سہارنپور ٹیم سے براہ راست رابطہ کریں۔',
+      formTitle: 'پیغام بھیجیں',
+      formSubtitle: 'ہم ایک کاروباری دن کے اندر جواب دیتے ہیں۔',
       fullName: 'پورا نام',
-      namePlaceholder: 'مثال: محمد احمد',
+      namePlaceholder: 'محمد احمد',
       mobile: 'موبائل نمبر',
       mobilePlaceholder: '98765 43210',
-      email: 'ای میل پتہ (اختیاری)',
-      emailPlaceholder: 'you@email.com',
+      email: 'ای میل (اختیاری)',
+      emailPlaceholder: 'you@example.com',
       city: 'شہر اور پن کوڈ',
-      cityPlaceholder: 'مثال: دہلی، 110001',
-      topic: 'مرض یا پروڈکٹ کی قسم',
-      message: 'آپ کا پیغام یا سوال',
-      messagePlaceholder: 'اپنی صحت، علامات یا آرڈر سے متعلق تفصیلات تحریر کریں...',
-      privacyNotice: 'آپ کی معلومات ہمیشہ محفوظ اور مکمل رازدارانہ رکھی جاتی ہے۔',
+      cityPlaceholder: 'سہارنپور، 247231',
+      topic: 'موضوع',
+      message: 'پیغام',
+      messagePlaceholder: 'اپنا سوال یا آرڈر نمبر تحریر کریں...',
+      privacyNotice: 'آپ کی معلومات مکمل محفوظ اور خفیہ رکھی جاتی ہیں۔',
       submitBtn: 'پیغام بھیجیں',
-      submittingBtn: 'پیغام بھیجا جا رہا ہے...',
-      successTitle: 'پیغام کامیابی سے موصول ہوا!',
-      successSubtitle: 'ہم سے رابطہ کرنے کا شکریہ۔',
-      tokenLabel: 'ریفرینس نمبر:',
-      phoneLabel: 'رابطہ فون:',
-      reviewTimeLabel: 'جواب کا متوقع وقت:',
-      reviewTimeValue: '24 کاروباری گھنٹوں کے اندر',
-      successNote: 'ہماری ٹیم کو آپ کا سوال موصول ہو چکا ہے۔ ہمارے نمائندے جلد ہی آپ سے فون پر رابطہ کریں گے۔',
-      newInquiryBtn: 'ایک اور پیغام بھیجیں',
+      submittingBtn: 'بھیجا جا رہا ہے',
+      successTitle: 'پیغام موصول ہوگیا',
+      tokenLabel: 'حوالہ نمبر',
+      phoneLabel: 'فون',
+      reviewTimeLabel: 'جواب کا وقت',
+      reviewTimeValue: '24 کاروباری گھنٹوں میں',
+      successNote: 'ہمیں آپ کا پیغام مل گیا ہے۔ ہماری ٹیم جلد آپ سے فون پر رابطہ کرے گی۔',
+      newInquiryBtn: 'نیا پیغام بھیجیں',
       shopBtn: 'مصنوعات دیکھیں',
-      helpdeskTitle: 'کسٹمر کیئر ہیلپ ڈیسک',
+      helpdeskTitle: 'سہارنپور دواخانہ',
       helplineLabel: 'فون ہیلپ لائن',
-      helplineValue: '+91 تصدیق شدہ سپورٹ ڈیسک',
-      helplineHours: 'پیر تا ہفتہ: صبح 9:00 تا رات 8:00 بجے تک',
-      emailLabel: 'ای میل سپورٹ',
-      emailValue: 'care@ifaqaremedies.com',
-      emailNote: 'ای میل کا جواب 24 گھنٹوں کے اندر دیا جاتا ہے۔',
-      addressLabel: 'دواخانہ آفس',
-      addressValue: 'IFAQA ہربل ریمیڈیز، رجسٹرڈ دواخانہ، بھارت',
-      addressNote: 'ملک بھر کے تمام پن کوڈز پر محفوظ ترسیل۔',
-      speedTitle: 'ڈلیوری کا دورانیہ',
-      metroSpeed: 'بڑے شہر (دہلی، ممبئی، بنگلور): 1 – 2 دن',
-      tierSpeed: 'دیگر شہر اور اضلاع: 2 – 4 دن',
-      remoteSpeed: 'پہاڑی و دور دراز علاقے: 4 – 6 دن',
-      intlSpeed: 'بین الاقوامی ایکسپریس کوریئر: 5 – 8 دن',
-      faqTitle: 'عام سوالات و جوابات (FAQ)',
-      faq1Q: 'صحیح دوا کا انتخاب کیسے کریں؟',
-      faq1A: 'آپ ویب سائٹ پر امراض کی فہرست سے دوا منتخب کر سکتے ہیں یا اوپر دیے گئے فارم کے ذریعے مشورہ طلب کر سکتے ہیں۔',
-      faq2Q: 'ڈلیوری میں کتنا وقت لگتا ہے؟',
-      faq2A: 'آرڈر 24 گھنٹوں میں روانہ ہو جاتا ہے۔ بڑے شہروں میں 1 سے 2 دن اور دیگر علاقوں میں 2 سے 4 دن لگتے ہیں۔',
-      faq3Q: 'کیا میری معلومات محفوظ رہتی ہے؟',
-      faq3A: 'جی ہاں، 100%۔ آپ کی تمام معلومات اور علامات مکمل خفیہ رکھی جاتی ہیں۔',
-      faq4Q: 'میں اپنا آرڈر کیسے ٹریک کر سکتا ہوں؟',
-      faq4A: 'آرڈر روانہ ہوتے ہی آپ کو SMS کے ذریعے لائیو کوریئر ٹریکنگ لنک موصول ہو جائے گا۔',
-      ctaTitle: 'فوری رہنمائی درکار ہے؟',
-      ctaSubtitle: 'ہماری ہیلپ لائن پر براہ راست کال کریں یا ہماری تمام ادویات دیکھیں۔',
+      helplineValue: '+91 97298 40336',
+      helplineHours: 'پیر تا ہفتہ، صبح 9:00 تا رات 8:00 بجے',
+      emailLabel: 'ای میل',
+      emailValue: 'ifaqaherbalremedies@gmail.com',
+      addressLabel: 'پتہ',
+      addressValue: 'قریب منڈی والی مسجد، برتھہ کائستھ پتھر، سہارنپور - 247231 (یوپی)',
+      speedTitle: 'ترسیل کا وقت',
+      metroSpeed: 'سہارنپور اور شمالی بھارت: 1 سے 2 دن',
+      tierSpeed: 'بڑے شہر: 2 سے 4 دن',
+      remoteSpeed: 'دور دراز علاقے: 4 سے 6 دن',
+      faqTitle: 'عام سوالات',
+      faq1Q: 'صحیح دوا کیسے منتخب کریں',
+      faq1A: 'آپ اقسام کے مطابق مصنوعات دیکھ سکتے ہیں یا اوپر دیے گئے فارم سے پوچھ سکتے ہیں۔',
+      faq2Q: 'ڈلیوری میں کتنا وقت لگتا ہے',
+      faq2A: 'آرڈر 24 گھنٹوں میں سہارنپور سے روانہ ہو کر 2 سے 5 دن میں پہنچ جاتا ہے۔',
+      faq3Q: 'کیا میری معلومات محفوظ رہتی ہیں',
+      faq3A: 'جی ہاں، تمام معلومات مکمل رازداری سے محفوظ رکھی جاتی ہیں۔',
+      faq4Q: 'پارسل کیسے ٹریک کریں',
+      faq4A: 'آرڈر روانہ ہوتے ہی آپ کے موبائل نمبر پر ٹریکنگ تفصیلات بھیجی جاتی ہیں۔',
     },
+  }[language] || {
+    badge: 'Contact',
+    title: 'Contact us and customer care',
+    subtitle: 'Reach our Saharanpur team directly for product guidance, dosage clarification, or order status.',
+    formTitle: 'Send a message',
+    formSubtitle: 'We reply to customer inquiries within one business day.',
+    fullName: 'Full name',
+    namePlaceholder: 'Rahul Sharma',
+    mobile: 'Mobile number',
+    mobilePlaceholder: '98765 43210',
+    email: 'Email address (optional)',
+    emailPlaceholder: 'you@example.com',
+    city: 'City and pincode',
+    cityPlaceholder: 'Saharanpur, 247231',
+    topic: 'Topic',
+    message: 'Message',
+    messagePlaceholder: 'Write your question about a product, dosage, or order reference...',
+    privacyNotice: 'Your contact details stay confidential and are never shared.',
+    submitBtn: 'Send message',
+    submittingBtn: 'Sending message',
+    successTitle: 'Message received',
+    tokenLabel: 'Reference',
+    phoneLabel: 'Phone',
+    reviewTimeLabel: 'Response time',
+    reviewTimeValue: 'Within 24 business hours',
+    successNote: 'We have logged your message. Our team will reach out by phone shortly.',
+    newInquiryBtn: 'Send another message',
+    shopBtn: 'Browse catalog',
+    helpdeskTitle: 'Saharanpur dispensary',
+    helplineLabel: 'Phone helpline',
+    helplineValue: '+91 97298 40336',
+    helplineHours: 'Monday to Saturday, 9:00 AM to 8:00 PM IST',
+    emailLabel: 'Email',
+    emailValue: 'ifaqaherbalremedies@gmail.com',
+    addressLabel: 'Address',
+    addressValue: 'Near Mandi Wali Masjid, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.), India',
+    speedTitle: 'Typical transit times',
+    metroSpeed: 'Saharanpur & North India: 1 to 2 business days',
+    tierSpeed: 'Major metro & regional cities: 2 to 4 business days',
+    remoteSpeed: 'Remote & hill districts: 4 to 6 business days',
+    faqTitle: 'Common questions',
+    faq1Q: 'How do I select the right herbal remedy',
+    faq1A: 'Browse products by health category or send us a message above describing what you need.',
+    faq2Q: 'How long does courier dispatch take',
+    faq2A: 'Orders ship from Saharanpur within 24 hours and arrive across India in 2 to 5 business days.',
+    faq3Q: 'Is my inquiry kept confidential',
+    faq3A: 'Yes. All contact details and customer questions are handled privately by our team.',
+    faq4Q: 'How do I track my parcel',
+    faq4A: 'Your courier tracking reference is sent directly to your registered mobile number upon dispatch.',
   };
 
-  const c = content[language] || content.en;
-
   const topics = [
-    { value: 'hazim', label: language === 'hi' ? 'पाचन एवं पेट स्वास्थ्य' : language === 'ur' ? 'ہاضم (معدہ و ہاضمہ)' : 'Digestive & Stomach Care' },
-    { value: 'muqawwi', label: language === 'hi' ? 'ऊर्जा एवं शारीरिक शक्ति' : language === 'ur' ? 'طاقت و توانائی' : 'Energy & Vitality' },
-    { value: 'sual', label: language === 'hi' ? 'खांसी, फेफड़े एवं श्वसन' : language === 'ur' ? 'کھانسی و سانس' : 'Cough & Respiratory Care' },
-    { value: 'mafasil', label: language === 'hi' ? 'जोड़ों एवं मांसपेशियों का दर्द' : language === 'ur' ? 'جوڑوں کا درد' : 'Joint & Muscle Relief' },
-    { value: 'jild', label: language === 'hi' ? 'त्वचा एवं सौंदर्य देखभाल' : language === 'ur' ? 'جلد و حسن' : 'Skin & Beauty Care' },
-    { value: 'quwwat', label: language === 'hi' ? 'रोग प्रतिरोधक क्षमता (इम्युनिटी)' : language === 'ur' ? 'قوت مدافعت' : 'Immunity Wellness' },
-    { value: 'order', label: language === 'hi' ? 'ऑर्डर एवं डिलीवरी संबंधी पूछताछ' : language === 'ur' ? 'آرڈر و ڈلیوری' : 'Order & Shipping Status' },
-    { value: 'other', label: language === 'hi' ? 'अन्य सामान्य सवाल' : language === 'ur' ? 'دیگر سوالات' : 'Other General Inquiries' },
+    { value: 'hazim', label: language === 'hi' ? 'पाचन एवं पेट स्वास्थ्य' : language === 'ur' ? 'ہاضمہ اور معدہ' : 'Digestive care' },
+    { value: 'muqawwi', label: language === 'hi' ? 'ऊर्जा एवं शारीरिक शक्ति' : language === 'ur' ? 'طاقت و توانائی' : 'Energy and vitality' },
+    { value: 'sual', label: language === 'hi' ? 'खांसी एवं श्वसन' : language === 'ur' ? 'کھانسی و سانس' : 'Respiratory care' },
+    { value: 'mafasil', label: language === 'hi' ? 'जोड़ों का दर्द' : language === 'ur' ? 'جوڑوں کا درد' : 'Joint and muscle relief' },
+    { value: 'jild', label: language === 'hi' ? 'त्वचा देखभाल' : language === 'ur' ? 'جلد و حسن' : 'Skin care' },
+    { value: 'quwwat', label: language === 'hi' ? 'इम्युनिटी' : language === 'ur' ? 'قوت مدافعت' : 'Immunity wellness' },
+    { value: 'order', label: language === 'hi' ? 'ऑर्डर एवं डिलीवरी' : language === 'ur' ? 'آرڈر و ڈلیوری' : 'Order and shipping' },
+    { value: 'other', label: language === 'hi' ? 'अन्य सवाल' : language === 'ur' ? 'دیگر سوالات' : 'General inquiry' },
   ];
 
   const [formData, setFormData] = useState({
@@ -223,97 +237,80 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     setTimeout(() => {
       setLoading(false);
       setTicketId(`IFQ-${Math.floor(100000 + Math.random() * 900000)}`);
       setSubmitted(true);
-    }, 600);
+    }, 400);
   };
 
   return (
-    <div className="min-h-screen bg-ifaqa-linen select-none pb-24 w-full">
-      {/* 1. Full-Width Grand Hero Banner */}
-      <section className="relative w-full bg-gradient-to-br from-[#165A45] via-[#0B2D22] to-[#061811] text-ifaqa-linen py-18 md:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 border-b-2 border-ifaqa-sand/50 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(197,160,89,0.2)_0%,transparent_60%)] pointer-events-none" />
-
-        <div className="relative w-full max-w-[1720px] mx-auto space-y-4">
-          <div className="flex items-center gap-2 text-xs font-mono tracking-wider uppercase text-ifaqa-sand">
-            <Link href="/" className="hover:text-white transition-colors">{t('home')}</Link>
-            <span>/</span>
-            <span className="text-white font-bold">{c.badge}</span>
-          </div>
-
-          <div className="pt-1">
-            <span className="inline-block px-3 py-1 bg-[#FAF5EC] text-ifaqa-plum font-serif font-bold text-xs uppercase tracking-wider border border-[#DFBA73] shadow-sm">
-              {c.tagline}
-            </span>
-          </div>
-
-          <div className="max-w-4xl space-y-3">
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-md leading-tight">
-              {c.title}
-            </h1>
-            <p className="text-base sm:text-xl text-[#F5F0E6] font-sans font-medium leading-relaxed max-w-3xl">
-              {c.subtitle}
-            </p>
-          </div>
+    <div className="min-h-screen bg-ifaqa-linen select-none pb-20 w-full font-sans">
+      <section className="w-full border-b border-ifaqa-plum/10 bg-ifaqa-linen py-10 md:py-16 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-[1440px] mx-auto space-y-3">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#5A6962]">
+            <Link href="/" className="hover:text-ifaqa-plum transition-colors">{t('home')}</Link>
+            <span aria-hidden="true">/</span>
+            <span className="text-ifaqa-plum font-medium">{content.badge}</span>
+          </nav>
+          <h1 className="font-serif font-normal text-3xl sm:text-5xl text-ifaqa-plum leading-tight">
+            {content.title}
+          </h1>
+          <p className="text-base sm:text-lg text-[#3E524A] leading-relaxed max-w-2xl">
+            {content.subtitle}
+          </p>
         </div>
       </section>
 
-      {/* 2. Main Full-Width Form & Info Grid */}
-      <section className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-16 space-y-16">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          
-          {/* Left Column: Easy Message Form (7 Cols) */}
-          <div className="lg:col-span-7 bg-white border-2 border-ifaqa-sand/70 p-8 sm:p-12 shadow-2xl space-y-6">
+      <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-12 md:py-16 space-y-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Form */}
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-ifaqa-plum/10 p-6 sm:p-10 shadow-luxury-card space-y-6">
             <div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum">
-                {c.formTitle}
+              <h2 className="font-serif font-normal text-2xl sm:text-3xl text-ifaqa-plum">
+                {content.formTitle}
               </h2>
-              <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans mt-1.5 leading-relaxed">
-                {c.formSubtitle}
+              <p className="text-sm text-[#5A6962] mt-1">
+                {content.formSubtitle}
               </p>
             </div>
 
             {submitted ? (
-              /* Success State */
-              <div className="p-8 bg-[#FAF5EC] border-2 border-ifaqa-sand/80 space-y-5 animate-in fade-in duration-300">
+              <div className="p-6 rounded-xl bg-ifaqa-cashmere/70 border border-ifaqa-plum/10 space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-800 text-white flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-6 h-6" />
+                  <div className="w-9 h-9 rounded-lg bg-[#E8F3EE] text-[#165A45] flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-5 h-5" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-900 block">
-                      {c.successTitle}
+                    <span className="text-xs font-medium text-[#165A45] block">
+                      {content.successTitle}
                     </span>
-                    <h3 className="font-serif text-xl font-bold text-ifaqa-plum">
-                      {formData.fullName || 'Valued Customer'}
+                    <h3 className="text-base font-semibold text-ifaqa-plum">
+                      {formData.fullName}
                     </h3>
                   </div>
                 </div>
 
-                <div className="p-4 bg-white border border-ifaqa-sand/60 space-y-2 text-xs font-sans">
+                <div className="p-4 rounded-lg bg-white border border-ifaqa-plum/10 space-y-2 text-xs tabular-nums">
                   <div className="flex items-center justify-between">
-                    <span className="text-ifaqa-blackberry uppercase tracking-wider font-bold">{c.tokenLabel}</span>
-                    <span className="font-mono text-sm font-bold text-ifaqa-plum">{ticketId}</span>
+                    <span className="text-[#5A6962]">{content.tokenLabel}</span>
+                    <span className="font-mono font-medium text-ifaqa-plum" dir="ltr">{ticketId}</span>
                   </div>
-                  <div className="flex items-center justify-between border-t border-ifaqa-sand/30 pt-2">
-                    <span className="text-ifaqa-blackberry uppercase tracking-wider font-bold">{c.phoneLabel}</span>
-                    <span className="font-mono text-ifaqa-plum font-bold">+91 {formData.phone}</span>
+                  <div className="flex items-center justify-between border-t border-ifaqa-plum/10 pt-2">
+                    <span className="text-[#5A6962]">{content.phoneLabel}</span>
+                    <span className="font-mono text-ifaqa-plum" dir="ltr">+91 {formData.phone}</span>
                   </div>
-                  <div className="flex items-center justify-between border-t border-ifaqa-sand/30 pt-2">
-                    <span className="text-ifaqa-blackberry uppercase tracking-wider font-bold">{c.reviewTimeLabel}</span>
-                    <span className="font-serif text-emerald-800 font-bold">{c.reviewTimeValue}</span>
+                  <div className="flex items-center justify-between border-t border-ifaqa-plum/10 pt-2">
+                    <span className="text-[#5A6962]">{content.reviewTimeLabel}</span>
+                    <span className="text-[#165A45] font-medium">{content.reviewTimeValue}</span>
                   </div>
                 </div>
 
-                <p className="text-xs text-ifaqa-blackberry font-sans leading-relaxed">
-                  {c.successNote}
+                <p className="text-xs text-[#5A6962] leading-relaxed">
+                  {content.successNote}
                 </p>
 
-                <div className="pt-2 flex gap-3">
+                <div className="pt-2 flex flex-wrap gap-3">
                   <Button3D
                     onClick={() => {
                       setSubmitted(false);
@@ -322,48 +319,47 @@ export default function ContactPage() {
                     variant="secondary"
                     size="sm"
                   >
-                    {c.newInquiryBtn}
+                    {content.newInquiryBtn}
                   </Button3D>
                   <Link href="/catalog">
                     <Button3D variant="primary" size="sm">
-                      {c.shopBtn}
+                      {content.shopBtn}
                     </Button3D>
                   </Link>
                 </div>
               </div>
             ) : (
-              /* Contact Form */
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                      {c.fullName} *
+                    <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                      {content.fullName}
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder={c.namePlaceholder}
+                      placeholder={content.namePlaceholder}
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-sans text-ifaqa-plum bg-[#FAF8F5] border-2 border-ifaqa-sand/60 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
+                      className="w-full h-10 px-3.5 rounded-lg text-sm text-ifaqa-plum bg-ifaqa-linen border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                      {c.mobile} *
+                    <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                      {content.mobile}
                     </label>
-                    <div className="flex border-2 border-ifaqa-sand/60 focus-within:border-ifaqa-plum transition-colors bg-[#FAF8F5] focus-within:bg-white">
-                      <span className="inline-flex items-center px-3 bg-[#FAF5EC] border-r border-ifaqa-sand/60 text-xs font-mono font-bold text-ifaqa-plum">
-                        🇮🇳 +91
+                    <div className="flex h-10 rounded-lg border border-ifaqa-plum/15 focus-within:border-ifaqa-plum transition-colors bg-ifaqa-linen focus-within:bg-white overflow-hidden" dir="ltr">
+                      <span className="inline-flex items-center px-3 bg-ifaqa-cashmere border-e border-ifaqa-plum/10 text-xs font-mono text-ifaqa-plum">
+                        +91
                       </span>
                       <input
                         type="tel"
                         required
-                        placeholder={c.mobilePlaceholder}
+                        placeholder={content.mobilePlaceholder}
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="flex-1 px-3 py-2.5 text-xs sm:text-sm font-mono text-ifaqa-plum placeholder:text-ifaqa-blackberry/50 focus:outline-none bg-transparent"
+                        className="flex-1 px-3 text-sm font-mono text-ifaqa-plum focus:outline-none bg-transparent tabular-nums"
                       />
                     </div>
                   </div>
@@ -371,229 +367,157 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                      {c.city}
+                    <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                      {content.city}
                     </label>
                     <input
                       type="text"
-                      placeholder={c.cityPlaceholder}
+                      placeholder={content.cityPlaceholder}
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-sans text-ifaqa-plum bg-[#FAF8F5] border-2 border-ifaqa-sand/60 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
+                      className="w-full h-10 px-3.5 rounded-lg text-sm text-ifaqa-plum bg-ifaqa-linen border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                      {c.email}
+                    <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                      {content.email}
                     </label>
                     <input
                       type="email"
-                      placeholder={c.emailPlaceholder}
+                      dir="ltr"
+                      placeholder={content.emailPlaceholder}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-sans text-ifaqa-plum bg-[#FAF8F5] border-2 border-ifaqa-sand/60 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
+                      className="w-full h-10 px-3.5 rounded-lg text-sm text-ifaqa-plum bg-ifaqa-linen border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                    {c.topic} *
+                  <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                    {content.topic}
                   </label>
                   <select
                     value={formData.topic}
                     onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                    className="w-full px-3 py-2.5 text-xs sm:text-sm font-sans text-ifaqa-plum bg-[#FAF8F5] border-2 border-ifaqa-sand/60 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
+                    className="w-full h-10 px-3 rounded-lg text-sm text-ifaqa-plum bg-ifaqa-linen border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors"
                   >
-                    {topics.map((t) => (
-                      <option key={t.value} value={t.value}>
-                        {t.label}
+                    {topics.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold mb-1.5">
-                    {c.message} *
+                  <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                    {content.message}
                   </label>
                   <textarea
                     required
                     rows={4}
-                    placeholder={c.messagePlaceholder}
+                    placeholder={content.messagePlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-sans text-ifaqa-plum bg-[#FAF8F5] border-2 border-ifaqa-sand/60 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors resize-y"
+                    className="w-full p-3.5 rounded-lg text-sm text-ifaqa-plum bg-ifaqa-linen border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:bg-white focus:outline-none transition-colors resize-y"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-ifaqa-blackberry font-sans">
-                  <ShieldCheck className="w-4 h-4 text-emerald-800 shrink-0" />
-                  <span>{c.privacyNotice}</span>
+                <div className="flex items-center gap-2 text-xs text-[#5A6962]">
+                  <ShieldCheck className="w-4 h-4 text-[#165A45] shrink-0" strokeWidth={1.5} />
+                  <span>{content.privacyNotice}</span>
                 </div>
 
                 <Button3D
                   type="submit"
                   variant="primary"
                   size="lg"
-                  className="w-full justify-center font-bold text-xs uppercase tracking-wider shadow-md py-3.5"
+                  className="w-full"
                   disabled={loading}
                 >
-                  {loading ? (
-                    <span>{c.submittingBtn}</span>
-                  ) : (
-                    <>
-                      <span>{c.submitBtn}</span>
-                      <Send className="w-4 h-4 ml-2 text-ifaqa-sand" />
-                    </>
-                  )}
+                  <span>{loading ? content.submittingBtn : content.submitBtn}</span>
+                  {!loading && <Send className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />}
                 </Button3D>
               </form>
             )}
           </div>
 
-          {/* Right Column: Helpdesk & Shipping (5 Cols) */}
+          {/* Direct Contact Info & Transit Info */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-gradient-to-br from-[#165A45] via-[#0B2D22] to-[#061811] text-ifaqa-linen p-8 sm:p-10 border-2 border-ifaqa-sand/60 shadow-2xl space-y-6">
-              <div className="inline-flex items-center justify-center p-2.5 bg-white border border-ifaqa-sand/60 shadow-md">
-                <Image
-                  src="/images/logo-framed.jpg"
-                  alt="IFAQA Heritage Emblem"
-                  width={160}
-                  height={56}
-                  priority
-                  className="h-10 w-auto object-contain"
-                />
-              </div>
+            <div className="bg-ifaqa-cashmere rounded-2xl border border-ifaqa-plum/10 p-6 sm:p-8 space-y-5">
+              <h3 className="font-serif font-normal text-2xl text-ifaqa-plum">
+                {content.helpdeskTitle}
+              </h3>
 
-              <div className="space-y-1">
-                <h3 className="font-serif text-xl font-bold text-white">
-                  {c.helpdeskTitle}
-                </h3>
-                <p className="text-xs text-ifaqa-linen/85 font-sans leading-relaxed">
-                  IFAQA Herbal Remedies • Registered Desi Dawakhana
-                </p>
-              </div>
-
-              <div className="space-y-4 pt-2 text-xs font-sans text-ifaqa-linen/95 divide-y divide-white/10">
-                <div className="flex items-start gap-3 pt-2">
-                  <div className="w-8 h-8 bg-ifaqa-plum border border-ifaqa-sand/50 flex items-center justify-center shrink-0 mt-0.5 text-ifaqa-sand">
-                    <Phone className="w-4 h-4" />
-                  </div>
+              <div className="space-y-4 text-sm divide-y divide-ifaqa-plum/10">
+                <div className="flex items-start gap-3 pt-1">
+                  <Phone className="w-4 h-4 text-[#5A6962] shrink-0 mt-1" strokeWidth={1.5} />
                   <div>
-                    <span className="font-serif font-bold text-white uppercase tracking-wider block text-xs">{c.helplineLabel}</span>
-                    <span className="font-mono text-ifaqa-sand font-bold text-sm block mt-0.5">{c.helplineValue}</span>
-                    <p className="text-[11px] text-ifaqa-linen/75 mt-0.5">{c.helplineHours}</p>
+                    <span className="text-xs text-[#5A6962] block">{content.helplineLabel}</span>
+                    <a href="tel:+919729840336" dir="ltr" className="font-mono font-medium text-ifaqa-plum hover:underline tabular-nums block mt-0.5">
+                      {content.helplineValue}
+                    </a>
+                    <span className="text-xs text-[#5A6962] block mt-0.5">{content.helplineHours}</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 pt-3">
-                  <div className="w-8 h-8 bg-ifaqa-plum border border-ifaqa-sand/50 flex items-center justify-center shrink-0 mt-0.5 text-ifaqa-sand">
-                    <Mail className="w-4 h-4" />
-                  </div>
+                <div className="flex items-start gap-3 pt-4">
+                  <Mail className="w-4 h-4 text-[#5A6962] shrink-0 mt-1" strokeWidth={1.5} />
                   <div>
-                    <span className="font-serif font-bold text-white uppercase tracking-wider block text-xs">{c.emailLabel}</span>
-                    <span className="font-mono text-ifaqa-sand font-bold text-sm block mt-0.5">{c.emailValue}</span>
-                    <p className="text-[11px] text-ifaqa-linen/75 mt-0.5">{c.emailNote}</p>
+                    <span className="text-xs text-[#5A6962] block">{content.emailLabel}</span>
+                    <a href="mailto:ifaqaherbalremedies@gmail.com" dir="ltr" className="font-mono font-medium text-ifaqa-plum hover:underline break-all block mt-0.5">
+                      {content.emailValue}
+                    </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 pt-3">
-                  <div className="w-8 h-8 bg-ifaqa-plum border border-ifaqa-sand/50 flex items-center justify-center shrink-0 mt-0.5 text-ifaqa-sand">
-                    <MapPin className="w-4 h-4" />
-                  </div>
+                <div className="flex items-start gap-3 pt-4">
+                  <MapPin className="w-4 h-4 text-[#5A6962] shrink-0 mt-1" strokeWidth={1.5} />
                   <div>
-                    <span className="font-serif font-bold text-white uppercase tracking-wider block text-xs">{c.addressLabel}</span>
-                    <p className="text-ifaqa-linen font-medium mt-0.5">{c.addressValue}</p>
-                    <p className="text-[11px] text-ifaqa-linen/75 mt-0.5">{c.addressNote}</p>
+                    <span className="text-xs text-[#5A6962] block">{content.addressLabel}</span>
+                    <p className="text-ifaqa-plum mt-0.5 leading-relaxed">{content.addressValue}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Delivery Speeds */}
-            <div className="p-6 bg-white border-2 border-ifaqa-sand/70 shadow-lg space-y-3">
+            <div className="p-6 rounded-2xl bg-white border border-ifaqa-plum/10 space-y-3 shadow-luxury-card">
               <div className="flex items-center gap-2">
-                <Truck className="w-5 h-5 text-ifaqa-plum" />
-                <h4 className="font-serif text-sm font-bold text-ifaqa-plum uppercase tracking-wider">
-                  {c.speedTitle}
+                <Truck className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+                <h4 className="text-sm font-medium text-ifaqa-plum">
+                  {content.speedTitle}
                 </h4>
               </div>
+              <ul className="space-y-2 text-sm text-[#3E524A]">
+                <li className="p-2.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/10">{content.metroSpeed}</li>
+                <li className="p-2.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/10">{content.tierSpeed}</li>
+                <li className="p-2.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/10">{content.remoteSpeed}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-              <div className="space-y-2 text-xs font-sans">
-                <div className="p-2 bg-[#FAF8F5] border border-ifaqa-sand/40">
-                  {c.metroSpeed}
-                </div>
-                <div className="p-2 bg-[#FAF8F5] border border-ifaqa-sand/40">
-                  {c.tierSpeed}
-                </div>
-                <div className="p-2 bg-[#FAF8F5] border border-ifaqa-sand/40">
-                  {c.remoteSpeed}
-                </div>
-                <div className="p-2 bg-[#FAF8F5] border border-ifaqa-sand/40">
-                  {c.intlSpeed}
-                </div>
+        {/* FAQ */}
+        <div className="space-y-6 pt-8 border-t border-ifaqa-plum/10">
+          <h3 className="font-serif font-normal text-2xl sm:text-3xl text-ifaqa-plum">
+            {content.faqTitle}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[
+              { q: content.faq1Q, a: content.faq1A },
+              { q: content.faq2Q, a: content.faq2A },
+              { q: content.faq3Q, a: content.faq3A },
+              { q: content.faq4Q, a: content.faq4A },
+            ].map((item, idx) => (
+              <div key={idx} className="p-6 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1.5">
+                <h4 className="text-sm font-semibold text-ifaqa-plum">{item.q}</h4>
+                <p className="text-sm text-[#5A6962] leading-relaxed">{item.a}</p>
               </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* 3. FAQ Grid */}
-        <div className="space-y-6 pt-6 border-t-2 border-ifaqa-sand/40">
-          <div>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum">
-              {c.faqTitle}
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 bg-white border-2 border-ifaqa-sand/60 space-y-2 shadow-sm">
-              <h4 className="font-serif text-sm font-bold text-ifaqa-plum">{c.faq1Q}</h4>
-              <p className="text-xs text-ifaqa-plum/85 font-sans leading-relaxed">{c.faq1A}</p>
-            </div>
-            <div className="p-6 bg-white border-2 border-ifaqa-sand/60 space-y-2 shadow-sm">
-              <h4 className="font-serif text-sm font-bold text-ifaqa-plum">{c.faq2Q}</h4>
-              <p className="text-xs text-ifaqa-plum/85 font-sans leading-relaxed">{c.faq2A}</p>
-            </div>
-            <div className="p-6 bg-white border-2 border-ifaqa-sand/60 space-y-2 shadow-sm">
-              <h4 className="font-serif text-sm font-bold text-ifaqa-plum">{c.faq3Q}</h4>
-              <p className="text-xs text-ifaqa-plum/85 font-sans leading-relaxed">{c.faq3A}</p>
-            </div>
-            <div className="p-6 bg-white border-2 border-ifaqa-sand/60 space-y-2 shadow-sm">
-              <h4 className="font-serif text-sm font-bold text-ifaqa-plum">{c.faq4Q}</h4>
-              <p className="text-xs text-ifaqa-plum/85 font-sans leading-relaxed">{c.faq4A}</p>
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* 4. Bottom Action Banner */}
-        <div className="p-8 sm:p-12 bg-white border-2 border-ifaqa-sand/70 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
-          <div className="space-y-1.5 text-center lg:text-left max-w-2xl">
-            <h4 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum">
-              {c.ctaTitle}
-            </h4>
-            <p className="text-xs sm:text-sm text-ifaqa-blackberry font-sans">
-              {c.ctaSubtitle}
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-center">
-            <Link href="/catalog">
-              <Button3D variant="primary" size="lg" className="font-bold text-xs uppercase tracking-wider shadow-md">
-                <span>{c.shopBtn}</span>
-                <ArrowRight className="w-4 h-4 ml-1.5 text-ifaqa-sand" />
-              </Button3D>
-            </Link>
-            <Link href="/">
-              <button className="px-5 py-3 border-2 border-ifaqa-plum text-ifaqa-plum hover:bg-ifaqa-plum hover:text-white text-xs font-serif font-bold uppercase tracking-wider transition-all duration-200 shadow-sm">
-                {t('home')}
-              </button>
-            </Link>
-          </div>
-        </div>
-
       </section>
     </div>
   );

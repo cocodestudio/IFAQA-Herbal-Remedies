@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'ifaqa-plum': '#0B2D22',        // Deep Imperial Forest Emerald (Primary Brand)
-        'ifaqa-blackberry': '#165A45',  // Vibrant Botanical Spruce (Secondary/Interactive)
-        'ifaqa-mauve': '#C5A059',       // Royal Antique Burnished Gold (Accent/Badges)
-        'ifaqa-sand': '#DFBA73',        // Champagne Gold Hairline (Borders/Dividers)
-        'ifaqa-cashmere': '#F5F0E6',    // Warm Silk Parchment (Container Base)
-        'ifaqa-linen': '#FAF8F5',       // Luminous Alabaster Pearl (Clean Canvas)
+        'ifaqa-plum': '#0B2D22',        // Deep Forest Ink (Primary Brand Accent & Ink)
+        'ifaqa-blackberry': '#165A45',  // Botanical Spruce (Secondary Ink)
+        'ifaqa-mauve': '#C5A059',       // Burnished Brass Accent (Use sparingly for signature detail)
+        'ifaqa-sand': '#DFBA73',        // Light Brass Border Accent
+        'ifaqa-cashmere': '#F5F0E6',    // Warm Botanical Stone (Raised Surface)
+        'ifaqa-linen': '#FAF8F5',       // Warm Paper Canvas (Page Ground)
         ifaqa: {
           plum: '#0B2D22',
           blackberry: '#165A45',
@@ -24,6 +24,7 @@ const config: Config = {
           linen: '#FAF8F5',
           emerald: '#0B2D22',
           spruce: '#165A45',
+          muted: '#5A6962',
           gold: '#C5A059',
           goldLight: '#FAF5EC',
           goldDark: '#99752D',
@@ -42,18 +43,18 @@ const config: Config = {
         'gradient-emerald-silk': 'linear-gradient(180deg, #FAF8F5 0%, #F5F0E6 100%)',
       },
       fontFamily: {
-        serif: ['Cinzel', 'Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        urdu: ['Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'serif'],
+        serif: ['var(--font-display)', 'Newsreader', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['var(--font-mono)', 'IBM Plex Mono', 'ui-monospace', 'monospace'],
+        urdu: ['var(--font-urdu)', 'Noto Nastaliq Urdu', 'serif'],
       },
       boxShadow: {
-        'luxury-card': '0 8px 24px -4px rgba(11, 45, 34, 0.08), 0 2px 8px -2px rgba(11, 45, 34, 0.04)',
-        'luxury-lifted': '0 20px 40px -8px rgba(11, 45, 34, 0.16), 0 6px 16px -2px rgba(197, 160, 89, 0.18)',
-        'specular-glow': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), 0 8px 24px -4px rgba(197, 160, 89, 0.25)',
+        'luxury-card': '0 1px 2px rgba(11, 45, 34, 0.05)',
+        'luxury-lifted': '0 8px 24px rgba(11, 45, 34, 0.07)',
       },
       transitionTimingFunction: {
-        'emil-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
-        'emil-drawer': 'cubic-bezier(0.32, 0.72, 0, 1)',
+        'emil-out': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'emil-drawer': 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

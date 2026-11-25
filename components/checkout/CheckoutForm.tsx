@@ -9,7 +9,7 @@ import { PaymentMethod, ShippingAddress } from '@/lib/types';
 import { PaymentMethodSelector } from './PaymentMethodSelector';
 import { Button3D } from '@/components/ui/Button3D';
 import { validateE164Phone, validatePostalCode } from '@/lib/formatters';
-import { Lock, AlertCircle, ShieldCheck, MapPin, Phone, User, Mail } from 'lucide-react';
+import { Lock, AlertCircle, ShieldCheck, MapPin, User } from 'lucide-react';
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -34,40 +34,34 @@ export function CheckoutForm() {
     setError(null);
 
     if (items.length === 0) {
-      setError('Your shopping cart is empty. Please select products from the catalog.');
+      setError('Your shopping cart is empty.');
       return;
     }
 
     const cleanPhone = customerPhone.trim().replace(/\s+/g, '');
-    // Standard phone validation: accepts +91... or standard 10 digit number
     const formattedPhone = cleanPhone.startsWith('+') ? cleanPhone : `+91${cleanPhone.replace(/^0+/, '')}`;
     if (!validateE164Phone(formattedPhone)) {
-      setError('Please provide a valid 10-digit mobile number (e.g. +91 98765 43210).');
+      setError('Enter a valid 10-digit mobile number (for example +91 98765 43210).');
       return;
     }
 
     if (recipientName.trim().length < 2) {
-      setError('Please enter your full name (at least 2 characters).');
+      setError('Enter your full name.');
       return;
     }
 
     if (streetAddress.trim().length < 5) {
-      setError('Please enter your complete delivery address with house/flat number.');
+      setError('Enter your complete house or street delivery address.');
       return;
     }
 
-    if (!city.trim()) {
-      setError('Please enter your city.');
-      return;
-    }
-
-    if (!stateProvince.trim()) {
-      setError('Please enter your state.');
+    if (!city.trim() || !stateProvince.trim()) {
+      setError('Enter both city and state.');
       return;
     }
 
     if (!validatePostalCode(postalCode)) {
-      setError('Please enter a valid 6-digit PIN code.');
+      setError('Enter a valid 6-digit PIN code.');
       return;
     }
 
@@ -110,65 +104,67 @@ export function CheckoutForm() {
       clearCart();
       router.push(`/order-confirmation?orderNumber=${res.orderNumber}&orderId=${res.orderId}`);
     } catch (err: any) {
-      setError(err?.message || 'An unexpected error occurred while placing your order. Please try again.');
+      setError(err?.message || 'Unable to place your order. Please try again.');
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-white border border-ifaqa-sand/60 p-5 sm:p-8 shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-8 bg-white rounded-xl border border-ifaqa-plum/10 p-5 sm:p-8 shadow-luxury-card font-sans">
       {error && (
-        <div className="p-4 bg-red-50 border-l-4 border-l-red-800 text-red-950 text-xs flex items-start gap-2.5">
-          <AlertCircle className="w-4 h-4 text-red-800 shrink-0 mt-0.5" />
-          <div className="leading-relaxed font-medium">{error}</div>
+        <div className="p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-900 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-red-700 shrink-0 mt-0.5" strokeWidth={1.5} />
+          <div className="leading-relaxed">{error}</div>
         </div>
       )}
 
-      {/* 1. Recipient & Contact Details */}
+      {/* 1. Customer Details */}
       <div>
-        <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum mb-4 border-b border-ifaqa-sand/40 pb-2 flex items-center gap-2">
-          <User className="w-4 h-4 text-emerald-800" />
-          <span>1. Customer & Contact Details</span>
+        <h3 className="font-sans text-sm font-semibold text-ifaqa-plum mb-4 border-b border-ifaqa-plum/10 pb-2.5 flex items-center gap-2">
+          <User className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+          <span>Customer details</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-              Full Name *
+            <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+              Full name
             </label>
             <input
               type="text"
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
-              placeholder="e.g. Rahul Sharma"
-              className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+              placeholder="Rahul Sharma"
+              className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-              Mobile Number (For Delivery Updates) *
+            <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+              Mobile number
             </label>
             <input
               type="tel"
+              dir="ltr"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
               placeholder="+91 98765 43210"
-              className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs font-mono focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+              className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm font-mono focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors tabular-nums"
               required
             />
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-              Email Address (Optional - For Invoices & Tracking)
+            <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+              Email address (optional)
             </label>
             <input
               type="email"
+              dir="ltr"
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
-              placeholder="customer@email.com"
-              className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+              placeholder="name@example.com"
+              className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
             />
           </div>
         </div>
@@ -176,79 +172,80 @@ export function CheckoutForm() {
 
       {/* 2. Delivery Address */}
       <div>
-        <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum mb-4 border-b border-ifaqa-sand/40 pb-2 flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-emerald-800" />
-          <span>2. Delivery Address</span>
+        <h3 className="font-sans text-sm font-semibold text-ifaqa-plum mb-4 border-b border-ifaqa-plum/10 pb-2.5 flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+          <span>Delivery address</span>
         </h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-              Complete Street Address (Flat / House No., Landmark) *
+            <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+              House or flat number, street, landmark
             </label>
             <input
               type="text"
               value={streetAddress}
               onChange={(e) => setStreetAddress(e.target.value)}
-              placeholder="e.g. Flat 302, Green Valley Apartments, MG Road"
-              className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+              placeholder="House 42, Gandhi Nagar, Near Central Market"
+              className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-                City *
+              <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                City
               </label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="e.g. New Delhi"
-                className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+                placeholder="Saharanpur"
+                className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-                State *
+              <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                State
               </label>
               <input
                 type="text"
                 value={stateProvince}
                 onChange={(e) => setStateProvince(e.target.value)}
-                placeholder="e.g. Delhi"
-                className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+                placeholder="Uttar Pradesh"
+                className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-                PIN Code *
+              <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                PIN code
               </label>
               <input
                 type="text"
+                dir="ltr"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
-                placeholder="e.g. 110001"
+                placeholder="247231"
                 maxLength={10}
-                className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs font-mono focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+                className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm font-mono focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors tabular-nums"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-serif font-bold uppercase tracking-wider text-ifaqa-plum mb-1.5">
-                Country *
+              <label className="block text-xs font-medium text-ifaqa-plum mb-1.5">
+                Country
               </label>
               <input
                 type="text"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 placeholder="India"
-                className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-ifaqa-sand/70 text-ifaqa-plum text-xs focus:outline-none focus:border-ifaqa-plum focus:bg-white"
+                className="w-full h-10 px-3.5 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/15 text-ifaqa-plum text-sm focus:outline-none focus:border-ifaqa-plum focus:bg-white transition-colors"
                 required
               />
             </div>
@@ -256,7 +253,7 @@ export function CheckoutForm() {
         </div>
       </div>
 
-      {/* 3. Payment Method (NEFT Removed, only UPI/Cards & COD) */}
+      {/* 3. Payment Method (UPI/Cards & Cash on Delivery only — NEFT removed) */}
       <div>
         <PaymentMethodSelector
           selected={paymentMethod}
@@ -265,22 +262,21 @@ export function CheckoutForm() {
         />
       </div>
 
-      {/* Submit Order Button */}
-      <div className="pt-4 border-t border-ifaqa-sand/40 space-y-3">
+      <div className="pt-4 border-t border-ifaqa-plum/10 space-y-3">
         <Button3D
           type="submit"
           variant="primary"
           size="lg"
           disabled={loading || items.length === 0}
-          className="w-full shadow-lg font-bold"
+          className="w-full"
         >
-          <Lock className="w-4 h-4 mr-2" />
-          {loading ? 'Processing Order...' : 'Confirm & Place Order'}
+          <Lock className="w-4 h-4 me-2" strokeWidth={1.5} />
+          <span>{loading ? 'Processing order' : 'Confirm and place order'}</span>
         </Button3D>
 
-        <p className="text-xs text-center text-ifaqa-blackberry font-sans flex items-center justify-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-800" />
-          <span>Instant Order Confirmation & Tracking SMS sent to your mobile.</span>
+        <p className="text-xs text-center text-[#5A6962] flex items-center justify-center gap-1.5">
+          <ShieldCheck className="w-4 h-4 text-[#165A45]" strokeWidth={1.5} />
+          <span>Order confirmation and courier tracking reference sent to your mobile</span>
         </p>
       </div>
     </form>

@@ -10,27 +10,27 @@ export function ContraindicationsCallout({ contraindications }: Contraindication
 
   if (!hasContraindications) {
     return (
-      <div className="p-4 bg-ifaqa-linen/50 border-l-2 border-l-ifaqa-sand text-ifaqa-plum text-xs font-sans leading-relaxed">
-        <p className="font-semibold font-serif text-ifaqa-blackberry mb-0.5">
-          General Wellness Formulation:
+      <div className="p-4 rounded-xl bg-ifaqa-linen border border-ifaqa-plum/10 text-sm text-[#3E524A] leading-relaxed">
+        <p className="font-medium text-ifaqa-plum mb-0.5">
+          General wellness guidance
         </p>
-        <p className="text-ifaqa-mauve">
-          No specific contraindications recorded. Suitable for general adult wellness under customary dietary guidance. Consult your personal physician or certified Hakeem if pregnant or nursing.
+        <p className="text-xs text-[#5A6962]">
+          Suitable for adult use with a balanced diet. Consult a qualified physician if pregnant, nursing, or taking prescription medication.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 bg-amber-50/70 border-l-2 border-l-amber-800 text-amber-950 text-xs font-sans">
-      <div className="flex items-center gap-2 mb-2 font-serif font-bold text-amber-900 uppercase tracking-wider">
-        <ShieldAlert className="w-4 h-4 text-amber-800 shrink-0" />
-        <span>Precautionary Guidance</span>
+    <div className="p-4 rounded-xl bg-[#FDF6EB] border border-[#C5A059]/30 text-ifaqa-plum text-sm">
+      <div className="flex items-center gap-2 mb-2 font-medium text-xs text-ifaqa-plum">
+        <ShieldAlert className="w-4 h-4 text-[#99752D] shrink-0" strokeWidth={1.5} />
+        <span>Usage precautions</span>
       </div>
-      <ul className="space-y-1.5 list-disc list-inside">
+      <ul className="space-y-1.5 list-disc list-inside text-xs text-[#3E524A]">
         {contraindications.map((item, idx) => (
           <li key={idx} className="leading-relaxed">
-            <span className="font-medium">{item}</span>
+            {item}
           </li>
         ))}
       </ul>

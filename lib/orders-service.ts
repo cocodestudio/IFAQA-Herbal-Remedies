@@ -55,7 +55,7 @@ export function assembleCustomerOrder(input: AssembleOrderInput): CustomerOrder 
   }
 
   if (!validateE164Phone(input.customer.phone)) {
-    throw new Error(`Invalid customer phone number: ${input.customer.phone}. Must be in E.164 international format (e.g. +923001234567).`);
+    throw new Error(`Invalid customer phone number: ${input.customer.phone}. Must be in E.164 international format (e.g. +919876543210).`);
   }
 
   if (!input.items || input.items.length === 0) {

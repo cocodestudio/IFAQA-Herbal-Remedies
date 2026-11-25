@@ -1,14 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { notFound, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import seedData from '@/lib/seed-data.json';
 import { getRemedyBySlug, getRemediesByCategory } from '@/lib/remedies-service';
 import { HerbalRemedy } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { BotanicalIngredientsTable } from '@/components/remedy/BotanicalIngredientsTable';
 import { DosageGuide } from '@/components/remedy/DosageGuide';
 import { RemedyGallery } from '@/components/remedy/RemedyGallery';
@@ -21,17 +20,13 @@ import {
   Minus,
   Plus,
   ShieldCheck,
-  Sparkles,
+  Leaf,
   Check,
-  Star,
   Truck,
   RotateCcw,
   MapPin,
   CheckCircle2,
-  HelpCircle,
   Award,
-  RefreshCw,
-  Clock,
 } from 'lucide-react';
 
 export default function RemedyDetailPage() {
@@ -46,6 +41,7 @@ export default function RemedyDetailPage() {
       r => r.slug === clean || r.id === clean
     ) || null;
   });
+
   const [relatedRemedies, setRelatedRemedies] = useState<HerbalRemedy[]>(() => {
     if (!rawSlug) return [];
     const clean = rawSlug.toLowerCase().trim();
@@ -57,9 +53,10 @@ export default function RemedyDetailPage() {
       .filter(r => r.categoryId === matched.categoryId && r.id !== matched.id)
       .slice(0, 4);
   });
+
   const [loading, setLoading] = useState(() => !remedy);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'dosage' | 'faq' | 'reviews'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'dosage' | 'faq'>('overview');
   const [addedToast, setAddedToast] = useState(false);
   const [pincode, setPincode] = useState('');
   const [deliveryChecked, setDeliveryChecked] = useState(false);
@@ -88,17 +85,17 @@ export default function RemedyDetailPage() {
 
   if (!remedy) {
     return (
-      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-16 text-center space-y-4 select-none">
-        <ArchitecturalBadge variant="notched">Dispensary Archive</ArchitecturalBadge>
-        <h1 className="font-serif text-3xl font-bold text-ifaqa-plum">Formulation Not Found</h1>
-        <p className="text-ifaqa-blackberry text-sm max-w-md mx-auto">
-          The requested classical herbal remedy could not be located in our active pharmacopoeia.
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-16 text-center space-y-4 select-none">
+        <p className="text-xs font-sans text-[#5A6962]">{t('catalog')}</p>
+        <h1 className="font-serif font-normal text-3xl text-ifaqa-plum">Product not found</h1>
+        <p className="text-sm text-[#5A6962] max-w-md mx-auto">
+          This remedy could not be found in our active catalog.
         </p>
         <Link
           href="/catalog"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-ifaqa-plum text-white font-serif text-xs uppercase tracking-widest font-bold hover:bg-ifaqa-blackberry transition-colors"
+          className="inline-flex items-center h-10 px-5 rounded-lg bg-ifaqa-plum text-ifaqa-linen text-sm font-sans font-medium hover:bg-ifaqa-blackberry transition-colors"
         >
-          Return to Pharmacopoeia
+          Return to catalog
         </Link>
       </div>
     );
@@ -109,7 +106,7 @@ export default function RemedyDetailPage() {
   const displaySubtitle = getRemedySubtitle(remedy);
   const displayCategory = getCategoryTitle({ id: remedy.categoryId, name: remedy.categoryName });
 
-  const mrpPrice = remedy.comparePricePKR || Math.round(remedy.pricePKR * 1.3);
+  const mrpPrice = remedy.comparePricePKR || Math.round(remedy.pricePKR * 1.25);
   const savingsAmount = mrpPrice - remedy.pricePKR;
   const savingsPercent = Math.round((savingsAmount / mrpPrice) * 100);
 
@@ -117,7 +114,7 @@ export default function RemedyDetailPage() {
     if (!isAvailable) return;
     addToCart(remedy, selectedQuantity);
     setAddedToast(true);
-    setTimeout(() => setAddedToast(false), 2000);
+    setTimeout(() => setAddedToast(false), 1800);
   };
 
   const handleBuyNow = () => {
@@ -134,22 +131,22 @@ export default function RemedyDetailPage() {
   };
 
   return (
-    <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-6 md:py-10 space-y-10 select-none">
-      {/* Breadcrumb Navigation - Amazon Style */}
-      <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs font-sans text-ifaqa-blackberry font-medium border-b border-ifaqa-sand/40 pb-3">
-        <Link href="/" className="hover:text-ifaqa-plum hover:underline">Home</Link>
-        <span>›</span>
-        <Link href="/catalog" className="hover:text-ifaqa-plum hover:underline">Pharmacopoeia</Link>
-        <span>›</span>
-        <Link href={`/catalog/${remedy.categoryId}`} className="hover:text-ifaqa-plum hover:underline">{displayCategory}</Link>
-        <span>›</span>
-        <span className="text-ifaqa-plum font-bold truncate max-w-[320px]">{displayTitle}</span>
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-6 md:py-10 space-y-10 select-none">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs font-sans text-[#5A6962] border-b border-ifaqa-plum/10 pb-3">
+        <Link href="/" className="hover:text-ifaqa-plum transition-colors">{t('home')}</Link>
+        <span aria-hidden="true">/</span>
+        <Link href="/catalog" className="hover:text-ifaqa-plum transition-colors">{t('catalog')}</Link>
+        <span aria-hidden="true">/</span>
+        <Link href={`/catalog/${remedy.categoryId}`} className="hover:text-ifaqa-plum transition-colors">{displayCategory}</Link>
+        <span aria-hidden="true">/</span>
+        <span className="text-ifaqa-plum font-medium truncate max-w-[280px]">{displayTitle}</span>
       </nav>
 
-      {/* Main Product Layout - Amazon / Flipkart Dual Column Split */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-        {/* Left Column: Product Visuals & Trust Guarantees (5 cols) */}
-        <div className="lg:col-span-5 space-y-6">
+      {/* Main Dual Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Left Column: Borderless Image Gallery + Balanced Quality & Storage Cards (5 cols) */}
+        <div className="lg:col-span-5 space-y-5">
           <RemedyGallery
             primaryImage={remedy.primaryImage}
             images={remedy.images}
@@ -157,249 +154,245 @@ export default function RemedyDetailPage() {
             urduName={remedy.urduName}
           />
 
-          {/* Amazon/Flipkart Style Trust & Assurances Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-ifaqa-sand/40 text-center">
-            <div className="p-3 bg-white border border-ifaqa-sand/60 space-y-1 shadow-sm">
-              <Truck className="w-5 h-5 mx-auto text-ifaqa-plum" />
-              <span className="text-[11px] font-serif font-bold text-ifaqa-plum block">Free Shipping</span>
-              <span className="text-[10px] text-ifaqa-blackberry font-sans block">All Over India</span>
+          {/* 4-Item Trust Row */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <Truck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Pan-India</span>
+              <span className="text-xs text-[#5A6962] block">Courier</span>
             </div>
-            <div className="p-3 bg-white border border-ifaqa-sand/60 space-y-1 shadow-sm">
-              <ShieldCheck className="w-5 h-5 mx-auto text-ifaqa-plum" />
-              <span className="text-[11px] font-serif font-bold text-ifaqa-plum block">100% Herbal</span>
-              <span className="text-[10px] text-ifaqa-blackberry font-sans block">Zero Chemicals</span>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <ShieldCheck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Zero fillers</span>
+              <span className="text-xs text-[#5A6962] block">Herbal only</span>
             </div>
-            <div className="p-3 bg-white border border-ifaqa-sand/60 space-y-1 shadow-sm">
-              <RotateCcw className="w-5 h-5 mx-auto text-ifaqa-plum" />
-              <span className="text-[11px] font-serif font-bold text-ifaqa-plum block">Replacement</span>
-              <span className="text-[10px] text-ifaqa-blackberry font-sans block">If Damaged</span>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <RotateCcw className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Sealed jar</span>
+              <span className="text-xs text-[#5A6962] block">Replacement</span>
             </div>
-            <div className="p-3 bg-white border border-ifaqa-sand/60 space-y-1 shadow-sm">
-              <Award className="w-5 h-5 mx-auto text-ifaqa-plum" />
-              <span className="text-[11px] font-serif font-bold text-ifaqa-plum block">Desi Dawakhana</span>
-              <span className="text-[10px] text-ifaqa-blackberry font-sans block">Empirical Canon</span>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <Award className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Small batch</span>
+              <span className="text-xs text-[#5A6962] block">Saharanpur</span>
             </div>
           </div>
 
-          {/* 100% Herbal Purity & Quality Assurance Certificate Box */}
-          <div className="bg-white border border-ifaqa-sand/60 p-5 space-y-3.5 shadow-sm">
-            <div className="flex items-center justify-between border-b border-ifaqa-sand/40 pb-2.5">
-              <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-ifaqa-plum flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-800" />
-                <span>Purity & Quality Assurance</span>
+          {/* Quality & Formulation Card (balances height cleanly with right column) */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 shadow-luxury-card">
+            <div className="flex items-center justify-between border-b border-ifaqa-plum/10 pb-2.5">
+              <h4 className="font-sans text-xs font-medium text-ifaqa-plum flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#165A45]" strokeWidth={1.5} />
+                <span>Preparation standards</span>
               </h4>
-              <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
-                Batch Verified
+              <span className="text-xs font-mono text-[#165A45] bg-ifaqa-cashmere px-2 py-0.5 rounded">
+                Verified batch
               </span>
             </div>
-            <ul className="space-y-2.5 text-xs font-sans text-ifaqa-plum/90 font-medium">
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
-                <span><strong>Pure Wildcrafted Botanicals:</strong> Hand-harvested roots, seeds, and natural resins compounded at peak seasonal potency.</span>
+            <ul className="space-y-2 text-xs text-[#3E524A] font-sans">
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Whole dried roots, seeds, and natural resins compounded in small batches.</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
-                <span><strong>Zero Heavy Metals & Steroids:</strong> 100% chemical-free formulation with zero synthetic binders or artificial preservatives.</span>
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Zero chemical steroids, artificial sweeteners, or synthetic coloring.</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-emerald-800 shrink-0 mt-0.5" />
-                <span><strong>Classical Scriptural Method:</strong> Handcrafted under canonical dawakhana standards for maximum bioavailability.</span>
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Packed fresh inside UV-shielded tamper-proof containers.</span>
               </li>
             </ul>
           </div>
 
-          {/* Packaging, Storage & Delivery Guarantee */}
-          <div className="bg-[#FAF5EC] border border-ifaqa-sand/60 p-5 space-y-3 shadow-sm text-xs font-sans">
-            <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-ifaqa-plum flex items-center gap-2 border-b border-ifaqa-sand/40 pb-2">
-              <Sparkles className="w-4 h-4 text-[#C5A059]" />
-              <span>Storage & Dispatch Information</span>
+          {/* Storage & Dispatch Card */}
+          <div className="bg-ifaqa-cashmere/70 rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 text-xs font-sans">
+            <h4 className="font-medium text-ifaqa-plum flex items-center gap-2 border-b border-ifaqa-plum/10 pb-2">
+              <Leaf className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+              <span>Storage and dispatch</span>
             </h4>
-            <div className="grid grid-cols-2 gap-y-2 gap-x-4 pt-1">
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               <div>
-                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Storage Advice:</span>
-                <span className="font-bold text-ifaqa-plum">Cool, dry place away from sunlight</span>
+                <span className="text-[#5A6962] block">Storage</span>
+                <span className="font-medium text-ifaqa-plum">Cool, dry place away from sun</span>
               </div>
               <div>
-                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Shelf Life:</span>
-                <span className="font-bold text-ifaqa-plum">24 Months (Fresh Batch)</span>
+                <span className="text-[#5A6962] block">Shelf life</span>
+                <span className="font-medium text-ifaqa-plum">24 months from batch date</span>
               </div>
               <div>
-                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Dispatch Time:</span>
-                <span className="font-bold text-ifaqa-plum">Within 24 Hours</span>
+                <span className="text-[#5A6962] block">Dispatch</span>
+                <span className="font-medium text-ifaqa-plum">Within 24 hours</span>
               </div>
               <div>
-                <span className="text-ifaqa-blackberry font-medium block text-[11px]">Origin:</span>
-                <span className="font-bold text-ifaqa-plum">Made in India</span>
+                <span className="text-[#5A6962] block">Prepared in</span>
+                <span className="font-medium text-ifaqa-plum">Saharanpur, U.P., India</span>
               </div>
             </div>
           </div>
 
-          {/* Patient Support Helpline Banner */}
-          <div className="bg-white border border-ifaqa-sand/60 p-4 shadow-sm flex items-center justify-between gap-3">
-            <div className="space-y-0.5">
-              <span className="text-[11px] font-serif font-bold text-ifaqa-plum uppercase tracking-wider block">
-                Need Dosage Consultation?
+          {/* Direct Support */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-4 flex items-center justify-between gap-3">
+            <div className="space-y-0.5 min-w-0">
+              <span className="text-xs font-medium text-ifaqa-plum block">
+                Questions about usage or dosage
               </span>
-              <span className="text-[10px] text-ifaqa-blackberry font-sans block">
-                Speak directly with an IFAQA Ayurvedic & Unani practitioner.
+              <span className="text-xs text-[#5A6962] font-mono block tabular-nums" dir="ltr">
+                +91 97298 40336 (Mon–Sat)
               </span>
             </div>
             <Link
               href="/contact"
-              className="px-3 py-1.5 bg-ifaqa-plum text-ifaqa-linen text-[11px] font-serif font-bold uppercase tracking-wider hover:bg-ifaqa-blackberry transition-colors shrink-0 whitespace-nowrap"
+              className="h-9 px-4 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-sans font-medium inline-flex items-center shrink-0 whitespace-nowrap transition-colors"
             >
-              Consult Now
+              Contact us
             </Link>
           </div>
         </div>
 
-        {/* Right Column: Complete Product Dossier & Buy Box (7 cols) */}
+        {/* Right Column: Title, Price Box, Action Controls & Specs (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Brand Header & Star Rating */}
-          <div className="space-y-2 border-b border-ifaqa-sand/40 pb-4">
+          <div className="space-y-2.5 border-b border-ifaqa-plum/10 pb-5">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-mono font-bold tracking-widest uppercase text-ifaqa-blackberry bg-ifaqa-sand/30 px-2 py-0.5 border border-ifaqa-sand/60">
-                IFAQA HERBAL REMEDIES • DESI DAWAKHANA
+              <span className="text-xs font-sans text-[#5A6962]">
+                {displayCategory}
               </span>
-              <ArchitecturalBadge variant="diamond" className="text-[10px]">
-                {remedy.isBestSeller ? 'Top Rated Remedy' : remedy.form}
-              </ArchitecturalBadge>
+              <span className="text-xs font-sans font-medium bg-ifaqa-cashmere text-ifaqa-plum px-2.5 py-0.5 rounded border border-ifaqa-plum/10">
+                {remedy.isBestSeller ? t('bestSellerBadge') : remedy.form}
+              </span>
             </div>
 
-            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ifaqa-plum leading-tight">
+            <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum leading-tight">
               {displayTitle}
             </h1>
 
-            <p className="text-sm font-sans font-semibold text-ifaqa-blackberry">
-              {displaySubtitle}
-            </p>
+            {language === 'ur' && remedy.urduName && (
+              <p dir="rtl" lang="ur" className="font-urdu text-lg text-[#3E524A]">
+                {remedy.urduName}
+              </p>
+            )}
 
-            {/* Rating Stars - Amazon Style */}
-            <div className="flex items-center gap-3 pt-1">
-              <div className="flex items-center text-amber-600">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <span className="text-xs font-mono font-bold text-ifaqa-plum">4.9 out of 5</span>
-              <span className="text-xs text-ifaqa-blackberry">|</span>
-              <span className="text-xs text-ifaqa-blackberry font-medium hover:underline cursor-pointer">
-                1,248 Verified Patient Ratings
-              </span>
-            </div>
+            <p className="text-sm font-sans text-[#5A6962]">
+              {displaySubtitle}{remedy.packaging?.size ? ` · ${remedy.packaging.size}` : ''}
+            </p>
           </div>
 
-          {/* Amazon Style Price & Offer Box */}
-          <div className="bg-white border-2 border-ifaqa-sand/70 p-5 sm:p-6 space-y-4 shadow-sm">
-            <div className="space-y-1">
-              <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="text-xs uppercase font-mono font-bold text-red-700 bg-red-100 px-2 py-0.5">
-                  Save {savingsPercent}%
-                </span>
-                <span className="font-serif text-3xl sm:text-4xl font-bold text-ifaqa-plum">
+          {/* Clean Buy Box */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/15 p-5 sm:p-6 space-y-5 shadow-luxury-card">
+            <div className="space-y-1.5">
+              <div className="flex items-baseline gap-3 flex-wrap tabular-nums">
+                <span className="font-sans text-3xl font-semibold text-ifaqa-plum">
                   {formatPriceINR(remedy.pricePKR)}
                 </span>
-                <span className="text-sm text-ifaqa-blackberry line-through font-mono">
-                  M.R.P.: {formatPriceINR(mrpPrice)}
-                </span>
+                {savingsPercent > 0 && (
+                  <>
+                    <span className="text-sm text-[#5A6962] line-through font-mono">
+                      MRP {formatPriceINR(mrpPrice)}
+                    </span>
+                    <span className="text-xs font-medium text-[#165A45] bg-[#E8F3EE] px-2 py-0.5 rounded">
+                      Save {savingsPercent}%
+                    </span>
+                  </>
+                )}
               </div>
-              <p className="text-xs text-ifaqa-blackberry font-sans font-medium">
-                Inclusive of all taxes • <strong>FREE Delivery</strong> on this order anywhere in India.
+              <p className="text-xs text-[#5A6962] font-sans">
+                Inclusive of all taxes · Pan-India courier dispatch
               </p>
             </div>
 
-            {/* Availability */}
-            <div className="pt-3 border-t border-ifaqa-sand/30 flex items-center justify-between">
+            {/* Availability & SKU */}
+            <div className="pt-4 border-t border-ifaqa-plum/10 flex items-center justify-between gap-2 flex-wrap">
               <div>
-                <span className={`text-sm font-serif font-bold uppercase tracking-wider ${isAvailable ? 'text-emerald-800' : 'text-red-700'}`}>
-                  {isAvailable ? '● In Stock' : '● Out of Stock'}
+                <span className={`text-sm font-sans font-medium flex items-center gap-2 ${isAvailable ? 'text-[#165A45]' : 'text-red-700'}`}>
+                  <span className={`w-2 h-2 rounded-sm ${isAvailable ? 'bg-[#165A45]' : 'bg-red-700'}`} />
+                  {isAvailable ? 'In stock' : t('outOfStock')}
                 </span>
-                <span className="text-xs text-ifaqa-blackberry font-sans block mt-0.5 font-medium">
-                  Ships from: IFAQA Central Apothecary, India
+                <span className="text-xs text-[#5A6962] block mt-0.5">
+                  Dispatched from Saharanpur, Uttar Pradesh
                 </span>
               </div>
-              <span className="text-xs font-mono font-bold text-ifaqa-plum bg-ifaqa-linen px-2.5 py-1 border border-ifaqa-sand/50">
-                SKU: {remedy.sku}
+              <span className="text-xs font-mono text-[#5A6962] bg-ifaqa-linen px-2.5 py-1 rounded border border-ifaqa-plum/10 tabular-nums" dir="ltr">
+                SKU {remedy.sku}
               </span>
             </div>
 
-            {/* Pincode Delivery Estimator */}
-            <div className="pt-3 border-t border-ifaqa-sand/30">
+            {/* Pincode Estimator */}
+            <div className="pt-4 border-t border-ifaqa-plum/10">
               <form onSubmit={handleCheckPincode} className="flex items-center gap-2 max-w-sm">
                 <div className="relative flex-1">
-                  <MapPin className="w-4 h-4 text-ifaqa-blackberry absolute left-3 top-1/2 -translate-y-1/2" />
+                  <MapPin className="w-4 h-4 text-[#5A6962] absolute start-3 top-1/2 -translate-y-1/2" strokeWidth={1.5} />
                   <input
                     type="text"
+                    dir="ltr"
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
-                    placeholder="Enter Delivery Pincode"
+                    placeholder="Enter pincode (e.g. 110001)"
                     maxLength={6}
-                    className="w-full pl-9 pr-3 py-2 text-xs font-mono border border-ifaqa-sand/70 bg-ifaqa-linen/50 text-ifaqa-plum focus:outline-none focus:border-ifaqa-plum"
+                    className="w-full h-10 ps-9 pe-3 rounded-lg text-xs font-mono border border-ifaqa-plum/15 bg-ifaqa-linen text-ifaqa-plum focus:outline-none focus:border-ifaqa-plum focus:bg-white tabular-nums"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-ifaqa-plum text-ifaqa-linen text-xs font-serif font-bold uppercase tracking-wider hover:bg-ifaqa-blackberry transition-colors"
+                  className="h-10 px-4 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-sans font-medium transition-colors"
                 >
                   Check
                 </button>
               </form>
               {deliveryChecked && (
-                <p className="text-xs text-emerald-800 font-sans font-bold mt-2 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>Delivery to {pincode} available in 2–4 business days via Express Courier.</span>
+                <p className="text-xs text-[#165A45] font-sans font-medium mt-2 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                  <span>Delivery to {pincode} available in 2 to 4 business days</span>
                 </p>
               )}
             </div>
 
-            {/* Quantity Stepper & Dual Big Buttons (Add to Cart + Buy Now) */}
-            <div className="pt-4 border-t border-ifaqa-sand/40 space-y-3">
+            {/* Quantity & CTA Buttons */}
+            <div className="pt-4 border-t border-ifaqa-plum/10 space-y-4">
               <div className="flex items-center gap-4">
-                <span className="text-xs font-serif uppercase tracking-wider text-ifaqa-plum font-bold">
-                  Quantity:
+                <span className="text-sm font-sans text-[#5A6962]">
+                  Quantity
                 </span>
-                <div className="flex items-center border border-ifaqa-sand/80 bg-white shadow-sm">
+                <div className="flex items-center rounded-lg border border-ifaqa-plum/15 bg-white">
                   <button
                     onClick={() => setSelectedQuantity(Math.max(1, selectedQuantity - 1))}
                     disabled={!isAvailable || selectedQuantity <= 1}
-                    className="p-2 text-ifaqa-plum hover:bg-ifaqa-sand/20 disabled:opacity-30"
+                    className="w-9 h-9 flex items-center justify-center text-ifaqa-plum hover:bg-ifaqa-cashmere disabled:opacity-30 transition-colors"
                     aria-label="Decrease quantity"
                   >
-                    <Minus className="w-3.5 h-3.5" />
+                    <Minus className="w-3.5 h-3.5" strokeWidth={1.5} />
                   </button>
-                  <span className="px-4 font-mono font-bold text-sm text-ifaqa-plum">
+                  <span className="w-9 text-center font-mono text-sm font-medium text-ifaqa-plum tabular-nums">
                     {selectedQuantity}
                   </span>
                   <button
                     onClick={() => setSelectedQuantity(Math.min(remedy.stockQuantity || 10, selectedQuantity + 1))}
                     disabled={!isAvailable || selectedQuantity >= (remedy.stockQuantity || 10)}
-                    className="p-2 text-ifaqa-plum hover:bg-ifaqa-sand/20 disabled:opacity-30"
+                    className="w-9 h-9 flex items-center justify-center text-ifaqa-plum hover:bg-ifaqa-cashmere disabled:opacity-30 transition-colors"
                     aria-label="Increase quantity"
                   >
-                    <Plus className="w-3.5 h-3.5" />
+                    <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
                   </button>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   onClick={handleAddToCart}
                   disabled={!isAvailable}
-                  className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all ${
+                  className={`h-11 px-6 rounded-lg text-sm font-sans font-medium flex items-center justify-center gap-2 transition-colors active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
                     addedToast
-                      ? 'bg-emerald-800 text-white'
-                      : 'bg-ifaqa-plum text-ifaqa-linen hover:bg-ifaqa-blackberry active:scale-[0.98]'
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      ? 'bg-[#165A45] text-white'
+                      : 'bg-ifaqa-plum text-ifaqa-linen hover:bg-ifaqa-blackberry'
+                  }`}
                 >
                   {addedToast ? (
                     <>
-                      <Check className="w-4 h-4" />
+                      <Check className="w-4 h-4" strokeWidth={1.5} />
                       <span>{t('addedToCart')}</span>
                     </>
                   ) : isAvailable ? (
                     <>
-                      <ShoppingBag className="w-4 h-4" />
+                      <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
                       <span>{t('addToCart')}</span>
                     </>
                   ) : (
@@ -410,133 +403,121 @@ export default function RemedyDetailPage() {
                 <button
                   onClick={handleBuyNow}
                   disabled={!isAvailable}
-                  className="py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md bg-ifaqa-sand text-ifaqa-plum hover:bg-white border-2 border-ifaqa-plum active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-11 px-6 rounded-lg text-sm font-sans font-medium flex items-center justify-center gap-2 bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/20 hover:bg-[#EDE5D5] active:scale-[0.98] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Zap className="w-4 h-4 text-ifaqa-plum" />
-                  <span>Buy Now</span>
+                  <Zap className="w-4 h-4" strokeWidth={1.5} />
+                  <span>Buy now</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Quick Specifications Table - Flipkart/Amazon Style */}
-          <div className="bg-white border border-ifaqa-sand/60 p-5 space-y-3 shadow-sm">
-            <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum border-b border-ifaqa-sand/40 pb-2">
-              Product Overview & Specifications
+          {/* Product Specifications */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-5 sm:p-6 space-y-3 shadow-luxury-card">
+            <h3 className="font-sans text-sm font-semibold text-ifaqa-plum border-b border-ifaqa-plum/10 pb-2.5">
+              Product specifications
             </h3>
-            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4 text-xs font-sans">
-              <div className="text-ifaqa-blackberry font-medium">Formulation Form:</div>
-              <div className="font-bold text-ifaqa-plum">{remedy.form}</div>
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4 text-sm font-sans">
+              <div className="text-[#5A6962]">Preparation form</div>
+              <div className="font-medium text-ifaqa-plum">{remedy.form}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">Net Weight / Size:</div>
-              <div className="font-bold text-ifaqa-plum">{remedy.packaging?.size || 'Standard'}</div>
+              <div className="text-[#5A6962]">Net weight / pack</div>
+              <div className="font-medium text-ifaqa-plum">{remedy.packaging?.size || 'Standard'}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">Packaging Type:</div>
-              <div className="font-bold text-ifaqa-plum">{remedy.packaging?.containerType || 'Amber Glass Jar'}</div>
+              <div className="text-[#5A6962]">Container</div>
+              <div className="font-medium text-ifaqa-plum">{remedy.packaging?.containerType || 'Sealed Jar'}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">Ailment Target:</div>
-              <div className="font-bold text-ifaqa-plum">{displayCategory}</div>
+              <div className="text-[#5A6962]">Health focus</div>
+              <div className="font-medium text-ifaqa-plum">{displayCategory}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">How to Consume:</div>
-              <div className="font-bold text-ifaqa-plum">{remedy.dosageInstructions?.anupana || 'Lukewarm Water'}</div>
+              <div className="text-[#5A6962]">Consume with</div>
+              <div className="font-medium text-ifaqa-plum">{remedy.dosageInstructions?.anupana || 'Lukewarm water'}</div>
 
-              <div className="text-ifaqa-blackberry font-medium">Country of Origin:</div>
-              <div className="font-bold text-ifaqa-plum">India</div>
+              <div className="text-[#5A6962]">Origin</div>
+              <div className="font-medium text-ifaqa-plum">Saharanpur, India</div>
             </div>
           </div>
 
-          {/* About This Item Bullet Points - Amazon Style */}
-          <div className="bg-white border border-ifaqa-sand/60 p-5 space-y-3 shadow-sm">
-            <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum border-b border-ifaqa-sand/40 pb-2">
-              About This Classical Remedy
+          {/* Highlights */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-5 sm:p-6 space-y-3 shadow-luxury-card">
+            <h3 className="font-sans text-sm font-semibold text-ifaqa-plum border-b border-ifaqa-plum/10 pb-2.5">
+              About this remedy
             </h3>
-            <ul className="space-y-2 text-xs font-sans text-ifaqa-plum/90 list-disc pl-5 leading-relaxed font-medium">
-              <li><strong>Resultful & Potent:</strong> Handcrafted under canonical dawakhana processing standards to target systemic root causes.</li>
-              <li><strong>Pure Herbs Only:</strong> Contains 100% genuine botanical roots, seeds, floral extracts, and minerals without synthetic fillers.</li>
-              <li><strong>Clinical Efficacy:</strong> {remedy.shortDescription}</li>
-              <li><strong>Easy Daily Use:</strong> {remedy.dosageInstructions?.amount} {remedy.dosageInstructions?.timing}.</li>
+            <ul className="space-y-2 text-sm font-sans text-[#3E524A] list-disc ps-5 leading-relaxed">
+              <li>{remedy.shortDescription}</li>
+              <li>Prepared from whole dried botanical roots, seeds, and honey without synthetic binders.</li>
+              <li>Recommended usage: {remedy.dosageInstructions?.amount} {remedy.dosageInstructions?.timing}.</li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* In-Depth Detailed Sections (Tabs) - Amazon / Flipkart Extended Details */}
-      <div className="pt-8 border-t-2 border-ifaqa-sand/60">
-        <div className="flex border-b border-ifaqa-sand/60 overflow-x-auto no-scrollbar gap-2">
+      {/* Extended Details Tabs (Horizontal scroll without scrollbar thumb) */}
+      <div className="pt-8 border-t border-ifaqa-plum/10">
+        <div className="flex border-b border-ifaqa-plum/10 overflow-x-auto no-scrollbar gap-2">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
+            className={`py-3 px-4 text-sm font-sans font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'overview'
-                ? 'border-ifaqa-plum text-ifaqa-plum bg-ifaqa-sand/25'
-                : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
+                ? 'border-ifaqa-plum text-ifaqa-plum'
+                : 'border-transparent text-[#5A6962] hover:text-ifaqa-plum'
             }`}
           >
-            Product Summary & Benefits
+            Summary & benefits
           </button>
           <button
             onClick={() => setActiveTab('ingredients')}
-            className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
+            className={`py-3 px-4 text-sm font-sans font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'ingredients'
-                ? 'border-ifaqa-plum text-ifaqa-plum bg-ifaqa-sand/25'
-                : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
+                ? 'border-ifaqa-plum text-ifaqa-plum'
+                : 'border-transparent text-[#5A6962] hover:text-ifaqa-plum'
             }`}
           >
-            Botanical Ingredients (Jadi Buti)
+            Botanical ingredients
           </button>
           <button
             onClick={() => setActiveTab('dosage')}
-            className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
+            className={`py-3 px-4 text-sm font-sans font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'dosage'
-                ? 'border-ifaqa-plum text-ifaqa-plum bg-ifaqa-sand/25'
-                : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
+                ? 'border-ifaqa-plum text-ifaqa-plum'
+                : 'border-transparent text-[#5A6962] hover:text-ifaqa-plum'
             }`}
           >
-            How to Take & Dosage Guide
+            Dosage guide
           </button>
           <button
             onClick={() => setActiveTab('faq')}
-            className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
+            className={`py-3 px-4 text-sm font-sans font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'faq'
-                ? 'border-ifaqa-plum text-ifaqa-plum bg-ifaqa-sand/25'
-                : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
+                ? 'border-ifaqa-plum text-ifaqa-plum'
+                : 'border-transparent text-[#5A6962] hover:text-ifaqa-plum'
             }`}
           >
-            FAQ & Safety
-          </button>
-          <button
-            onClick={() => setActiveTab('reviews')}
-            className={`py-3.5 px-6 text-xs sm:text-sm font-serif font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
-              activeTab === 'reviews'
-                ? 'border-ifaqa-plum text-ifaqa-plum bg-ifaqa-sand/25'
-                : 'border-transparent text-ifaqa-blackberry hover:text-ifaqa-plum'
-            }`}
-          >
-            Customer Reviews (1,248)
+            Safety & FAQ
           </button>
         </div>
 
-        <div className="pt-8">
-          {/* Tab 1: Detailed Overview */}
+        <div className="pt-6">
           {activeTab === 'overview' && (
-            <div className="bg-white border border-ifaqa-sand/60 p-6 sm:p-8 space-y-6 shadow-sm">
+            <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-6 sm:p-8 space-y-6 shadow-luxury-card">
               <div>
-                <h3 className="font-serif text-xl font-bold text-ifaqa-plum mb-3">
-                  Comprehensive Therapeutic Overview
+                <h3 className="font-serif font-normal text-2xl text-ifaqa-plum mb-3">
+                  Overview and formulation purpose
                 </h3>
-                <p className="text-sm font-sans text-ifaqa-plum leading-relaxed font-medium">
+                <p className="text-sm font-sans text-[#3E524A] leading-relaxed max-w-3xl">
                   {remedy.longDescription}
                 </p>
               </div>
 
               <div>
-                <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum mb-3">
-                  Specific Health Benefits & Indications
+                <h4 className="font-sans text-xs font-medium text-[#5A6962] mb-3">
+                  Targeted wellness areas
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {remedy.therapeuticIndications.map((ind, idx) => (
-                    <div key={idx} className="p-3 bg-ifaqa-linen border border-ifaqa-sand/50 flex items-center gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-800 shrink-0" />
-                      <span className="text-xs font-serif font-bold text-ifaqa-plum">{ind}</span>
+                    <div key={idx} className="p-3 rounded-lg bg-ifaqa-linen border border-ifaqa-plum/10 flex items-center gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-[#165A45] shrink-0" strokeWidth={1.5} />
+                      <span className="text-sm font-sans text-ifaqa-plum">{ind}</span>
                     </div>
                   ))}
                 </div>
@@ -544,104 +525,56 @@ export default function RemedyDetailPage() {
             </div>
           )}
 
-          {/* Tab 2: Botanical Ingredients */}
           {activeTab === 'ingredients' && (
-            <div className="bg-white border border-ifaqa-sand/60 p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-6 sm:p-8 space-y-4 shadow-luxury-card">
               <div>
-                <h3 className="font-serif text-xl font-bold text-ifaqa-plum mb-1">
-                  100% Pure Botanical Ingredients Breakdown
+                <h3 className="font-serif font-normal text-2xl text-ifaqa-plum mb-1">
+                  Botanical composition
                 </h3>
-                <p className="text-xs text-ifaqa-blackberry font-sans font-medium mb-4">
-                  Every batch is formulated strictly using wildcrafted, laboratory-tested natural jadi buti.
+                <p className="text-sm text-[#5A6962] font-sans mb-4">
+                  Prepared using cleaned natural botanical roots, seeds, and distillates.
                 </p>
               </div>
               <BotanicalIngredientsTable ingredients={remedy.herbalIngredients} />
             </div>
           )}
 
-          {/* Tab 3: Dosage Guide */}
           {activeTab === 'dosage' && (
-            <div className="bg-white border border-ifaqa-sand/60 p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-6 sm:p-8 space-y-4 shadow-luxury-card">
               <div>
-                <h3 className="font-serif text-xl font-bold text-ifaqa-plum mb-1">
-                  Usage Instructions & Anupana (Tarkeebe Istemal)
+                <h3 className="font-serif font-normal text-2xl text-ifaqa-plum mb-1">
+                  Usage and dosage instructions
                 </h3>
-                <p className="text-xs text-ifaqa-blackberry font-sans font-medium mb-4">
-                  For optimal absorption, strictly observe the traditional dosage vehicle instructions below.
+                <p className="text-sm text-[#5A6962] font-sans mb-4">
+                  Follow standard adult intake guidance or advice from your physician.
                 </p>
               </div>
               <DosageGuide dosage={remedy.dosageInstructions} />
             </div>
           )}
 
-          {/* Tab 4: FAQ */}
           {activeTab === 'faq' && (
-            <div className="bg-white border border-ifaqa-sand/60 p-6 sm:p-8 space-y-6 shadow-sm">
-              <h3 className="font-serif text-xl font-bold text-ifaqa-plum">
-                Frequently Asked Questions
+            <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-6 sm:p-8 space-y-6 shadow-luxury-card">
+              <h3 className="font-serif font-normal text-2xl text-ifaqa-plum">
+                Frequently asked questions
               </h3>
-              <div className="space-y-4 divide-y divide-ifaqa-sand/30">
+              <div className="space-y-4 divide-y divide-ifaqa-plum/10">
                 <div className="pt-3">
-                  <h4 className="font-serif text-sm font-bold text-ifaqa-plum">Are there any side effects?</h4>
-                  <p className="text-xs font-sans text-ifaqa-blackberry mt-1 font-medium leading-relaxed">
-                    This remedy is prepared from 100% pure herbs and mineral calces according to time-tested classical recipes. When taken within the prescribed dosage, it is completely safe and non-habit forming.
-                  </p>
-                </div>
-                <div className="pt-3">
-                  <h4 className="font-serif text-sm font-bold text-ifaqa-plum">How long should I take this medicine?</h4>
-                  <p className="text-xs font-sans text-ifaqa-blackberry mt-1 font-medium leading-relaxed">
-                    Most patients notice significant symptomatic relief within 3 to 7 days. For chronic conditions and complete humoral balancing, a course of 3 to 6 weeks is recommended.
+                  <h4 className="font-sans text-sm font-semibold text-ifaqa-plum">Are artificial additives or steroids used</h4>
+                  <p className="text-sm font-sans text-[#5A6962] mt-1 leading-relaxed">
+                    No. Preparations use cleaned herbs, natural resins, and honey without synthetic fillers or steroids.
                   </p>
                 </div>
                 <div className="pt-3">
-                  <h4 className="font-serif text-sm font-bold text-ifaqa-plum">Can I take this alongside other medications?</h4>
-                  <p className="text-xs font-sans text-ifaqa-blackberry mt-1 font-medium leading-relaxed">
-                    Yes, keeping a 1-hour interval between allopathic medicines and herbal remedies is recommended to prevent any digestive interference.
+                  <h4 className="font-sans text-sm font-semibold text-ifaqa-plum">How should I store the container</h4>
+                  <p className="text-sm font-sans text-[#5A6962] mt-1 leading-relaxed">
+                    Keep the cap tightly closed in a cool, dry shelf away from direct sunlight and moisture.
                   </p>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Tab 5: Reviews */}
-          {activeTab === 'reviews' && (
-            <div className="bg-white border border-ifaqa-sand/60 p-6 sm:p-8 space-y-6 shadow-sm">
-              <div className="flex items-center justify-between flex-wrap gap-4 border-b border-ifaqa-sand/40 pb-4">
-                <div>
-                  <h3 className="font-serif text-xl font-bold text-ifaqa-plum">
-                    Patient Testimonials & Reviews
-                  </h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="flex text-amber-600">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-current" />
-                      ))}
-                    </div>
-                    <span className="text-xs font-bold text-ifaqa-plum">4.9 out of 5 based on 1,248 verified orders</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sample Reviews */}
-              <div className="space-y-4 divide-y divide-ifaqa-sand/30">
-                <div className="pt-3 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif text-xs font-bold text-ifaqa-plum">Mohd. Rizwan — New Delhi</span>
-                    <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">Verified Buyer</span>
-                  </div>
-                  <div className="flex text-amber-600 text-xs">★★★★★</div>
-                  <p className="text-xs font-sans text-ifaqa-plum font-medium leading-relaxed">
-                    "Bahut hi damdar aur zabardast dawa hai! 3 din me hi pet ki gas aur bhari-pan khatam ho gaya. Packaging bilkul safe amber jar me aayi thi."
-                  </p>
-                </div>
-                <div className="pt-3 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif text-xs font-bold text-ifaqa-plum">Sunil Verma — Lucknow</span>
-                    <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">Verified Buyer</span>
-                  </div>
-                  <div className="flex text-amber-600 text-xs">★★★★★</div>
-                  <p className="text-xs font-sans text-ifaqa-plum font-medium leading-relaxed">
-                    "Asal jadi butiyo se bani hui dawa hai, result 100% visible hai. Fast delivery in just 2 days. Highly recommended!"
+                <div className="pt-3">
+                  <h4 className="font-sans text-sm font-semibold text-ifaqa-plum">Can I take this alongside other medicines</h4>
+                  <p className="text-sm font-sans text-[#5A6962] mt-1 leading-relaxed">
+                    Maintain a gap of at least 60 minutes from prescription drugs and consult your physician if pregnant or nursing.
                   </p>
                 </div>
               </div>
@@ -650,23 +583,22 @@ export default function RemedyDetailPage() {
         </div>
       </div>
 
-      {/* Related Formulations Carousel */}
+      {/* Related Remedies */}
       {relatedRemedies.length > 0 && (
-        <div className="pt-12 border-t border-ifaqa-sand/60">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ifaqa-plum">
-              Frequently Bought Together In {displayCategory}
+        <div className="pt-10 border-t border-ifaqa-plum/10">
+          <div className="flex items-center justify-between mb-6 gap-2">
+            <h2 className="font-serif font-normal text-2xl sm:text-3xl text-ifaqa-plum">
+              More in {displayCategory}
             </h2>
             <Link
               href={`/catalog/${remedy.categoryId}`}
-              className="text-xs font-serif uppercase tracking-widest text-ifaqa-plum hover:text-ifaqa-blackberry font-bold flex items-center gap-1"
+              className="text-sm font-sans font-medium text-ifaqa-plum hover:underline whitespace-nowrap"
             >
-              <span>Explore All</span>
-              <Truck className="w-3.5 h-3.5" />
+              View all
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-fr">
             {relatedRemedies.map((rel) => (
               <RemedyCard3D key={rel.id} remedy={rel} />
             ))}

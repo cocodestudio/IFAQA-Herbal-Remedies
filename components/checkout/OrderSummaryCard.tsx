@@ -3,82 +3,81 @@
 import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { formatPriceINR } from '@/lib/formatters';
-import { ArchitecturalBadge } from '@/components/ui/ArchitecturalBadge';
 import { ShieldCheck, Truck } from 'lucide-react';
 
 export function OrderSummaryCard() {
   const { items, subtotalPKR, shippingFee, totalAmount } = useCart();
 
   return (
-    <div className="bg-white border-2 border-ifaqa-sand/70 p-6 space-y-6 shadow-luxury-card select-none">
-      <div className="border-b border-ifaqa-sand/40 pb-3 flex items-center justify-between">
-        <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-ifaqa-plum">
-          Order Summary
+    <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-6 space-y-5 shadow-luxury-card select-none font-sans">
+      <div className="border-b border-ifaqa-plum/10 pb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-ifaqa-plum">
+          Order summary
         </h3>
-        <span className="text-xs font-mono text-ifaqa-blackberry font-bold">
-          {items.length} {items.length === 1 ? 'line item' : 'line items'}
+        <span className="text-xs font-mono text-[#5A6962] tabular-nums">
+          {items.length} {items.length === 1 ? 'item' : 'items'}
         </span>
       </div>
 
-      {/* Line Items List */}
-      <div className="max-h-60 overflow-y-auto divide-y divide-ifaqa-sand/20 pr-1">
+      {/* Line Items */}
+      <div className="max-h-60 overflow-y-auto divide-y divide-ifaqa-plum/10">
         {items.map((item) => (
-          <div key={item.remedyId} className="py-2.5 flex items-center justify-between text-xs">
-            <div className="flex-1 pr-3">
-              <span className="font-serif font-bold text-ifaqa-plum block truncate">
+          <div key={item.remedyId} className="py-2.5 flex items-center justify-between gap-3 text-sm tabular-nums">
+            <div className="flex-1 min-w-0">
+              <span className="font-medium text-ifaqa-plum block truncate">
                 {item.name}
               </span>
-              <span className="text-[11px] text-ifaqa-blackberry font-mono">
-                Qty: {item.quantity} × {formatPriceINR(item.unitPrice)}
+              <span className="text-xs text-[#5A6962] font-mono">
+                {item.quantity} × {formatPriceINR(item.unitPrice)}
               </span>
             </div>
-            <span className="font-serif font-bold text-ifaqa-plum text-sm">
+            <span className="font-medium text-ifaqa-plum shrink-0">
               {formatPriceINR(item.unitPrice * item.quantity)}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Fee Calculation Breakdown */}
-      <div className="border-t border-ifaqa-sand/40 pt-4 space-y-2.5 text-xs font-serif">
-        <div className="flex items-center justify-between text-ifaqa-blackberry font-medium">
+      {/* Totals */}
+      <div className="border-t border-ifaqa-plum/10 pt-4 space-y-2.5 text-sm tabular-nums">
+        <div className="flex items-center justify-between text-[#5A6962]">
           <span>Subtotal</span>
-          <span className="font-mono font-bold text-ifaqa-plum text-sm">
+          <span className="font-medium text-ifaqa-plum">
             {formatPriceINR(subtotalPKR)}
           </span>
         </div>
 
-        <div className="flex items-center justify-between text-ifaqa-blackberry font-medium">
+        <div className="flex items-center justify-between text-[#5A6962]">
           <span className="flex items-center gap-1.5">
-            <Truck className="w-3.5 h-3.5 text-ifaqa-plum" />
-            <span>Pan-India Delivery</span>
+            <Truck className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+            <span>Pan-India delivery</span>
           </span>
-          <span className="font-mono font-bold text-ifaqa-plum">
+          <span className="font-medium text-ifaqa-plum">
             {shippingFee === 0 ? (
-              <span className="text-emerald-800 font-bold uppercase tracking-wider text-[11px]">Free</span>
+              <span className="text-[#165A45]">Free</span>
             ) : (
               formatPriceINR(shippingFee)
             )}
           </span>
         </div>
 
-        <div className="border-t border-ifaqa-sand/40 pt-3 flex items-center justify-between text-sm">
-          <span className="font-serif font-bold text-ifaqa-plum">Total Amount</span>
-          <span className="font-serif text-xl font-bold text-ifaqa-plum">
+        <div className="border-t border-ifaqa-plum/10 pt-3 flex items-center justify-between">
+          <span className="font-semibold text-ifaqa-plum">Total amount</span>
+          <span className="font-sans text-xl font-semibold text-ifaqa-plum">
             {formatPriceINR(totalAmount)}
           </span>
         </div>
       </div>
 
-      {/* Dispatch Guarantees */}
-      <div className="pt-2 border-t border-ifaqa-sand/30 space-y-2 text-[11px] font-sans text-ifaqa-blackberry font-medium">
+      {/* Dispatch note */}
+      <div className="pt-2 border-t border-ifaqa-plum/10 space-y-2 text-xs text-[#5A6962]">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-800 shrink-0" />
-          <span>Cash on Delivery (COD) & Online Payment Supported</span>
+          <ShieldCheck className="w-4 h-4 text-[#165A45] shrink-0" strokeWidth={1.5} />
+          <span>Online payment and cash on delivery accepted</span>
         </div>
         <div className="flex items-center gap-2">
-          <Truck className="w-4 h-4 text-emerald-800 shrink-0" />
-          <span>Doorstep Courier to all Indian Pincodes</span>
+          <Truck className="w-4 h-4 text-[#165A45] shrink-0" strokeWidth={1.5} />
+          <span>Dispatched in sealed containers from Saharanpur</span>
         </div>
       </div>
     </div>
