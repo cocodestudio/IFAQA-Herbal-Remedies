@@ -64,12 +64,11 @@ function CatalogContent() {
     setCurrentPage(page);
     if (typeof window !== 'undefined') {
       const gridElem = document.getElementById('catalog-grid-top');
-      if (gridElem && window.innerWidth >= 1024) {
-        gridElem.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (gridElem) {
-        gridElem.scrollIntoView({ behavior: 'smooth' });
+      if (gridElem) {
+        const y = gridElem.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
       } else {
-        window.scrollTo({ top: 120, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
   };
@@ -113,7 +112,7 @@ function CatalogContent() {
         </button>
       </div>
 
-      {/* Main Layout: Locked Left Sidebar + Independently Scrollable Right Products Pane */}
+      {/* Main Layout: Sticky Left Sidebar (scrolls up then locks at top) + Full Right Products Scroll */}
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className={`w-full lg:w-[260px] shrink-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto no-scrollbar ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <FilterSidebar
@@ -128,7 +127,7 @@ function CatalogContent() {
           />
         </div>
 
-        <div id="catalog-grid-top" className="flex-1 w-full min-w-0 lg:h-[calc(100vh-13.5rem)] lg:overflow-y-auto lg:pe-1 pb-6 no-scrollbar">
+        <div id="catalog-grid-top" className="flex-1 w-full min-w-0">
           {filteredRemedies.length === 0 ? (
             <div className="p-10 text-center bg-white rounded-xl border border-ifaqa-plum/10 space-y-4">
               <div className="w-12 h-12 rounded-xl mx-auto bg-ifaqa-cashmere flex items-center justify-center text-[#5A6962]">

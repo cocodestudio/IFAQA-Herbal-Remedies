@@ -70,10 +70,11 @@ export default function CategoryCatalogPage() {
     setCurrentPage(page);
     if (typeof window !== 'undefined') {
       const gridElem = document.getElementById('category-grid-top');
-      if (gridElem && window.innerWidth >= 1024) {
-        gridElem.scrollTo({ top: 0, behavior: 'smooth' });
+      if (gridElem) {
+        const y = gridElem.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
       } else {
-        window.scrollTo({ top: 120, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
   };
@@ -160,7 +161,7 @@ export default function CategoryCatalogPage() {
           />
         </div>
 
-        <div id="category-grid-top" className="flex-1 w-full min-w-0 lg:h-[calc(100vh-15rem)] lg:overflow-y-auto lg:pe-1 pb-6 no-scrollbar">
+        <div id="category-grid-top" className="flex-1 w-full min-w-0">
           {filteredRemedies.length === 0 ? (
             <div className="p-10 text-center bg-white rounded-xl border border-ifaqa-plum/10 space-y-4">
               <div className="w-12 h-12 rounded-xl mx-auto bg-ifaqa-cashmere flex items-center justify-center text-[#5A6962]">
