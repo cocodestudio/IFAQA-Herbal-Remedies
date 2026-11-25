@@ -7,6 +7,7 @@ import { HerbalRemedy } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPriceINR } from '@/lib/formatters';
+import { triggerNavigationProgress } from '@/lib/nav-progress';
 import { Leaf, Check, Plus } from 'lucide-react';
 
 interface RemedyCard3DProps {
@@ -46,7 +47,9 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
   };
 
   const handleCardClick = () => {
-    router.push(`/remedy/${remedy.slug}`);
+    const targetUrl = `/remedy/${remedy.slug}`;
+    triggerNavigationProgress(targetUrl);
+    router.push(targetUrl);
   };
 
   return (

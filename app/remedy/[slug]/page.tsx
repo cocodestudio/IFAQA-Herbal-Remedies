@@ -14,6 +14,7 @@ import { RemedyGallery } from '@/components/remedy/RemedyGallery';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
 import { PDPSkeleton } from '@/components/ui/ShimmerSkeleton';
 import { formatPriceINR } from '@/lib/formatters';
+import { triggerNavigationProgress } from '@/lib/nav-progress';
 import {
   ShoppingBag,
   Zap,
@@ -120,6 +121,7 @@ export default function RemedyDetailPage() {
   const handleBuyNow = () => {
     if (!isAvailable) return;
     addToCart(remedy, selectedQuantity);
+    triggerNavigationProgress('/checkout');
     router.push('/checkout');
   };
 

@@ -9,6 +9,7 @@ import { PaymentMethod, ShippingAddress } from '@/lib/types';
 import { PaymentMethodSelector } from './PaymentMethodSelector';
 import { Button3D } from '@/components/ui/Button3D';
 import { validateE164Phone, validatePostalCode } from '@/lib/formatters';
+import { triggerNavigationProgress } from '@/lib/nav-progress';
 import { Lock, AlertCircle, ShieldCheck, MapPin, User } from 'lucide-react';
 
 export function CheckoutForm() {
@@ -102,7 +103,9 @@ export function CheckoutForm() {
 
       const res = await placeCustomerOrder(orderPayload);
       clearCart();
-      router.push(`/order-confirmation?orderNumber=${res.orderNumber}&orderId=${res.orderId}`);
+      const targetUrl = `/order-confirmation?orderNumber=${res.orderNumber}&orderId=${res.orderId}`;
+      triggerNavigationProgress(targetUrl);
+      router.push(targetUrl);
     } catch (err: any) {
       setError(err?.message || 'Unable to place your order. Please try again.');
       setLoading(false);

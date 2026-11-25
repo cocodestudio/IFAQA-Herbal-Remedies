@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button3D } from '@/components/ui/Button3D';
+import { triggerNavigationProgress } from '@/lib/nav-progress';
 import {
   ShieldCheck,
   ArrowRight,
@@ -220,6 +221,7 @@ export default function SignInPage() {
         ? phoneNumber
         : `+91 ${phoneNumber.trim()}`;
       signInWithTestAccount(formatted);
+      triggerNavigationProgress('/');
       router.push('/');
     }, 350);
   };
@@ -229,6 +231,7 @@ export default function SignInPage() {
     setTimeout(() => {
       setLoading(false);
       signInWithTestAccount('+91 97298 40336');
+      triggerNavigationProgress('/');
       router.push('/');
     }, 300);
   };
