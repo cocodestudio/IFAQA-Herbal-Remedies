@@ -69,7 +69,12 @@ export default function CategoryCatalogPage() {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' });
+      const gridElem = document.getElementById('category-grid-top');
+      if (gridElem && window.innerWidth >= 1024) {
+        gridElem.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 120, behavior: 'smooth' });
+      }
     }
   };
 
@@ -96,9 +101,9 @@ export default function CategoryCatalogPage() {
   }
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-8 md:py-12 select-none">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-6 md:py-8 select-none">
       {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="mb-5 flex items-center gap-2 text-xs font-sans text-[#5A6962]">
+      <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-2 text-xs font-sans text-[#5A6962]">
         <Link href="/" className="hover:text-ifaqa-plum transition-colors">{t('home')}</Link>
         <span aria-hidden="true">/</span>
         <Link href="/catalog" className="hover:text-ifaqa-plum transition-colors">{t('catalog')}</Link>
@@ -107,7 +112,7 @@ export default function CategoryCatalogPage() {
       </nav>
 
       {/* Category Header */}
-      <div className="mb-8 border-b border-ifaqa-plum/10 pb-6">
+      <div className="mb-5 border-b border-ifaqa-plum/10 pb-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum">
             {displayTitle}
@@ -121,14 +126,14 @@ export default function CategoryCatalogPage() {
           </Link>
         </div>
         {activeCategory?.description && (
-          <p className="text-sm text-[#3E524A] font-sans mt-2 max-w-2xl leading-relaxed">
+          <p className="text-sm text-[#3E524A] font-sans mt-1.5 max-w-2xl leading-relaxed">
             {activeCategory.description}
           </p>
         )}
       </div>
 
       {/* Search & Mobile Filter Toggle */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-5">
         <div className="w-full sm:max-w-md">
           <SearchBar value={search} onChange={setSearch} />
         </div>
@@ -142,7 +147,7 @@ export default function CategoryCatalogPage() {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 items-start">
-        <div className={`w-full lg:w-[260px] shrink-0 ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
+        <div className={`w-full lg:w-[260px] shrink-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto no-scrollbar ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <FilterSidebar
             categories={categories}
             selectedCategory={selectedCategory}
@@ -155,7 +160,7 @@ export default function CategoryCatalogPage() {
           />
         </div>
 
-        <div className="flex-1 w-full min-w-0">
+        <div id="category-grid-top" className="flex-1 w-full min-w-0 lg:h-[calc(100vh-15rem)] lg:overflow-y-auto lg:pe-1 pb-6 no-scrollbar">
           {filteredRemedies.length === 0 ? (
             <div className="p-10 text-center bg-white rounded-xl border border-ifaqa-plum/10 space-y-4">
               <div className="w-12 h-12 rounded-xl mx-auto bg-ifaqa-cashmere flex items-center justify-center text-[#5A6962]">

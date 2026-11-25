@@ -61,7 +61,7 @@ export default function RootLayout({
       dir="ltr"
       className={`${displaySerif.variable} ${interfaceSans.variable} ${metaMono.variable} ${urduNastaliq.variable}`}
     >
-      <body className="bg-ifaqa-linen text-ifaqa-plum antialiased min-h-screen flex flex-col font-sans overflow-x-hidden selection:bg-ifaqa-plum selection:text-ifaqa-linen">
+      <body className="bg-ifaqa-linen text-ifaqa-plum antialiased min-h-screen flex flex-col font-sans overflow-x-clip selection:bg-ifaqa-plum selection:text-ifaqa-linen">
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>
@@ -69,7 +69,7 @@ export default function RootLayout({
                 <LuxuryPageLoader />
               </Suspense>
               <Header />
-              <main className="flex-1 w-full overflow-x-hidden">
+              <main className="flex-1 w-full overflow-x-clip">
                 {children}
               </main>
               <Footer />
