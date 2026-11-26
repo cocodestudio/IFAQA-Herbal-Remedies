@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { auth as firebaseAuth } from '@/lib/firebase';
+import { clearRecaptchaSlot, createFreshRecaptcha } from '@/lib/recaptcha';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button3D } from '@/components/ui/Button3D';
@@ -179,25 +180,18 @@ export default function SignInPage() {
     setLoading(true);
     if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
       try {
-        if (recaptchaRef.current) {
-          try {
-            recaptchaRef.current.clear();
-          } catch {}
-          recaptchaRef.current = null;
-        }
-        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
-          size: 'invisible',
-        });
+        const verifier = createFreshRecaptcha(firebaseAuth, 'recaptcha-container', recaptchaRef);
         confirmationRef.current = await signInWithPhoneNumber(
           firebaseAuth,
           e164Phone,
-          recaptchaRef.current
+          verifier
         );
         setLoading(false);
         setStep('otp');
         setResendTimer(30);
         return;
       } catch (err: any) {
+        clearRecaptchaSlot('recaptcha-container', recaptchaRef);
         setLoading(false);
         const code = err?.code || '';
         if (code === 'auth/invalid-phone-number') {
@@ -522,8 +516,9 @@ export default function SignInPage() {
                           <button
                             type="button"
                             onClick={() => {
-                              setResendTimer(30);
+                              setOtpCode(['', '', '', '', '', '']);
                               setError(null);
+                              void handleSendOtp({ preventDefault: () => {} } as React.FormEvent);
                             }}
                             className="text-ifaqa-plum font-medium underline"
                           >

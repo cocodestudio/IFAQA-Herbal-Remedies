@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { auth as firebaseAuth } from '@/lib/firebase';
+import { clearRecaptchaSlot, createFreshRecaptcha } from '@/lib/recaptcha';
 import { Modal } from '@/components/ui/Modal';
 import { Button3D } from '@/components/ui/Button3D';
 import { useAuth } from '@/context/AuthContext';
@@ -34,24 +35,21 @@ export function PhoneOtpModal() {
     setLoading(true);
     if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
       try {
-        if (recaptchaRef.current) {
-          try {
-            recaptchaRef.current.clear();
-          } catch {}
-          recaptchaRef.current = null;
-        }
-        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-modal-container', {
-          size: 'invisible',
-        });
+        const verifier = createFreshRecaptcha(
+          firebaseAuth,
+          'recaptcha-modal-container',
+          recaptchaRef
+        );
         confirmationRef.current = await signInWithPhoneNumber(
           firebaseAuth,
           cleanPhone,
-          recaptchaRef.current
+          verifier
         );
         setLoading(false);
         setStep('otp');
         return;
       } catch (err: any) {
+        clearRecaptchaSlot('recaptcha-modal-container', recaptchaRef);
         setLoading(false);
         const code = err?.code || '';
         if (code === 'auth/invalid-phone-number') {
