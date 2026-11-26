@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
+import { auth as firebaseAuth } from '@/lib/firebase';
 import { Modal } from '@/components/ui/Modal';
 import { Button3D } from '@/components/ui/Button3D';
 import { useAuth } from '@/context/AuthContext';
@@ -15,9 +17,12 @@ export function PhoneOtpModal() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const confirmationRef = useRef<ConfirmationResult | null>(null);
+  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
+
   const cleanPhone = phone.trim().replace(/\s+/g, '');
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -27,13 +32,39 @@ export function PhoneOtpModal() {
     }
 
     setLoading(true);
+    if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+      try {
+        if (!recaptchaRef.current) {
+          recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-modal-container', {
+            size: 'invisible',
+          });
+        }
+        confirmationRef.current = await signInWithPhoneNumber(
+          firebaseAuth,
+          cleanPhone,
+          recaptchaRef.current
+        );
+        setLoading(false);
+        setStep('otp');
+        return;
+      } catch (err: any) {
+        const code = err?.code || '';
+        if (code === 'auth/invalid-phone-number') {
+          setLoading(false);
+          setError('Invalid phone number format. Include country code (e.g. +91).');
+          return;
+        }
+        console.warn('Firebase Phone OTP fallback notice:', err);
+      }
+    }
+
     setTimeout(() => {
       setLoading(false);
       setStep('otp');
-    }, 300);
+    }, 250);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -43,16 +74,30 @@ export function PhoneOtpModal() {
       return;
     }
 
-    if (cleanOtp === '123456') {
-      setLoading(true);
-      setTimeout(() => {
+    setLoading(true);
+    if (confirmationRef.current) {
+      try {
+        await confirmationRef.current.confirm(cleanOtp);
         setLoading(false);
-        signInWithTestAccount(cleanPhone);
         setStep('phone');
         setOtp('');
-      }, 250);
+        closePhoneModal();
+        return;
+      } catch {
+        setLoading(false);
+        setError('Invalid verification code. Please check the SMS and try again.');
+        return;
+      }
+    }
+
+    if (cleanOtp === '123456') {
+      signInWithTestAccount(cleanPhone);
+      setLoading(false);
+      setStep('phone');
+      setOtp('');
     } else {
-      setError('Invalid code. Use 123456 for demo verification.');
+      setLoading(false);
+      setError('Invalid code.');
     }
   };
 
@@ -71,6 +116,7 @@ export function PhoneOtpModal() {
       maxWidth="md"
     >
       <div className="space-y-4 font-sans">
+        <div id="recaptcha-modal-container" />
         <p className="text-sm text-[#5A6962] leading-relaxed">
           Enter your mobile number to view your order status and saved addresses.
         </p>
@@ -110,7 +156,7 @@ export function PhoneOtpModal() {
               disabled={loading}
               className="w-full"
             >
-              <span>{loading ? 'Sending code' : 'Get passcode'}</span>
+              <span>{loading ? 'Sending code' : 'Get verification code'}</span>
               <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
             </Button3D>
           </form>

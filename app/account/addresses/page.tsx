@@ -8,6 +8,7 @@ import {
   CustomerSavedAddress,
   getSavedAddresses,
   saveAddresses,
+  syncCustomerAccountFromDb,
 } from '@/lib/account-storage';
 import { validateE164Phone, validatePostalCode } from '@/lib/formatters';
 import { Button3D } from '@/components/ui/Button3D';
@@ -37,6 +38,9 @@ export default function AccountAddressesPage() {
   useEffect(() => {
     if (!user?.uid) return;
     setAddresses(getSavedAddresses(user.uid));
+    syncCustomerAccountFromDb(user.uid).then(() => {
+      setAddresses(getSavedAddresses(user.uid));
+    });
   }, [user]);
 
   const openAddForm = () => {

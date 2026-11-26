@@ -19,6 +19,7 @@ import {
   saveBankAccounts,
   getUpiIds,
   saveUpiIds,
+  syncCustomerAccountFromDb,
   maskBankAccountNumber,
   validateIfscCode,
   validateUpiId,
@@ -49,6 +50,10 @@ export default function AccountBankPage() {
     if (!user?.uid) return;
     setBankAccounts(getBankAccounts(user.uid));
     setUpiIds(getUpiIds(user.uid));
+    syncCustomerAccountFromDb(user.uid).then(() => {
+      setBankAccounts(getBankAccounts(user.uid));
+      setUpiIds(getUpiIds(user.uid));
+    });
   }, [user]);
 
   const handleAddUpi = (e: React.FormEvent) => {

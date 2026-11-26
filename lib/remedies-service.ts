@@ -22,7 +22,7 @@ let categoriesTimestamp = 0;
 let cachedBanners: PromotionalBanner[] | null = null;
 let bannersTimestamp = 0;
 
-const CACHE_TTL_MS = 120 * 1000; // 2 minutes
+const CACHE_TTL_MS = 30 * 1000; // 30 seconds for fresh production catalog sync
 
 export async function getRemedies(): Promise<HerbalRemedy[]> {
   const now = Date.now();

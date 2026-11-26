@@ -1,5 +1,6 @@
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { db } from './firebase';
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { signInAnonymously } from 'firebase/auth';
+import { auth as firebaseAuth, db } from './firebase';
 import { CustomerOrder, OrderItem, ShippingAddress } from './types';
 import { validateE164Phone, validatePostalCode, generateOrderNumber, roundUsdCents } from './formatters';
 export { roundUsdCents } from './formatters';
@@ -98,7 +99,7 @@ export function assembleCustomerOrder(input: AssembleOrderInput): CustomerOrder 
     totalAmount,
     currency,
     paymentMethod: input.paymentMethod || 'cash_on_delivery',
-    paymentStatus: input.paymentMethod === 'credit_card' ? 'verified' : 'pending',
+    paymentStatus: 'pending',
     orderStatus: 'placed',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -117,28 +118,67 @@ export async function placeCustomerOrder(order: CustomerOrder): Promise<{ succes
     throw new Error("Order arithmetic mismatch: totalAmount must equal subtotal + shippingFee - discount and be positive.");
   }
 
-  // Always mirror order to local storage so My Orders shows recent checkouts immediately
+  let persistedOrder: CustomerOrder = { ...order };
+
+  // Ensure real Firebase Auth UID matches Firestore rules before writing
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+    try {
+      if (firebaseAuth && !firebaseAuth.currentUser) {
+        try {
+          await signInAnonymously(firebaseAuth);
+        } catch {
+          // Guest fallback below
+        }
+      }
+      const realUid = firebaseAuth?.currentUser?.uid;
+      persistedOrder = {
+        ...persistedOrder,
+        customerId: realUid || 'guest',
+      };
+
+      await setDoc(doc(db, 'orders', persistedOrder.id), persistedOrder);
+    } catch (err) {
+      console.warn("Firestore order write notice:", err);
+    }
+  }
+
+  // Always mirror order to local storage so My Orders & Order Confirmation work cleanly offline too
   if (typeof window !== 'undefined') {
     try {
       const existing: CustomerOrder[] = JSON.parse(localStorage.getItem('ifaqa_customer_orders') || '[]');
-      const deduped = [order, ...existing.filter((o) => o.id !== order.id)];
+      const deduped = [persistedOrder, ...existing.filter((o) => o.id !== persistedOrder.id)];
       localStorage.setItem('ifaqa_customer_orders', JSON.stringify(deduped));
     } catch (e) {
       console.warn("Failed saving order to localStorage mirror:", e);
     }
   }
 
-  // Attempt Firestore write
+  return { success: true, orderId: persistedOrder.id, orderNumber: persistedOrder.orderNumber };
+}
+
+export async function getOrderById(orderId: string): Promise<CustomerOrder | null> {
+  if (!orderId) return null;
+
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
-      await setDoc(doc(db, 'orders', order.id), order);
-      return { success: true, orderId: order.id, orderNumber: order.orderNumber };
-    } catch (err) {
-      console.warn("Firestore order write failed, using local order repository:", err);
+      const snap = await getDoc(doc(db, 'orders', orderId));
+      if (snap.exists()) {
+        return { ...(snap.data() as CustomerOrder), id: snap.id };
+      }
+    } catch {
+      // Guest order reads fall back cleanly to local receipt cache
     }
   }
 
-  return { success: true, orderId: order.id, orderNumber: order.orderNumber };
+  if (typeof window !== 'undefined') {
+    try {
+      const localOrders: CustomerOrder[] = JSON.parse(localStorage.getItem('ifaqa_customer_orders') || '[]');
+      return localOrders.find((o) => o.id === orderId) || null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
 }
 
 /**
@@ -163,21 +203,17 @@ export async function getCustomerOrders(uid?: string, phone?: string): Promise<C
     }
   }
 
-  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && (uid || normalizedPhone)) {
+  const effectiveAuthUid = firebaseAuth?.currentUser?.uid;
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && effectiveAuthUid) {
     try {
       const ordersRef = collection(db, 'orders');
-      const queries = [];
-      if (uid) queries.push(getDocs(query(ordersRef, where('customerId', '==', uid))));
-      if (normalizedPhone) queries.push(getDocs(query(ordersRef, where('customerPhone', '==', normalizedPhone))));
-      const snaps = await Promise.all(queries);
-      for (const snap of snaps) {
-        snap.forEach((docSnap) => {
-          const data = docSnap.data() as CustomerOrder;
-          results.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
-        });
-      }
-    } catch {
-      // Fall back cleanly to local orders if Firestore rules restrict query
+      const snap = await getDocs(query(ordersRef, where('customerId', '==', effectiveAuthUid)));
+      snap.forEach((docSnap) => {
+        const data = docSnap.data() as CustomerOrder;
+        results.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
+      });
+    } catch (err) {
+      console.warn("Firestore customer orders query notice:", err);
     }
   }
 

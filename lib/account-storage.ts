@@ -1,5 +1,7 @@
 'use client';
 
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth as firebaseAuth, db } from './firebase';
 import { SavedAddress } from './types';
 
 export interface CustomerAccountProfile {
@@ -72,6 +74,67 @@ function writeJson<T>(key: string, value: T): void {
   }
 }
 
+async function persistCustomerField(uid: string, patch: Record<string, unknown>): Promise<void> {
+  if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return;
+  const authUid = firebaseAuth?.currentUser?.uid;
+  const targetUid = authUid || uid;
+  if (!targetUid || targetUid === 'guest') return;
+
+  try {
+    await setDoc(
+      doc(db, 'customers', targetUid),
+      {
+        id: targetUid,
+        ...patch,
+        lastActiveAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+  } catch (err) {
+    console.warn('Firestore customer sync notice:', err);
+  }
+}
+
+/**
+ * Pulls live customer data (profile, addresses, bank, UPI, prefs, tickets)
+ * from Firestore `customers/{uid}` into local state/cache cleanly.
+ */
+export async function syncCustomerAccountFromDb(uid: string): Promise<{
+  fullName?: string;
+} | null> {
+  if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
+  const targetUid = firebaseAuth?.currentUser?.uid || uid;
+  if (!targetUid || targetUid === 'guest') return null;
+
+  try {
+    const snap = await getDoc(doc(db, 'customers', targetUid));
+    if (!snap.exists()) return null;
+    const data = snap.data() as Record<string, any>;
+
+    if (data.profile) writeJson(safeKey('ifaqa_profile', uid), data.profile);
+    if (Array.isArray(data.savedAddresses)) {
+      writeJson(safeKey('ifaqa_addresses', uid), data.savedAddresses);
+    }
+    if (Array.isArray(data.bankAccounts)) {
+      writeJson(safeKey('ifaqa_bank', uid), data.bankAccounts);
+    }
+    if (Array.isArray(data.upiIds)) {
+      writeJson(safeKey('ifaqa_upi', uid), data.upiIds);
+    }
+    if (data.preferences) writeJson(safeKey('ifaqa_prefs', uid), data.preferences);
+    if (Array.isArray(data.supportTickets)) {
+      writeJson(safeKey('ifaqa_tickets', uid), data.supportTickets);
+    }
+
+    return {
+      fullName: data.profile?.fullName || data.fullName || undefined,
+    };
+  } catch (err) {
+    console.warn('Firestore customer load notice:', err);
+    return null;
+  }
+}
+
 export function getAccountProfile(uid: string): CustomerAccountProfile {
   return readJson<CustomerAccountProfile>(safeKey('ifaqa_profile', uid), {
     fullName: '',
@@ -83,9 +146,15 @@ export function getAccountProfile(uid: string): CustomerAccountProfile {
 }
 
 export function saveAccountProfile(uid: string, profile: CustomerAccountProfile): void {
-  writeJson(safeKey('ifaqa_profile', uid), {
+  const payload = {
     ...profile,
     updatedAt: new Date().toISOString(),
+  };
+  writeJson(safeKey('ifaqa_profile', uid), payload);
+  void persistCustomerField(uid, {
+    profile: payload,
+    fullName: payload.fullName,
+    email: payload.email,
   });
 }
 
@@ -95,6 +164,7 @@ export function getSavedAddresses(uid: string): CustomerSavedAddress[] {
 
 export function saveAddresses(uid: string, addresses: CustomerSavedAddress[]): void {
   writeJson(safeKey('ifaqa_addresses', uid), addresses);
+  void persistCustomerField(uid, { savedAddresses: addresses });
 }
 
 export function getBankAccounts(uid: string): CustomerBankAccount[] {
@@ -103,6 +173,7 @@ export function getBankAccounts(uid: string): CustomerBankAccount[] {
 
 export function saveBankAccounts(uid: string, accounts: CustomerBankAccount[]): void {
   writeJson(safeKey('ifaqa_bank', uid), accounts);
+  void persistCustomerField(uid, { bankAccounts: accounts });
 }
 
 export function getUpiIds(uid: string): CustomerUpiId[] {
@@ -111,6 +182,7 @@ export function getUpiIds(uid: string): CustomerUpiId[] {
 
 export function saveUpiIds(uid: string, upis: CustomerUpiId[]): void {
   writeJson(safeKey('ifaqa_upi', uid), upis);
+  void persistCustomerField(uid, { upiIds: upis });
 }
 
 export function getAccountPrefs(uid: string): CustomerPreferences {
@@ -124,6 +196,7 @@ export function getAccountPrefs(uid: string): CustomerPreferences {
 
 export function saveAccountPrefs(uid: string, prefs: CustomerPreferences): void {
   writeJson(safeKey('ifaqa_prefs', uid), prefs);
+  void persistCustomerField(uid, { preferences: prefs });
 }
 
 export function getSupportTickets(uid: string): SupportTicket[] {
@@ -143,6 +216,20 @@ export function createSupportTicket(
   };
   const updated = [newTicket, ...existing];
   writeJson(safeKey('ifaqa_tickets', uid), updated);
+  void persistCustomerField(uid, { supportTickets: updated });
+
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+    const authUid = firebaseAuth?.currentUser?.uid;
+    if (authUid) {
+      void setDoc(doc(db, 'supportTickets', newTicket.id), {
+        ...newTicket,
+        customerId: authUid,
+      }).catch(() => {
+        // Already mirrored inside customers/{uid}.supportTickets
+      });
+    }
+  }
+
   return updated;
 }
 

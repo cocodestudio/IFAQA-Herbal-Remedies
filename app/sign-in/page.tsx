@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
+import { auth as firebaseAuth } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button3D } from '@/components/ui/Button3D';
@@ -29,6 +31,8 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resendTimer, setResendTimer] = useState(30);
+  const confirmationRef = useRef<ConfirmationResult | null>(null);
+  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
 
   const content = {
     en: {
@@ -159,7 +163,7 @@ export default function SignInPage() {
     }
   }, [step, resendTimer]);
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     const cleaned = phoneNumber.replace(/\s+/g, '');
@@ -168,12 +172,43 @@ export default function SignInPage() {
       return;
     }
 
+    const e164Phone = cleaned.startsWith('+')
+      ? cleaned
+      : `+91${cleaned.replace(/^0+/, '')}`;
+
     setLoading(true);
+    if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+      try {
+        if (!recaptchaRef.current) {
+          recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
+            size: 'invisible',
+          });
+        }
+        confirmationRef.current = await signInWithPhoneNumber(
+          firebaseAuth,
+          e164Phone,
+          recaptchaRef.current
+        );
+        setLoading(false);
+        setStep('otp');
+        setResendTimer(30);
+        return;
+      } catch (err: any) {
+        const code = err?.code || '';
+        if (code === 'auth/invalid-phone-number') {
+          setLoading(false);
+          setError(content.errValidPhone);
+          return;
+        }
+        console.warn('Firebase Phone OTP fallback notice:', err);
+      }
+    }
+
     setTimeout(() => {
       setLoading(false);
       setStep('otp');
       setResendTimer(30);
-    }, 350);
+    }, 300);
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -204,7 +239,7 @@ export default function SignInPage() {
     }
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     const fullCode = otpCode.join('');
@@ -215,24 +250,39 @@ export default function SignInPage() {
     }
 
     setLoading(true);
+    if (confirmationRef.current) {
+      try {
+        await confirmationRef.current.confirm(fullCode);
+        setLoading(false);
+        triggerNavigationProgress('/account');
+        router.push('/account');
+        return;
+      } catch {
+        setLoading(false);
+        setError('Invalid verification code. Check your SMS and try again.');
+        return;
+      }
+    }
+
     setTimeout(() => {
       setLoading(false);
-      const formatted = phoneNumber.startsWith('+91')
-        ? phoneNumber
-        : `+91 ${phoneNumber.trim()}`;
+      const cleaned = phoneNumber.trim().replace(/\s+/g, '');
+      const formatted = cleaned.startsWith('+')
+        ? cleaned
+        : `+91${cleaned.replace(/^0+/, '')}`;
       signInWithTestAccount(formatted);
-      triggerNavigationProgress('/');
-      router.push('/');
-    }, 350);
+      triggerNavigationProgress('/account');
+      router.push('/account');
+    }, 300);
   };
 
   const handleDemoSignIn = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      signInWithTestAccount('+91 97298 40336');
-      triggerNavigationProgress('/');
-      router.push('/');
+      signInWithTestAccount('+919729840336');
+      triggerNavigationProgress('/account');
+      router.push('/account');
     }, 300);
   };
 
@@ -299,6 +349,7 @@ export default function SignInPage() {
 
           {/* Right Panel: Focused Login Form (Single Headline — no duplication) */}
           <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white space-y-6">
+            <div id="recaptcha-container" />
             {isAuthenticated && user ? (
               <div className="space-y-6 max-w-md">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#E8F3EE] text-[#165A45] text-xs font-medium">

@@ -17,6 +17,7 @@ import {
   SupportTicket,
   createSupportTicket,
   getSupportTickets,
+  syncCustomerAccountFromDb,
 } from '@/lib/account-storage';
 import { getCustomerOrders } from '@/lib/orders-service';
 import { CustomerOrder } from '@/lib/types';
@@ -39,6 +40,9 @@ function SupportContent() {
   useEffect(() => {
     if (!user?.uid) return;
     setTickets(getSupportTickets(user.uid));
+    syncCustomerAccountFromDb(user.uid).then(() => {
+      setTickets(getSupportTickets(user.uid));
+    });
     getCustomerOrders(user.uid, user.phoneNumber).then(setOrders);
   }, [user]);
 

@@ -235,27 +235,6 @@ export function ProductReviewsSection({
             <span>Write a customer review</span>
           </button>
         )}
-
-        {!showForm && existingUserReview && (
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={() => handleOpenEditForm(existingUserReview)}
-              className="h-9 px-4 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
-            >
-              <Edit3 className="w-3.5 h-3.5" strokeWidth={1.5} />
-              <span>Edit your review</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDeleteOwnReview(existingUserReview.id)}
-              className="h-9 px-4 rounded-lg bg-white text-red-700 border border-red-200 hover:bg-red-50 text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
-            >
-              <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
-              <span>Delete</span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Aligned 5/7 Grid matching PDP Gallery/BuyBox vertical column alignment */}
@@ -313,31 +292,11 @@ export function ProductReviewsSection({
             {existingUserReview ? (
               <>
                 <h3 className="text-sm font-semibold text-ifaqa-plum">
-                  You reviewed this product
+                  Review submitted
                 </h3>
                 <p className="text-xs text-[#5A6962] leading-relaxed">
-                  Each customer can post one review per product. You can edit or delete your review anytime.
+                  One review is allowed per product. Use Edit or Delete on your review card to update it anytime.
                 </p>
-                {!showForm && (
-                  <div className="flex items-center gap-2 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => handleOpenEditForm(existingUserReview)}
-                      className="flex-1 h-10 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors"
-                    >
-                      <Edit3 className="w-3.5 h-3.5" strokeWidth={1.5} />
-                      <span>Edit review</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteOwnReview(existingUserReview.id)}
-                      className="h-10 px-4 rounded-lg bg-white border border-red-200 hover:bg-red-50 text-red-700 text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
-                      <span>Delete</span>
-                    </button>
-                  </div>
-                )}
               </>
             ) : (
               <>

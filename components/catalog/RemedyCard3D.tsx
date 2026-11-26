@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HerbalRemedy } from '@/lib/types';
@@ -8,7 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPriceINR } from '@/lib/formatters';
 import { triggerNavigationProgress } from '@/lib/nav-progress';
-import { Leaf, Check, Plus } from 'lucide-react';
+import { Leaf, Check, Plus, Star } from 'lucide-react';
 
 interface RemedyCard3DProps {
   remedy: HerbalRemedy;
@@ -18,8 +18,66 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
   const router = useRouter();
   const [justAdded, setJustAdded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [deliveryDateLabel, setDeliveryDateLabel] = useState('');
+  const [extraReviews, setExtraReviews] = useState(0);
   const { addToCart } = useCart();
-  const { t, getRemedyTitle, getRemedySubtitle } = useLanguage();
+  const { language, t, getRemedyTitle, getRemedySubtitle } = useLanguage();
+
+  useEffect(() => {
+    const estDate = new Date();
+    estDate.setDate(estDate.getDate() + 4);
+    setDeliveryDateLabel(
+      estDate.toLocaleDateString('en-IN', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+      })
+    );
+
+    try {
+      const raw = localStorage.getItem('ifaqa_product_reviews');
+      if (raw) {
+        const list = JSON.parse(raw) as Array<{ remedyId: string }>;
+        setExtraReviews(list.filter((r) => r.remedyId === remedy.id).length);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, [remedy.id]);
+
+  const ratingScore = Number((remedy.rating || 4.8).toFixed(1));
+  const totalReviews = (remedy.reviewCount || 0) + extraReviews;
+
+  const renderRatingRow = () => (
+    <div className="flex items-center gap-1.5 text-xs tabular-nums">
+      <span className="font-sans font-medium text-ifaqa-plum">
+        {ratingScore.toFixed(1)}
+      </span>
+      <div className="inline-flex items-center gap-0.5" aria-label={`${ratingScore} out of 5 stars`}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-3.5 h-3.5 ${
+              ratingScore >= star - 0.25
+                ? 'fill-[#C5A059] text-[#C5A059]'
+                : 'fill-transparent text-ifaqa-plum/20'
+            }`}
+            strokeWidth={1.5}
+          />
+        ))}
+      </div>
+      <span className="text-xs font-mono text-[#165A45]">
+        ({totalReviews})
+      </span>
+    </div>
+  );
+
+  const freeDeliveryLabel =
+    language === 'hi'
+      ? 'मुफ़्त डिलीवरी'
+      : language === 'ur'
+      ? 'مفت ڈلیوری'
+      : 'FREE delivery';
 
   const handleMouseEnter = () => {
     if (remedy.slug) {
@@ -87,9 +145,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
               {displayTitle}
             </h3>
 
-            <p className="text-xs text-[#5A6962] font-sans truncate">
-              {displaySubtitle}
-            </p>
+            {renderRatingRow()}
 
             {/* Single-line price row */}
             <div className="flex items-baseline gap-2 whitespace-nowrap pt-0.5 tabular-nums">
@@ -107,6 +163,11 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
                 </span>
               )}
             </div>
+
+            <p className="text-[11px] font-sans text-[#3E524A] truncate">
+              <span className="font-semibold text-ifaqa-plum">{freeDeliveryLabel}</span>
+              {deliveryDateLabel ? ` ${deliveryDateLabel}` : ''}
+            </p>
 
             <div className="flex items-center justify-between pt-1">
               <span className="text-xs text-[#5A6962]">
@@ -182,9 +243,16 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
               {displaySubtitle}{remedy.packaging?.size ? ` · ${remedy.packaging.size}` : ''}
             </p>
 
+            <div className="mt-1.5">{renderRatingRow()}</div>
+
             {/* Concise 2-line Benefit Description */}
             <p className="text-xs text-[#3E524A] line-clamp-2 mt-2 leading-relaxed font-sans">
               {remedy.shortDescription}
+            </p>
+
+            <p className="text-xs font-sans text-[#3E524A] mt-2">
+              <span className="font-semibold text-ifaqa-plum">{freeDeliveryLabel}</span>
+              {deliveryDateLabel ? ` ${deliveryDateLabel}` : ''}
             </p>
           </div>
 

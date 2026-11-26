@@ -22,6 +22,7 @@ import {
   getSavedAddresses,
   getBankAccounts,
   getUpiIds,
+  syncCustomerAccountFromDb,
   CustomerAccountProfile,
 } from '@/lib/account-storage';
 import { getCustomerOrders } from '@/lib/orders-service';
@@ -47,13 +48,20 @@ export default function MyAccountPage() {
 
   useEffect(() => {
     if (!user?.uid) return;
-    const loaded = getAccountProfile(user.uid);
-    setProfile({
-      ...loaded,
-      fullName: loaded.fullName || (user.displayName !== 'Customer' ? user.displayName || '' : ''),
+    const refreshFromCache = () => {
+      const loaded = getAccountProfile(user.uid);
+      setProfile({
+        ...loaded,
+        fullName: loaded.fullName || (user.displayName !== 'Customer' ? user.displayName || '' : ''),
+      });
+      setAddressCount(getSavedAddresses(user.uid).length);
+      setPayoutCount(getBankAccounts(user.uid).length + getUpiIds(user.uid).length);
+    };
+
+    refreshFromCache();
+    syncCustomerAccountFromDb(user.uid).then((synced) => {
+      if (synced) refreshFromCache();
     });
-    setAddressCount(getSavedAddresses(user.uid).length);
-    setPayoutCount(getBankAccounts(user.uid).length + getUpiIds(user.uid).length);
 
     getCustomerOrders(user.uid, user.phoneNumber).then((orders) => {
       setOrderCount(orders.length);

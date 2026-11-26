@@ -9,7 +9,8 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { signInAnonymously } from 'firebase/auth';
+import { auth as firebaseAuth, db } from './firebase';
 import { CustomerReview } from './types';
 
 export interface ProductReviewRecord extends CustomerReview {
@@ -75,6 +76,21 @@ function writeLocalReviews(reviews: ProductReviewRecord[]): void {
   }
 }
 
+async function ensureFirebaseWriteIdentity(fallbackId: string): Promise<string> {
+  if (firebaseAuth?.currentUser?.uid) {
+    return firebaseAuth.currentUser.uid;
+  }
+  if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+    try {
+      const cred = await signInAnonymously(firebaseAuth);
+      if (cred.user?.uid) return cred.user.uid;
+    } catch {
+      // Anonymous auth optional; continue cleanly with fallback ID
+    }
+  }
+  return fallbackId;
+}
+
 export async function getProductReviews(remedyId: string): Promise<ProductReviewRecord[]> {
   const map = new Map<string, ProductReviewRecord>();
 
@@ -86,14 +102,34 @@ export async function getProductReviews(remedyId: string): Promise<ProductReview
 
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && remedyId) {
     try {
-      const q = query(collection(db, 'reviews'), where('remedyId', '==', remedyId));
-      const snap = await getDocs(q);
+      // Query approved public reviews (compliant with firestore.rules)
+      const approvedQuery = query(
+        collection(db, 'reviews'),
+        where('remedyId', '==', remedyId),
+        where('approved', '==', true)
+      );
+      const snap = await getDocs(approvedQuery);
       snap.forEach((docSnap) => {
         const data = docSnap.data() as ProductReviewRecord;
         map.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
       });
-    } catch {
-      // Fallback cleanly to local review store
+
+      // Also fetch current Firebase user's own reviews for this product even if pending approval
+      const authUid = firebaseAuth?.currentUser?.uid;
+      if (authUid) {
+        const ownQuery = query(
+          collection(db, 'reviews'),
+          where('remedyId', '==', remedyId),
+          where('customerId', '==', authUid)
+        );
+        const ownSnap = await getDocs(ownQuery);
+        ownSnap.forEach((docSnap) => {
+          const data = docSnap.data() as ProductReviewRecord;
+          map.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
+        });
+      }
+    } catch (err) {
+      console.warn('Firestore reviews fetch notice:', err);
     }
   }
 
@@ -119,16 +155,17 @@ export async function getReviewsByCustomer(
     }
   }
 
-  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && customerId) {
+  const effectiveUid = firebaseAuth?.currentUser?.uid;
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && effectiveUid) {
     try {
-      const q = query(collection(db, 'reviews'), where('customerId', '==', customerId));
+      const q = query(collection(db, 'reviews'), where('customerId', '==', effectiveUid));
       const snap = await getDocs(q);
       snap.forEach((docSnap) => {
         const data = docSnap.data() as ProductReviewRecord;
         map.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
       });
-    } catch {
-      // Fallback cleanly to local review store
+    } catch (err) {
+      console.warn('Firestore customer reviews query notice:', err);
     }
   }
 
@@ -172,27 +209,6 @@ export async function submitProductReview(input: {
   title: string;
   comment: string;
 }): Promise<ProductReviewRecord> {
-  const newReview: ProductReviewRecord = {
-    id: `rev_${Date.now()}_${Math.floor(100 + Math.random() * 900)}`,
-    remedyId: input.remedyId,
-    remedySlug: input.remedySlug,
-    remedyName: input.remedyName,
-    remedyImage: input.remedyImage || '',
-    customerId: input.customerId,
-    customerName: input.customerName.trim() || 'IFAQA Customer',
-    customerPhone: input.customerPhone || '',
-    rating: Math.min(5, Math.max(1, Math.round(input.rating))),
-    title: input.title.trim(),
-    comment: input.comment.trim(),
-    verifiedPurchase: checkVerifiedPurchase(
-      input.remedyId,
-      input.customerId,
-      input.customerPhone
-    ),
-    approved: true,
-    createdAt: new Date().toISOString(),
-  };
-
   const existing = readLocalReviews();
   const duplicate = existing.find(
     (r) =>
@@ -205,16 +221,43 @@ export async function submitProductReview(input: {
     );
   }
 
-  writeLocalReviews([newReview, ...existing]);
+  const effectiveCustomerId = await ensureFirebaseWriteIdentity(input.customerId);
+
+  const newReview: ProductReviewRecord = {
+    id: `rev_${Date.now()}_${Math.floor(100 + Math.random() * 900)}`,
+    remedyId: input.remedyId,
+    remedySlug: input.remedySlug,
+    remedyName: input.remedyName,
+    remedyImage: input.remedyImage || '',
+    customerId: effectiveCustomerId,
+    customerName: input.customerName.trim() || 'IFAQA Customer',
+    customerPhone: input.customerPhone || '',
+    rating: Math.min(5, Math.max(1, Math.round(input.rating))),
+    title: input.title.trim(),
+    comment: input.comment.trim(),
+    verifiedPurchase: checkVerifiedPurchase(
+      input.remedyId,
+      effectiveCustomerId,
+      input.customerPhone
+    ),
+    approved: true,
+    createdAt: new Date().toISOString(),
+  };
 
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'reviews', newReview.id), newReview);
-    } catch {
-      // Saved reliably to local review repository
+    } catch (err) {
+      // Fallback gracefully to approved: false if strict rules require moderation before publish
+      try {
+        await setDoc(doc(db, 'reviews', newReview.id), { ...newReview, approved: false });
+      } catch (err2) {
+        console.warn('Firestore review write notice:', err, err2);
+      }
     }
   }
 
+  writeLocalReviews([newReview, ...existing]);
   return newReview;
 }
 
@@ -240,9 +283,9 @@ export async function updateProductReview(
 
   if (updatedRecord && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
-      await setDoc(doc(db, 'reviews', reviewId), updatedRecord);
-    } catch {
-      // Updated in local review store
+      await setDoc(doc(db, 'reviews', reviewId), updatedRecord, { merge: true });
+    } catch (err) {
+      console.warn('Firestore review update notice:', err);
     }
   }
 
@@ -256,8 +299,8 @@ export async function deleteProductReview(reviewId: string): Promise<void> {
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await deleteDoc(doc(db, 'reviews', reviewId));
-    } catch {
-      // Deleted cleanly from local store
+    } catch (err) {
+      console.warn('Firestore review delete notice:', err);
     }
   }
 }

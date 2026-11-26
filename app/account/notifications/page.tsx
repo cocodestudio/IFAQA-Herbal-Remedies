@@ -14,6 +14,7 @@ import {
   getSavedAddresses,
   getBankAccounts,
   getUpiIds,
+  syncCustomerAccountFromDb,
   clearCustomerAccountLocalData,
 } from '@/lib/account-storage';
 
@@ -33,6 +34,9 @@ export default function AccountNotificationsPage() {
   useEffect(() => {
     if (!user?.uid) return;
     setPrefs(getAccountPrefs(user.uid));
+    syncCustomerAccountFromDb(user.uid).then(() => {
+      setPrefs(getAccountPrefs(user.uid));
+    });
   }, [user]);
 
   const togglePref = (key: keyof CustomerPreferences) => {
