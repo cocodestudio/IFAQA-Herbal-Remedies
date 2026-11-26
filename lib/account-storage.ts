@@ -1,6 +1,7 @@
 'use client';
 
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { signInAnonymously } from 'firebase/auth';
 import { auth as firebaseAuth, db } from './firebase';
 import { SavedAddress } from './types';
 
@@ -74,17 +75,27 @@ function writeJson<T>(key: string, value: T): void {
   }
 }
 
+async function ensureCustomerAuthUid(): Promise<string | null> {
+  if (!firebaseAuth || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
+  if (firebaseAuth.currentUser?.uid) return firebaseAuth.currentUser.uid;
+  try {
+    const cred = await signInAnonymously(firebaseAuth);
+    return cred.user?.uid || null;
+  } catch {
+    return null;
+  }
+}
+
 async function persistCustomerField(uid: string, patch: Record<string, unknown>): Promise<void> {
   if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return;
-  const authUid = firebaseAuth?.currentUser?.uid;
-  const targetUid = authUid || uid;
-  if (!targetUid || targetUid === 'guest') return;
+  const authUid = await ensureCustomerAuthUid();
+  if (!authUid) return; // Skip Firestore write when Firebase Auth session is not active (prevents permission-denied noise)
 
   try {
     await setDoc(
-      doc(db, 'customers', targetUid),
+      doc(db, 'customers', authUid),
       {
-        id: targetUid,
+        id: authUid,
         ...patch,
         lastActiveAt: new Date().toISOString(),
       },
@@ -103,11 +114,11 @@ export async function syncCustomerAccountFromDb(uid: string): Promise<{
   fullName?: string;
 } | null> {
   if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
-  const targetUid = firebaseAuth?.currentUser?.uid || uid;
-  if (!targetUid || targetUid === 'guest') return null;
+  const authUid = await ensureCustomerAuthUid();
+  if (!authUid) return null;
 
   try {
-    const snap = await getDoc(doc(db, 'customers', targetUid));
+    const snap = await getDoc(doc(db, 'customers', authUid));
     if (!snap.exists()) return null;
     const data = snap.data() as Record<string, any>;
 

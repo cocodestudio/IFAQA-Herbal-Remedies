@@ -244,7 +244,7 @@ export async function submitProductReview(input: {
     createdAt: new Date().toISOString(),
   };
 
-  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'reviews', newReview.id), newReview);
     } catch (err) {
@@ -281,7 +281,7 @@ export async function updateProductReview(
   });
   writeLocalReviews(next);
 
-  if (updatedRecord && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (updatedRecord && firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'reviews', reviewId), updatedRecord, { merge: true });
     } catch (err) {
@@ -296,7 +296,7 @@ export async function deleteProductReview(reviewId: string): Promise<void> {
   const existing = readLocalReviews();
   writeLocalReviews(existing.filter((r) => r.id !== reviewId));
 
-  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await deleteDoc(doc(db, 'reviews', reviewId));
     } catch (err) {
