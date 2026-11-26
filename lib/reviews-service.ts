@@ -9,7 +9,6 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { signInAnonymously } from 'firebase/auth';
 import { auth as firebaseAuth, db } from './firebase';
 import { CustomerReview } from './types';
 
@@ -77,18 +76,7 @@ function writeLocalReviews(reviews: ProductReviewRecord[]): void {
 }
 
 async function ensureFirebaseWriteIdentity(fallbackId: string): Promise<string> {
-  if (firebaseAuth?.currentUser?.uid) {
-    return firebaseAuth.currentUser.uid;
-  }
-  if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
-    try {
-      const cred = await signInAnonymously(firebaseAuth);
-      if (cred.user?.uid) return cred.user.uid;
-    } catch {
-      // Anonymous auth optional; continue cleanly with fallback ID
-    }
-  }
-  return fallbackId;
+  return firebaseAuth?.currentUser?.uid || fallbackId;
 }
 
 export async function getProductReviews(remedyId: string): Promise<ProductReviewRecord[]> {
@@ -155,7 +143,7 @@ export async function getReviewsByCustomer(
     }
   }
 
-  const effectiveUid = firebaseAuth?.currentUser?.uid;
+  const effectiveUid = firebaseAuth?.currentUser?.uid || customerId;
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && effectiveUid) {
     try {
       const q = query(collection(db, 'reviews'), where('customerId', '==', effectiveUid));
@@ -244,7 +232,7 @@ export async function submitProductReview(input: {
     createdAt: new Date().toISOString(),
   };
 
-  if (firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'reviews', newReview.id), newReview);
     } catch (err) {
@@ -281,7 +269,7 @@ export async function updateProductReview(
   });
   writeLocalReviews(next);
 
-  if (updatedRecord && firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (updatedRecord && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'reviews', reviewId), updatedRecord, { merge: true });
     } catch (err) {
@@ -296,7 +284,7 @@ export async function deleteProductReview(reviewId: string): Promise<void> {
   const existing = readLocalReviews();
   writeLocalReviews(existing.filter((r) => r.id !== reviewId));
 
-  if (firebaseAuth?.currentUser?.uid && db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await deleteDoc(doc(db, 'reviews', reviewId));
     } catch (err) {

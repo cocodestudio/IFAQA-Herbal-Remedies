@@ -1,5 +1,4 @@
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { signInAnonymously } from 'firebase/auth';
 import { auth as firebaseAuth, db } from './firebase';
 import { CustomerOrder, OrderItem, ShippingAddress } from './types';
 import { validateE164Phone, validatePostalCode, generateOrderNumber, roundUsdCents } from './formatters';
@@ -120,20 +119,13 @@ export async function placeCustomerOrder(order: CustomerOrder): Promise<{ succes
 
   let persistedOrder: CustomerOrder = { ...order };
 
-  // Ensure real Firebase Auth UID matches Firestore rules before writing
+  // Use active Firebase Auth UID when signed in, otherwise order's customerId / 'guest'
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
-      if (firebaseAuth && !firebaseAuth.currentUser) {
-        try {
-          await signInAnonymously(firebaseAuth);
-        } catch {
-          // Guest fallback below
-        }
-      }
       const realUid = firebaseAuth?.currentUser?.uid;
       persistedOrder = {
         ...persistedOrder,
-        customerId: realUid || 'guest',
+        customerId: realUid || persistedOrder.customerId || 'guest',
       };
 
       await setDoc(doc(db, 'orders', persistedOrder.id), persistedOrder);
@@ -203,15 +195,20 @@ export async function getCustomerOrders(uid?: string, phone?: string): Promise<C
     }
   }
 
-  const effectiveAuthUid = firebaseAuth?.currentUser?.uid;
-  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && effectiveAuthUid) {
+  const effectiveUid = firebaseAuth?.currentUser?.uid || uid;
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && (effectiveUid || normalizedPhone)) {
     try {
       const ordersRef = collection(db, 'orders');
-      const snap = await getDocs(query(ordersRef, where('customerId', '==', effectiveAuthUid)));
-      snap.forEach((docSnap) => {
-        const data = docSnap.data() as CustomerOrder;
-        results.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
-      });
+      const queries = [];
+      if (effectiveUid) queries.push(getDocs(query(ordersRef, where('customerId', '==', effectiveUid))));
+      if (normalizedPhone) queries.push(getDocs(query(ordersRef, where('customerPhone', '==', normalizedPhone))));
+      const snaps = await Promise.all(queries);
+      for (const snap of snaps) {
+        snap.forEach((docSnap) => {
+          const data = docSnap.data() as CustomerOrder;
+          results.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
+        });
+      }
     } catch (err) {
       console.warn("Firestore customer orders query notice:", err);
     }

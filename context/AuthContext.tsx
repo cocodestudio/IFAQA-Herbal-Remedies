@@ -5,7 +5,6 @@ import { auth as firebaseAuth, db } from '@/lib/firebase';
 import {
   onAuthStateChanged,
   signOut as fbSignOut,
-  signInAnonymously,
   User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
@@ -129,14 +128,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsPhoneModalOpen(false);
     };
 
-    if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
-      if (firebaseAuth.currentUser) {
-        void finalizeSession(firebaseAuth.currentUser.uid);
-        return;
-      }
-      void signInAnonymously(firebaseAuth)
-        .then((cred) => finalizeSession(cred.user.uid))
-        .catch(() => finalizeSession(`cust_${cleanPhone.replace(/[^0-9]/g, '').slice(-8)}`));
+    if (firebaseAuth?.currentUser) {
+      void finalizeSession(firebaseAuth.currentUser.uid);
       return;
     }
 

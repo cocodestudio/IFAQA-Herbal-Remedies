@@ -1,7 +1,6 @@
 'use client';
 
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { signInAnonymously } from 'firebase/auth';
 import { auth as firebaseAuth, db } from './firebase';
 import { SavedAddress } from './types';
 
@@ -75,27 +74,23 @@ function writeJson<T>(key: string, value: T): void {
   }
 }
 
-async function ensureCustomerAuthUid(): Promise<string | null> {
-  if (!firebaseAuth || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
-  if (firebaseAuth.currentUser?.uid) return firebaseAuth.currentUser.uid;
-  try {
-    const cred = await signInAnonymously(firebaseAuth);
-    return cred.user?.uid || null;
-  } catch {
-    return null;
-  }
+function resolveCustomerDocId(uid: string): string | null {
+  if (process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
+  const target = firebaseAuth?.currentUser?.uid || uid;
+  if (!target || target === 'guest') return null;
+  return target;
 }
 
 async function persistCustomerField(uid: string, patch: Record<string, unknown>): Promise<void> {
   if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return;
-  const authUid = await ensureCustomerAuthUid();
-  if (!authUid) return; // Skip Firestore write when Firebase Auth session is not active (prevents permission-denied noise)
+  const docId = resolveCustomerDocId(uid);
+  if (!docId) return;
 
   try {
     await setDoc(
-      doc(db, 'customers', authUid),
+      doc(db, 'customers', docId),
       {
-        id: authUid,
+        id: docId,
         ...patch,
         lastActiveAt: new Date().toISOString(),
       },
@@ -114,11 +109,11 @@ export async function syncCustomerAccountFromDb(uid: string): Promise<{
   fullName?: string;
 } | null> {
   if (!db || process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
-  const authUid = await ensureCustomerAuthUid();
-  if (!authUid) return null;
+  const docId = resolveCustomerDocId(uid);
+  if (!docId) return null;
 
   try {
-    const snap = await getDoc(doc(db, 'customers', authUid));
+    const snap = await getDoc(doc(db, 'customers', docId));
     if (!snap.exists()) return null;
     const data = snap.data() as Record<string, any>;
 
@@ -230,11 +225,11 @@ export function createSupportTicket(
   void persistCustomerField(uid, { supportTickets: updated });
 
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
-    const authUid = firebaseAuth?.currentUser?.uid;
-    if (authUid) {
+    const docId = resolveCustomerDocId(uid);
+    if (docId) {
       void setDoc(doc(db, 'supportTickets', newTicket.id), {
         ...newTicket,
-        customerId: authUid,
+        customerId: docId,
       }).catch(() => {
         // Already mirrored inside customers/{uid}.supportTickets
       });
