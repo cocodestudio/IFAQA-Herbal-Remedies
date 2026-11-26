@@ -207,9 +207,11 @@ export default function SignInPage() {
         } else if (code === 'auth/billing-not-enabled') {
           setError('Live SMS requires Firebase Blaze plan (or Firebase Console test phone numbers). You can also use the test account below.');
         } else if (code === 'auth/operation-not-allowed') {
-          setError('Phone Sign-In provider is disabled in Firebase Authentication Console.');
+          setError(
+            `Firebase rejected Phone Auth (${code}: ${err?.message || 'OPERATION_NOT_ALLOWED'}). Verify in Firebase Console: (1) Sign-in method -> Phone -> Enable ON + Save, (2) Authentication -> Settings -> User actions -> Enable create (sign-up), and (3) SMS region policy allows India (+91).`
+          );
         } else {
-          setError(err?.message || 'Unable to send SMS code. Please try again.');
+          setError(`${err?.message || 'Unable to send SMS code.'} (${code || 'error'})`);
         }
         return;
       }

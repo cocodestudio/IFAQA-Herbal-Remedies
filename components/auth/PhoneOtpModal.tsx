@@ -60,8 +60,12 @@ export function PhoneOtpModal() {
           setError('Live SMS requires Firebase Blaze plan or configured test numbers in Firebase Console.');
         } else if (code === 'auth/too-many-requests') {
           setError('Too many requests. Wait briefly before trying again.');
+        } else if (code === 'auth/operation-not-allowed') {
+          setError(
+            `Firebase rejected Phone Auth (${code}). Check Phone Enable+Save, Settings -> User actions -> Enable create, and SMS region policy (+91).`
+          );
         } else {
-          setError(err?.message || 'Unable to send OTP via Firebase.');
+          setError(`${err?.message || 'Unable to send OTP via Firebase.'} (${code || 'error'})`);
         }
         return;
       }
