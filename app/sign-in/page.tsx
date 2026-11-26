@@ -200,9 +200,27 @@ export default function SignInPage() {
           setError('Too many SMS attempts. Please wait a few minutes or use the test account below.');
         } else if (code === 'auth/billing-not-enabled') {
           setError('Live SMS requires Firebase Blaze plan (or Firebase Console test phone numbers). You can also use the test account below.');
-        } else if (code === 'auth/operation-not-allowed') {
+        } else if (
+          code === 'auth/operation-not-allowed' ||
+          code === 'auth/billing-not-enabled'
+        ) {
+          // On localhost/dev: Firebase blocks India SMS region or billing.
+          // Fall through to test-OTP screen so test phone numbers still work.
+          const isLocalhost =
+            typeof window !== 'undefined' &&
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+          if (isLocalhost) {
+            confirmationRef.current = null; // signal: use mock verify path
+            setLoading(false);
+            setStep('otp');
+            setResendTimer(0);
+            setError('Live SMS blocked on localhost. Enter your Firebase test code (e.g. 123456) below.');
+            return;
+          }
           setError(
-            `Firebase rejected Phone Auth (${code}: ${err?.message || 'OPERATION_NOT_ALLOWED'}). Verify in Firebase Console: (1) Sign-in method -> Phone -> Enable ON + Save, (2) Authentication -> Settings -> User actions -> Enable create (sign-up), and (3) SMS region policy allows India (+91).`
+            code === 'auth/billing-not-enabled'
+              ? 'Firebase billing not enabled for SMS. Enable Blaze plan or add test phone numbers in Firebase Console.'
+              : `SMS for India (+91) blocked in Firebase Console. Go to Authentication → Settings → SMS region policy → Allow India (+91).`
           );
         } else {
           setError(`${err?.message || 'Unable to send SMS code.'} (${code || 'error'})`);
@@ -269,6 +287,16 @@ export default function SignInPage() {
         setError('Invalid verification code. Check your SMS and try again.');
         return;
       }
+    }
+
+    // Mock path: confirmationRef is null (localhost fallback or MOCK_FALLBACK mode)
+    const isLocalhost =
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (isLocalhost && fullCode !== '123456') {
+      setLoading(false);
+      setError('Enter your Firebase test code (123456) to sign in.');
+      return;
     }
 
     setTimeout(() => {

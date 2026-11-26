@@ -54,13 +54,24 @@ export function PhoneOtpModal() {
         const code = err?.code || '';
         if (code === 'auth/invalid-phone-number') {
           setError('Invalid phone number format. Include country code (e.g. +91).');
-        } else if (code === 'auth/billing-not-enabled') {
-          setError('Live SMS requires Firebase Blaze plan or configured test numbers in Firebase Console.');
-        } else if (code === 'auth/too-many-requests') {
-          setError('Too many requests. Wait briefly before trying again.');
-        } else if (code === 'auth/operation-not-allowed') {
+        } else if (
+          code === 'auth/operation-not-allowed' ||
+          code === 'auth/billing-not-enabled'
+        ) {
+          const isLocalhost =
+            typeof window !== 'undefined' &&
+            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+          if (isLocalhost) {
+            confirmationRef.current = null;
+            setLoading(false);
+            setStep('otp');
+            setError('Live SMS blocked on localhost. Enter Firebase test code (123456).');
+            return;
+          }
           setError(
-            `Firebase rejected Phone Auth (${code}). Check Phone Enable+Save, Settings -> User actions -> Enable create, and SMS region policy (+91).`
+            code === 'auth/billing-not-enabled'
+              ? 'Live SMS requires Firebase Blaze plan or configured test numbers in Firebase Console.'
+              : 'SMS for India (+91) blocked. Go to Firebase Console → Authentication → Settings → SMS region policy → Allow India (+91).'
           );
         } else {
           setError(`${err?.message || 'Unable to send OTP via Firebase.'} (${code || 'error'})`);
