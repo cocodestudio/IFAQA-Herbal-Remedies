@@ -34,11 +34,15 @@ export function PhoneOtpModal() {
     setLoading(true);
     if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
       try {
-        if (!recaptchaRef.current) {
-          recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-modal-container', {
-            size: 'invisible',
-          });
+        if (recaptchaRef.current) {
+          try {
+            recaptchaRef.current.clear();
+          } catch {}
+          recaptchaRef.current = null;
         }
+        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-modal-container', {
+          size: 'invisible',
+        });
         confirmationRef.current = await signInWithPhoneNumber(
           firebaseAuth,
           cleanPhone,
@@ -48,13 +52,18 @@ export function PhoneOtpModal() {
         setStep('otp');
         return;
       } catch (err: any) {
+        setLoading(false);
         const code = err?.code || '';
         if (code === 'auth/invalid-phone-number') {
-          setLoading(false);
           setError('Invalid phone number format. Include country code (e.g. +91).');
-          return;
+        } else if (code === 'auth/billing-not-enabled') {
+          setError('Live SMS requires Firebase Blaze plan or configured test numbers in Firebase Console.');
+        } else if (code === 'auth/too-many-requests') {
+          setError('Too many requests. Wait briefly before trying again.');
+        } else {
+          setError(err?.message || 'Unable to send OTP via Firebase.');
         }
-        console.warn('Firebase Phone OTP fallback notice:', err);
+        return;
       }
     }
 

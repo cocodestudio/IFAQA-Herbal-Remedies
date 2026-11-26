@@ -179,11 +179,15 @@ export default function SignInPage() {
     setLoading(true);
     if (firebaseAuth && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
       try {
-        if (!recaptchaRef.current) {
-          recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
-            size: 'invisible',
-          });
+        if (recaptchaRef.current) {
+          try {
+            recaptchaRef.current.clear();
+          } catch {}
+          recaptchaRef.current = null;
         }
+        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
+          size: 'invisible',
+        });
         confirmationRef.current = await signInWithPhoneNumber(
           firebaseAuth,
           e164Phone,
@@ -194,13 +198,20 @@ export default function SignInPage() {
         setResendTimer(30);
         return;
       } catch (err: any) {
+        setLoading(false);
         const code = err?.code || '';
         if (code === 'auth/invalid-phone-number') {
-          setLoading(false);
           setError(content.errValidPhone);
-          return;
+        } else if (code === 'auth/too-many-requests') {
+          setError('Too many SMS attempts. Please wait a few minutes or use the test account below.');
+        } else if (code === 'auth/billing-not-enabled') {
+          setError('Live SMS requires Firebase Blaze plan (or Firebase Console test phone numbers). You can also use the test account below.');
+        } else if (code === 'auth/operation-not-allowed') {
+          setError('Phone Sign-In provider is disabled in Firebase Authentication Console.');
+        } else {
+          setError(err?.message || 'Unable to send SMS code. Please try again.');
         }
-        console.warn('Firebase Phone OTP fallback notice:', err);
+        return;
       }
     }
 
