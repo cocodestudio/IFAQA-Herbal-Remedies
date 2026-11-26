@@ -18,6 +18,7 @@ interface AuthContextType {
   openPhoneModal: () => void;
   closePhoneModal: () => void;
   signInWithTestAccount: (phoneNumber: string) => void;
+  updateDisplayName: (displayName: string) => void;
   signOut: () => Promise<void>;
 }
 
@@ -61,10 +62,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithTestAccount = (phoneNumber: string) => {
     const cleanPhone = phoneNumber.trim().replace(/\s+/g, '');
+    const uid = `cust_${cleanPhone.replace(/[^0-9]/g, '').slice(-8)}`;
+    let savedName = 'Customer';
+    try {
+      const profileRaw = localStorage.getItem(`ifaqa_profile_${uid}`);
+      if (profileRaw) {
+        const parsed = JSON.parse(profileRaw);
+        if (parsed?.fullName?.trim()) savedName = parsed.fullName.trim();
+      }
+    } catch (_) {}
+
     const customer: CustomerAuthUser = {
-      uid: `cust_${cleanPhone.replace(/[^0-9]/g, '').slice(-8)}`,
+      uid,
       phoneNumber: cleanPhone,
-      displayName: 'Customer',
+      displayName: savedName,
       role: 'customer',
     };
     setUser(customer);
@@ -72,6 +83,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('ifaqa_customer_auth', JSON.stringify(customer));
     } catch (_) {}
     setIsPhoneModalOpen(false);
+  };
+
+  const updateDisplayName = (displayName: string) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+      const updated = { ...prev, displayName: displayName.trim() || prev.displayName };
+      try {
+        localStorage.setItem('ifaqa_customer_auth', JSON.stringify(updated));
+      } catch (_) {}
+      return updated;
+    });
   };
 
   const signOut = async () => {
@@ -95,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         openPhoneModal,
         closePhoneModal,
         signInWithTestAccount,
+        updateDisplayName,
         signOut,
       }}
     >

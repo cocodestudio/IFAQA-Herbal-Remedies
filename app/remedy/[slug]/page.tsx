@@ -16,6 +16,15 @@ import { PDPSkeleton } from '@/components/ui/ShimmerSkeleton';
 import { formatPriceINR } from '@/lib/formatters';
 import { triggerNavigationProgress } from '@/lib/nav-progress';
 import {
+  ProductReviewsSection,
+  StarRatingDisplay,
+} from '@/components/remedy/ProductReviewsSection';
+import {
+  ProductReviewRecord,
+  getProductReviews,
+  computeRatingBreakdown,
+} from '@/lib/reviews-service';
+import {
   ShoppingBag,
   Zap,
   Minus,
@@ -61,6 +70,7 @@ export default function RemedyDetailPage() {
   const [addedToast, setAddedToast] = useState(false);
   const [pincode, setPincode] = useState('');
   const [deliveryChecked, setDeliveryChecked] = useState(false);
+  const [reviews, setReviews] = useState<ProductReviewRecord[]>([]);
 
   const { addToCart } = useCart();
   const { language, t, getRemedyTitle, getRemedySubtitle, getCategoryTitle } = useLanguage();
@@ -73,8 +83,12 @@ export default function RemedyDetailPage() {
         return;
       }
       setRemedy(data);
-      const related = await getRemediesByCategory(data.categoryId);
+      const [related, prodReviews] = await Promise.all([
+        getRemediesByCategory(data.categoryId),
+        getProductReviews(data.id),
+      ]);
       setRelatedRemedies(related.filter(r => r.id !== data.id).slice(0, 4));
+      setReviews(prodReviews);
       setLoading(false);
     }
     load();
@@ -145,115 +159,20 @@ export default function RemedyDetailPage() {
         <span className="text-ifaqa-plum font-medium truncate max-w-[280px]">{displayTitle}</span>
       </nav>
 
-      {/* Main Dual Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left Column: Borderless Image Gallery + Balanced Quality & Storage Cards (5 cols) */}
-        <div className="lg:col-span-5 space-y-5">
+      {/* Main Layout: Mobile (Image -> Title & Price/CTA -> Trust Icons & Info); Desktop (Balanced 5/7 Grid) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-x-12 lg:gap-y-6 items-start">
+        {/* Block 1: Borderless Image Gallery (Mobile #1, Desktop Top-Left) */}
+        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-1">
           <RemedyGallery
             primaryImage={remedy.primaryImage}
             images={remedy.images}
             remedyName={displayTitle}
             urduName={remedy.urduName}
           />
-
-          {/* 4-Item Trust Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
-            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
-              <Truck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
-              <span className="text-xs font-medium text-ifaqa-plum block">Pan-India</span>
-              <span className="text-xs text-[#5A6962] block">Courier</span>
-            </div>
-            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
-              <ShieldCheck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
-              <span className="text-xs font-medium text-ifaqa-plum block">Zero fillers</span>
-              <span className="text-xs text-[#5A6962] block">Herbal only</span>
-            </div>
-            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
-              <RotateCcw className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
-              <span className="text-xs font-medium text-ifaqa-plum block">Sealed jar</span>
-              <span className="text-xs text-[#5A6962] block">Replacement</span>
-            </div>
-            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
-              <Award className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
-              <span className="text-xs font-medium text-ifaqa-plum block">Small batch</span>
-              <span className="text-xs text-[#5A6962] block">Saharanpur</span>
-            </div>
-          </div>
-
-          {/* Quality & Formulation Card (balances height cleanly with right column) */}
-          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 shadow-luxury-card">
-            <div className="flex items-center justify-between border-b border-ifaqa-plum/10 pb-2.5">
-              <h4 className="font-sans text-xs font-medium text-ifaqa-plum flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#165A45]" strokeWidth={1.5} />
-                <span>Preparation standards</span>
-              </h4>
-              <span className="text-xs font-mono text-[#165A45] bg-ifaqa-cashmere px-2 py-0.5 rounded">
-                Verified batch
-              </span>
-            </div>
-            <ul className="space-y-2 text-xs text-[#3E524A] font-sans">
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Whole dried roots, seeds, and natural resins compounded in small batches.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Zero chemical steroids, artificial sweeteners, or synthetic coloring.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Packed fresh inside UV-shielded tamper-proof containers.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Storage & Dispatch Card */}
-          <div className="bg-ifaqa-cashmere/70 rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 text-xs font-sans">
-            <h4 className="font-medium text-ifaqa-plum flex items-center gap-2 border-b border-ifaqa-plum/10 pb-2">
-              <Leaf className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
-              <span>Storage and dispatch</span>
-            </h4>
-            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
-              <div>
-                <span className="text-[#5A6962] block">Storage</span>
-                <span className="font-medium text-ifaqa-plum">Cool, dry place away from sun</span>
-              </div>
-              <div>
-                <span className="text-[#5A6962] block">Shelf life</span>
-                <span className="font-medium text-ifaqa-plum">24 months from batch date</span>
-              </div>
-              <div>
-                <span className="text-[#5A6962] block">Dispatch</span>
-                <span className="font-medium text-ifaqa-plum">Within 24 hours</span>
-              </div>
-              <div>
-                <span className="text-[#5A6962] block">Prepared in</span>
-                <span className="font-medium text-ifaqa-plum">Saharanpur, U.P., India</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Direct Support */}
-          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-4 flex items-center justify-between gap-3">
-            <div className="space-y-0.5 min-w-0">
-              <span className="text-xs font-medium text-ifaqa-plum block">
-                Questions about usage or dosage
-              </span>
-              <span className="text-xs text-[#5A6962] font-mono block tabular-nums" dir="ltr">
-                +91 97298 40336 (Mon–Sat)
-              </span>
-            </div>
-            <Link
-              href="/contact"
-              className="h-9 px-4 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-sans font-medium inline-flex items-center shrink-0 whitespace-nowrap transition-colors"
-            >
-              Contact us
-            </Link>
-          </div>
         </div>
 
-        {/* Right Column: Title, Price Box, Action Controls & Specs (7 cols) */}
-        <div className="lg:col-span-7 space-y-6">
+        {/* Block 2: Title, Price Box, Action Controls & Specs (Mobile #2 right below Image, Desktop Right Column) */}
+        <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:row-span-2 space-y-6">
           <div className="space-y-2.5 border-b border-ifaqa-plum/10 pb-5">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <span className="text-xs font-sans text-[#5A6962]">
@@ -277,6 +196,37 @@ export default function RemedyDetailPage() {
             <p className="text-sm font-sans text-[#5A6962]">
               {displaySubtitle}{remedy.packaging?.size ? ` · ${remedy.packaging.size}` : ''}
             </p>
+
+            {/* Amazon-Style Top Rating Summary Link */}
+            <a
+              href="#customer-reviews"
+              className="inline-flex items-center gap-2 pt-1 text-xs font-sans text-ifaqa-plum hover:text-ifaqa-blackberry transition-colors group"
+            >
+              {(() => {
+                const stats = computeRatingBreakdown(reviews);
+                if (stats.count > 0) {
+                  return (
+                    <>
+                      <span className="font-mono font-semibold tabular-nums">
+                        {stats.average.toFixed(1)}
+                      </span>
+                      <StarRatingDisplay rating={stats.average} size="sm" />
+                      <span className="text-[#165A45] group-hover:underline font-medium tabular-nums">
+                        ({stats.count} {stats.count === 1 ? 'review' : 'reviews'})
+                      </span>
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    <StarRatingDisplay rating={0} size="sm" />
+                    <span className="text-[#165A45] group-hover:underline font-medium">
+                      Be the first to review
+                    </span>
+                  </>
+                );
+              })()}
+            </a>
           </div>
 
           {/* Clean Buy Box */}
@@ -302,19 +252,14 @@ export default function RemedyDetailPage() {
               </p>
             </div>
 
-            {/* Availability & SKU */}
-            <div className="pt-4 border-t border-ifaqa-plum/10 flex items-center justify-between gap-2 flex-wrap">
-              <div>
-                <span className={`text-sm font-sans font-medium flex items-center gap-2 ${isAvailable ? 'text-[#165A45]' : 'text-red-700'}`}>
-                  <span className={`w-2 h-2 rounded-sm ${isAvailable ? 'bg-[#165A45]' : 'bg-red-700'}`} />
-                  {isAvailable ? 'In stock' : t('outOfStock')}
-                </span>
-                <span className="text-xs text-[#5A6962] block mt-0.5">
-                  Dispatched from Saharanpur, Uttar Pradesh
-                </span>
-              </div>
-              <span className="text-xs font-mono text-[#5A6962] bg-ifaqa-linen px-2.5 py-1 rounded border border-ifaqa-plum/10 tabular-nums" dir="ltr">
-                SKU {remedy.sku}
+            {/* Availability */}
+            <div className="pt-4 border-t border-ifaqa-plum/10">
+              <span className={`text-sm font-sans font-medium flex items-center gap-2 ${isAvailable ? 'text-[#165A45]' : 'text-red-700'}`}>
+                <span className={`w-2 h-2 rounded-sm ${isAvailable ? 'bg-[#165A45]' : 'bg-red-700'}`} />
+                {isAvailable ? 'In stock' : t('outOfStock')}
+              </span>
+              <span className="text-xs text-[#5A6962] block mt-0.5">
+                Dispatched from Saharanpur, Uttar Pradesh
               </span>
             </div>
 
@@ -452,6 +397,104 @@ export default function RemedyDetailPage() {
             </ul>
           </div>
         </div>
+
+        {/* Block 3: Trust Badges, Preparation Standards & Dispatch (Mobile #3 after Purchase Details, Desktop Below Image) */}
+        <div className="lg:col-span-5 lg:col-start-1 lg:row-start-2 space-y-5">
+          {/* 4-Item Trust Row */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <Truck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Pan-India</span>
+              <span className="text-xs text-[#5A6962] block">Courier</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <ShieldCheck className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Zero fillers</span>
+              <span className="text-xs text-[#5A6962] block">Herbal only</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <RotateCcw className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Sealed jar</span>
+              <span className="text-xs text-[#5A6962] block">Replacement</span>
+            </div>
+            <div className="p-3 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1">
+              <Award className="w-4 h-4 mx-auto text-[#5A6962]" strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ifaqa-plum block">Small batch</span>
+              <span className="text-xs text-[#5A6962] block">Saharanpur</span>
+            </div>
+          </div>
+
+          {/* Quality & Formulation Card */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 shadow-luxury-card">
+            <div className="flex items-center justify-between border-b border-ifaqa-plum/10 pb-2.5">
+              <h4 className="font-sans text-xs font-medium text-ifaqa-plum flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#165A45]" strokeWidth={1.5} />
+                <span>Preparation standards</span>
+              </h4>
+              <span className="text-xs font-mono text-[#165A45] bg-ifaqa-cashmere px-2 py-0.5 rounded">
+                Verified batch
+              </span>
+            </div>
+            <ul className="space-y-2 text-xs text-[#3E524A] font-sans">
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Whole dried roots, seeds, and natural resins compounded in small batches.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Zero chemical steroids, artificial sweeteners, or synthetic coloring.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#165A45] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <span>Packed fresh inside UV-shielded tamper-proof containers.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Storage & Dispatch Card */}
+          <div className="bg-ifaqa-cashmere/70 rounded-xl border border-ifaqa-plum/10 p-5 space-y-3 text-xs font-sans">
+            <h4 className="font-medium text-ifaqa-plum flex items-center gap-2 border-b border-ifaqa-plum/10 pb-2">
+              <Leaf className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
+              <span>Storage and dispatch</span>
+            </h4>
+            <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
+              <div>
+                <span className="text-[#5A6962] block">Storage</span>
+                <span className="font-medium text-ifaqa-plum">Cool, dry place away from sun</span>
+              </div>
+              <div>
+                <span className="text-[#5A6962] block">Shelf life</span>
+                <span className="font-medium text-ifaqa-plum">24 months from batch date</span>
+              </div>
+              <div>
+                <span className="text-[#5A6962] block">Dispatch</span>
+                <span className="font-medium text-ifaqa-plum">Within 24 hours</span>
+              </div>
+              <div>
+                <span className="text-[#5A6962] block">Prepared in</span>
+                <span className="font-medium text-ifaqa-plum">Saharanpur, U.P., India</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Direct Support */}
+          <div className="bg-white rounded-xl border border-ifaqa-plum/10 p-4 flex items-center justify-between gap-3">
+            <div className="space-y-0.5 min-w-0">
+              <span className="text-xs font-medium text-ifaqa-plum block">
+                Questions about usage or dosage
+              </span>
+              <span className="text-xs text-[#5A6962] font-mono block tabular-nums" dir="ltr">
+                +91 97298 40336 (Mon–Sat)
+              </span>
+            </div>
+            <Link
+              href="/contact"
+              className="h-9 px-4 rounded-lg bg-ifaqa-cashmere text-ifaqa-plum border border-ifaqa-plum/15 hover:bg-[#EDE5D5] text-xs font-sans font-medium inline-flex items-center shrink-0 whitespace-nowrap transition-colors"
+            >
+              Contact us
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Extended Details Tabs (Horizontal scroll without scrollbar thumb) */}
@@ -584,6 +627,22 @@ export default function RemedyDetailPage() {
           )}
         </div>
       </div>
+
+      {/* Customer Reviews Section (Bottom of PDP, Linked from Top Stars) */}
+      <ProductReviewsSection
+        remedyId={remedy.id}
+        remedySlug={remedy.slug}
+        remedyName={displayTitle}
+        remedyImage={remedy.primaryImage}
+        reviews={reviews}
+        onReviewAdded={(newRev) => setReviews((prev) => [newRev, ...prev])}
+        onReviewUpdated={(updatedRev) =>
+          setReviews((prev) => prev.map((r) => (r.id === updatedRev.id ? updatedRev : r)))
+        }
+        onReviewDeleted={(deletedId) =>
+          setReviews((prev) => prev.filter((r) => r.id !== deletedId))
+        }
+      />
 
       {/* Related Remedies */}
       {relatedRemedies.length > 0 && (

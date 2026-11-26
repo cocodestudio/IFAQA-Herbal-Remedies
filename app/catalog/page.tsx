@@ -17,6 +17,7 @@ const ITEMS_PER_PAGE = 9;
 function CatalogContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
+  const urlSearch = searchParams.get('search') || searchParams.get('q') || '';
 
   // Instant initial hydration from local seedData — avoids blocking on remote network fetches
   const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
@@ -24,11 +25,15 @@ function CatalogContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const { t, getCategoryTitle } = useLanguage();
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(urlSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedForm, setSelectedForm] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  useEffect(() => {
+    setSearch(urlSearch);
+  }, [urlSearch]);
 
   useEffect(() => {
     async function refreshInBackground() {

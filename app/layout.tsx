@@ -69,7 +69,7 @@ export default function RootLayout({
                 <LuxuryPageLoader />
               </Suspense>
               <Header />
-              <main className="flex-1 w-full overflow-x-clip">
+              <main className="flex-1 w-full min-h-[calc(100vh-4.5rem)] overflow-x-clip">
                 {children}
               </main>
               <Footer />

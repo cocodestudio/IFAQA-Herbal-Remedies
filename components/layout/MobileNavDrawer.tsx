@@ -125,7 +125,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
                   <span className="truncate max-w-[140px]" dir="ltr">{user.phoneNumber}</span>
                 </div>
                 <Link
-                  href="/sign-in"
+                  href="/account"
                   onClick={onClose}
                   className="text-xs font-sans text-ifaqa-plum hover:underline font-medium"
                 >

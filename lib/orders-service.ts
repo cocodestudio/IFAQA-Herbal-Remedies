@@ -1,4 +1,4 @@
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { db } from './firebase';
 import { CustomerOrder, OrderItem, ShippingAddress } from './types';
 import { validateE164Phone, validatePostalCode, generateOrderNumber, roundUsdCents } from './formatters';
@@ -117,26 +117,71 @@ export async function placeCustomerOrder(order: CustomerOrder): Promise<{ succes
     throw new Error("Order arithmetic mismatch: totalAmount must equal subtotal + shippingFee - discount and be positive.");
   }
 
+  // Always mirror order to local storage so My Orders shows recent checkouts immediately
+  if (typeof window !== 'undefined') {
+    try {
+      const existing: CustomerOrder[] = JSON.parse(localStorage.getItem('ifaqa_customer_orders') || '[]');
+      const deduped = [order, ...existing.filter((o) => o.id !== order.id)];
+      localStorage.setItem('ifaqa_customer_orders', JSON.stringify(deduped));
+    } catch (e) {
+      console.warn("Failed saving order to localStorage mirror:", e);
+    }
+  }
+
   // Attempt Firestore write
   if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true') {
     try {
       await setDoc(doc(db, 'orders', order.id), order);
       return { success: true, orderId: order.id, orderNumber: order.orderNumber };
     } catch (err) {
-      console.warn("Firestore order write failed, saving to local order repository:", err);
-    }
-  }
-
-  // Local storage fallback for resilient offline operation
-  if (typeof window !== 'undefined') {
-    try {
-      const existing = JSON.parse(localStorage.getItem('ifaqa_customer_orders') || '[]');
-      existing.push(order);
-      localStorage.setItem('ifaqa_customer_orders', JSON.stringify(existing));
-    } catch (e) {
-      console.warn("Failed saving order to localStorage fallback:", e);
+      console.warn("Firestore order write failed, using local order repository:", err);
     }
   }
 
   return { success: true, orderId: order.id, orderNumber: order.orderNumber };
+}
+
+/**
+ * Fetches orders belonging to a signed-in customer by UID or normalized phone number,
+ * merging local order mirror + Firestore orders sorted newest-first.
+ */
+export async function getCustomerOrders(uid?: string, phone?: string): Promise<CustomerOrder[]> {
+  const normalizedPhone = (phone || '').replace(/\s+/g, '');
+  const results = new Map<string, CustomerOrder>();
+
+  if (typeof window !== 'undefined') {
+    try {
+      const localOrders: CustomerOrder[] = JSON.parse(localStorage.getItem('ifaqa_customer_orders') || '[]');
+      for (const order of localOrders) {
+        const orderPhone = (order.customerPhone || '').replace(/\s+/g, '');
+        if ((uid && order.customerId === uid) || (normalizedPhone && orderPhone === normalizedPhone)) {
+          results.set(order.id, order);
+        }
+      }
+    } catch {
+      // Ignore parse issues
+    }
+  }
+
+  if (db && process.env.NEXT_PUBLIC_MOCK_FALLBACK !== 'true' && (uid || normalizedPhone)) {
+    try {
+      const ordersRef = collection(db, 'orders');
+      const queries = [];
+      if (uid) queries.push(getDocs(query(ordersRef, where('customerId', '==', uid))));
+      if (normalizedPhone) queries.push(getDocs(query(ordersRef, where('customerPhone', '==', normalizedPhone))));
+      const snaps = await Promise.all(queries);
+      for (const snap of snaps) {
+        snap.forEach((docSnap) => {
+          const data = docSnap.data() as CustomerOrder;
+          results.set(data.id || docSnap.id, { ...data, id: data.id || docSnap.id });
+        });
+      }
+    } catch {
+      // Fall back cleanly to local orders if Firestore rules restrict query
+    }
+  }
+
+  return Array.from(results.values()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 }

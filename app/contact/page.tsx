@@ -43,7 +43,7 @@ export default function ContactPage() {
       helplineValue: '+91 97298 40336',
       helplineHours: 'Monday to Saturday, 9:00 AM to 8:00 PM IST',
       emailLabel: 'Email',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       addressLabel: 'Address',
       addressValue: 'Near Mandi Wali Masjid, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.), India',
       speedTitle: 'Typical transit times',
@@ -93,7 +93,7 @@ export default function ContactPage() {
       helplineValue: '+91 97298 40336',
       helplineHours: 'सोमवार से शनिवार, सुबह 9:00 से रात 8:00 बजे',
       emailLabel: 'ईमेल',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       addressLabel: 'पता',
       addressValue: 'नियर मंडी वाली मस्जिद, बरथा कायस्थ पाथर, सहारनपुर - 247231 (उ.प्र.)',
       speedTitle: 'अनुमानित डिलीवरी समय',
@@ -143,7 +143,7 @@ export default function ContactPage() {
       helplineValue: '+91 97298 40336',
       helplineHours: 'پیر تا ہفتہ، صبح 9:00 تا رات 8:00 بجے',
       emailLabel: 'ای میل',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       addressLabel: 'پتہ',
       addressValue: 'قریب منڈی والی مسجد، برتھہ کائستھ پتھر، سہارنپور - 247231 (یوپی)',
       speedTitle: 'ترسیل کا وقت',
@@ -193,7 +193,7 @@ export default function ContactPage() {
     helplineValue: '+91 97298 40336',
     helplineHours: 'Monday to Saturday, 9:00 AM to 8:00 PM IST',
     emailLabel: 'Email',
-    emailValue: 'ifaqaherbalremedies@gmail.com',
+    emailValue: 'support@ifaqa.in',
     addressLabel: 'Address',
     addressValue: 'Near Mandi Wali Masjid, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.), India',
     speedTitle: 'Typical transit times',
@@ -467,7 +467,7 @@ export default function ContactPage() {
                   <Mail className="w-4 h-4 text-[#5A6962] shrink-0 mt-1" strokeWidth={1.5} />
                   <div>
                     <span className="text-xs text-[#5A6962] block">{content.emailLabel}</span>
-                    <a href="mailto:ifaqaherbalremedies@gmail.com" dir="ltr" className="font-mono font-medium text-ifaqa-plum hover:underline break-all block mt-0.5">
+                    <a href="mailto:support@ifaqa.in" dir="ltr" className="font-mono font-medium text-ifaqa-plum hover:underline break-all block mt-0.5">
                       {content.emailValue}
                     </a>
                   </div>

@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
       officerLabel: 'Office',
       officerValue: 'IFAQA Herbal Remedies, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.)',
       emailLabel: 'Email',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       phoneLabel: 'Phone',
       phoneValue: '+91 97298 40336',
       ctaTitle: 'Questions about an order or delivery',
@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
       officerLabel: 'कार्यालय',
       officerValue: 'IFAQA हर्बल रेमेडीज़, बरथा कायस्थ पाथर, सहारनपुर - 247231 (उ.प्र.)',
       emailLabel: 'ईमेल',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       phoneLabel: 'फ़ोन',
       phoneValue: '+91 97298 40336',
       ctaTitle: 'ऑर्डर से जुड़ा कोई सवाल है',
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
       officerLabel: 'دفتر',
       officerValue: 'IFAQA ہربل ریمیڈیز، برتھہ کائستھ پتھر، سہارنپور - 247231 (یوپی)',
       emailLabel: 'ای میل',
-      emailValue: 'ifaqaherbalremedies@gmail.com',
+      emailValue: 'support@ifaqa.in',
       phoneLabel: 'فون',
       phoneValue: '+91 97298 40336',
       ctaTitle: 'آرڈر کے متعلق کوئی سوال ہے',
@@ -126,7 +126,7 @@ export default function PrivacyPolicyPage() {
     officerLabel: 'Office',
     officerValue: 'IFAQA Herbal Remedies, Bartha Kayasth Pather, Saharanpur - 247231 (U.P.)',
     emailLabel: 'Email',
-    emailValue: 'ifaqaherbalremedies@gmail.com',
+    emailValue: 'support@ifaqa.in',
     phoneLabel: 'Phone',
     phoneValue: '+91 97298 40336',
     ctaTitle: 'Questions about an order or delivery',
@@ -205,7 +205,7 @@ export default function PrivacyPolicyPage() {
             </div>
             <div className="p-4 rounded-xl bg-white border border-ifaqa-plum/10">
               <span className="text-xs text-[#5A6962] block">{content.emailLabel}</span>
-              <a href="mailto:ifaqaherbalremedies@gmail.com" dir="ltr" className="font-mono text-ifaqa-plum hover:underline block mt-1 break-all">
+              <a href="mailto:support@ifaqa.in" dir="ltr" className="font-mono text-ifaqa-plum hover:underline block mt-1 break-all">
                 {content.emailValue}
               </a>
             </div>

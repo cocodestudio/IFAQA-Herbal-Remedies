@@ -33,6 +33,36 @@ function resolveRouteLabel(href: string, language: string): string {
     if (language === 'ur') return 'آرڈر کی تصدیق کھل رہی ہے...';
     return 'Confirming your order...';
   }
+  if (path.includes('/account/orders')) {
+    if (language === 'hi') return 'आपके ऑर्डर लोड हो रहे हैं...';
+    if (language === 'ur') return 'آپ کے آرڈرز کھل رہے ہیں...';
+    return 'Loading your orders...';
+  }
+  if (path.includes('/account/reviews')) {
+    if (language === 'hi') return 'आपकी समीक्षाएं खुल रही हैं...';
+    if (language === 'ur') return 'آپ کے تبصرے کھل رہے ہیں...';
+    return 'Loading your reviews...';
+  }
+  if (path.includes('/account/addresses')) {
+    if (language === 'hi') return 'सहेजे गए पते खुल रहे हैं...';
+    if (language === 'ur') return 'محفوظ پتے کھل رہے ہیں...';
+    return 'Opening saved addresses...';
+  }
+  if (path.includes('/account/bank')) {
+    if (language === 'hi') return 'बैंक और UPI विवरण खुल रहा है...';
+    if (language === 'ur') return 'بینک اور یو پی آئی تفصیلات کھل رہی ہیں...';
+    return 'Opening bank & UPI details...';
+  }
+  if (path.includes('/account/support')) {
+    if (language === 'hi') return 'सहायता केंद्र खुल रहा है...';
+    if (language === 'ur') return 'ہیلپ اینڈ سپورٹ کھل رہا ہے...';
+    return 'Opening help & support...';
+  }
+  if (path.includes('/account')) {
+    if (language === 'hi') return 'मेरा खाता खुल रहा है...';
+    if (language === 'ur') return 'میرا اکاؤنٹ کھل رہا ہے...';
+    return 'Opening my account...';
+  }
   if (path.includes('/sign-in') || path.includes('/login')) {
     if (language === 'hi') return 'साइन-इन पेज खुल रहा है...';
     if (language === 'ur') return 'سائن ان صفحہ کھل رہا ہے...';
@@ -105,15 +135,19 @@ export function LuxuryPageLoader() {
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
 
     settleTimerRef.current = setTimeout(() => {
-      setProgress(100);
-      setCompleting(true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setProgress(100);
+          setCompleting(true);
 
-      hideTimerRef.current = setTimeout(() => {
-        activeNavRef.current = false;
-        setVisible(false);
-        setCompleting(false);
-        setProgress(0);
-      }, 210);
+          hideTimerRef.current = setTimeout(() => {
+            activeNavRef.current = false;
+            setVisible(false);
+            setCompleting(false);
+            setProgress(0);
+          }, 210);
+        });
+      });
     }, waitMs);
   }, []);
 

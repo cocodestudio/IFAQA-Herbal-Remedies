@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -9,6 +9,7 @@ import { PaymentMethod, ShippingAddress } from '@/lib/types';
 import { PaymentMethodSelector } from './PaymentMethodSelector';
 import { Button3D } from '@/components/ui/Button3D';
 import { validateE164Phone, validatePostalCode } from '@/lib/formatters';
+import { getSavedAddresses, getAccountProfile } from '@/lib/account-storage';
 import { triggerNavigationProgress } from '@/lib/nav-progress';
 import { Lock, AlertCircle, ShieldCheck, MapPin, User } from 'lucide-react';
 
@@ -29,6 +30,37 @@ export function CheckoutForm() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+    const savedProfile = getAccountProfile(user.uid);
+    const savedAddresses = getSavedAddresses(user.uid);
+    const defaultAddr = savedAddresses.find((a) => a.isDefault) || savedAddresses[0];
+
+    if (savedProfile.fullName) {
+      setRecipientName((prev) => prev || savedProfile.fullName);
+    }
+    if (savedProfile.email) {
+      setCustomerEmail((prev) => prev || savedProfile.email);
+    }
+    if (user.phoneNumber) {
+      setCustomerPhone((prev) => (prev === '+91 ' || !prev ? user.phoneNumber : prev));
+    }
+
+    if (defaultAddr) {
+      if (defaultAddr.recipientName) {
+        setRecipientName((prev) => prev || defaultAddr.recipientName);
+      }
+      if (defaultAddr.phone) {
+        setCustomerPhone((prev) => (prev === '+91 ' || !prev ? defaultAddr.phone : prev));
+      }
+      setStreetAddress((prev) => prev || defaultAddr.streetAddress);
+      setCity((prev) => prev || defaultAddr.city);
+      setStateProvince((prev) => prev || defaultAddr.stateProvince);
+      setPostalCode((prev) => prev || defaultAddr.postalCode);
+      setCountry((prev) => prev || defaultAddr.country || 'India');
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

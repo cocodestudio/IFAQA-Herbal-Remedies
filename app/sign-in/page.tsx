@@ -327,17 +327,25 @@ export default function SignInPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link href="/catalog" className="flex-1">
+                  <Link href="/account" className="flex-1">
                     <Button3D variant="primary" size="md" className="w-full">
+                      <span>{t('account')}</span>
+                      <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+                    </Button3D>
+                  </Link>
+                  <Link href="/catalog" className="flex-1">
+                    <Button3D variant="secondary" size="md" className="w-full">
                       <ShoppingBag className="w-4 h-4 me-2" strokeWidth={1.5} />
                       <span>{content.browseShop}</span>
                     </Button3D>
                   </Link>
+                </div>
+                <div className="pt-1">
                   <button
                     onClick={() => signOut()}
-                    className="h-10 px-5 rounded-lg bg-white text-ifaqa-plum hover:bg-red-50 hover:text-red-700 border border-ifaqa-plum/15 text-sm font-medium transition-colors inline-flex items-center justify-center gap-2"
+                    className="h-9 px-4 rounded-lg bg-white text-[#5A6962] hover:bg-red-50 hover:text-red-700 border border-ifaqa-plum/15 text-xs font-medium transition-colors inline-flex items-center justify-center gap-2"
                   >
-                    <LogOut className="w-4 h-4" strokeWidth={1.5} />
+                    <LogOut className="w-3.5 h-3.5" strokeWidth={1.5} />
                     <span>{content.signOutBtn}</span>
                   </button>
                 </div>
