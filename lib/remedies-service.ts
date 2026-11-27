@@ -1,18 +1,17 @@
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, firebaseConfig } from './firebase';
 import seedData from './seed-data.json';
 import { HerbalRemedy, AilmentCategory, PromotionalBanner } from './types';
 
 export const isFallbackMode = (): boolean => {
   if (typeof process !== 'undefined') {
     if (process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return true;
-    const key = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+    const key = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || firebaseConfig.apiKey;
     if (!key || key.includes('mock') || key.includes('Dummy')) return true;
   }
   return false;
 };
 
-// In-Memory Fast Cache for Instant 0ms Page Navigation & Seamless Transitions
 let cachedRemedies: HerbalRemedy[] | null = null;
 let remediesTimestamp = 0;
 
@@ -22,11 +21,17 @@ let categoriesTimestamp = 0;
 let cachedBanners: PromotionalBanner[] | null = null;
 let bannersTimestamp = 0;
 
-const CACHE_TTL_MS = 30 * 1000; // 30 seconds for fresh production catalog sync
+// Always keep storefront live-synced with Admin Portal updates in Firestore
+const CACHE_TTL_MS = 0;
 
 export async function getRemedies(): Promise<HerbalRemedy[]> {
   const now = Date.now();
-  if (cachedRemedies && cachedRemedies.length > 0 && (now - remediesTimestamp) < CACHE_TTL_MS) {
+  if (
+    CACHE_TTL_MS > 0 &&
+    cachedRemedies &&
+    cachedRemedies.length > 0 &&
+    now - remediesTimestamp < CACHE_TTL_MS
+  ) {
     return cachedRemedies;
   }
 
@@ -34,12 +39,18 @@ export async function getRemedies(): Promise<HerbalRemedy[]> {
     try {
       const snap = await getDocs(collection(db, 'remedies'));
       if (!snap.empty) {
-        cachedRemedies = snap.docs.map(d => ({ ...d.data(), id: d.id } as HerbalRemedy));
+        const list = snap.docs.map((d) => ({ ...d.data(), id: d.id } as HerbalRemedy));
+        list.sort((a, b) => {
+          const tA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+          const tB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+          return tB - tA;
+        });
+        cachedRemedies = list;
         remediesTimestamp = now;
         return cachedRemedies;
       }
     } catch (e) {
-      console.warn("Firestore remedies fetch failed, using seed data fallback:", e);
+      console.warn('Firestore remedies fetch failed, using seed data fallback:', e);
     }
   }
   cachedRemedies = seedData.remedies as unknown as HerbalRemedy[];
@@ -49,31 +60,35 @@ export async function getRemedies(): Promise<HerbalRemedy[]> {
 
 export async function getRemedyBySlug(slug: string): Promise<HerbalRemedy | null> {
   const cleanSlug = (slug || '').toLowerCase().trim();
-  // Fast-path: instant in-memory cache lookup
-  if (cachedRemedies) {
-    const match = cachedRemedies.find(r => r.slug === cleanSlug || r.id === cleanSlug);
-    if (match) return match;
-  }
-  // Synchronous fallback lookup from seed dataset
-  const quick = (seedData.remedies as unknown as HerbalRemedy[]).find(
-    r => r.slug === cleanSlug || r.id === cleanSlug
-  );
-  if (quick && (isFallbackMode() || !db)) {
-    return quick;
-  }
+  if (!cleanSlug) return null;
+
   const all = await getRemedies();
-  return all.find(r => r.slug === cleanSlug || r.id === cleanSlug) || quick || null;
+  const liveMatch = all.find(
+    (r) => (r.slug || '').toLowerCase() === cleanSlug || r.id.toLowerCase() === cleanSlug
+  );
+  if (liveMatch) return liveMatch;
+
+  const quick = (seedData.remedies as unknown as HerbalRemedy[]).find(
+    (r) => (r.slug || '').toLowerCase() === cleanSlug || r.id.toLowerCase() === cleanSlug
+  );
+  return quick || null;
 }
 
 export async function getRemediesByCategory(categoryId: string): Promise<HerbalRemedy[]> {
   const all = await getRemedies();
-  if (!categoryId || categoryId === 'all') return all;
-  return all.filter(r => r.categoryId === categoryId);
+  const active = all.filter((r) => r.isAvailable !== false);
+  if (!categoryId || categoryId === 'all') return active;
+  return active.filter((r) => r.categoryId === categoryId);
 }
 
 export async function getCategories(): Promise<AilmentCategory[]> {
   const now = Date.now();
-  if (cachedCategories && cachedCategories.length > 0 && (now - categoriesTimestamp) < CACHE_TTL_MS) {
+  if (
+    CACHE_TTL_MS > 0 &&
+    cachedCategories &&
+    cachedCategories.length > 0 &&
+    now - categoriesTimestamp < CACHE_TTL_MS
+  ) {
     return cachedCategories;
   }
 
@@ -81,17 +96,23 @@ export async function getCategories(): Promise<AilmentCategory[]> {
     try {
       const snap = await getDocs(collection(db, 'ailments'));
       if (!snap.empty) {
-        const categories = snap.docs.map(d => ({ ...d.data(), id: d.id } as AilmentCategory));
-        cachedCategories = categories.sort((a, b) => a.displayOrder - b.displayOrder);
-        categoriesTimestamp = now;
-        return cachedCategories;
+        const categories = snap.docs
+          .map((d) => ({ ...d.data(), id: d.id } as AilmentCategory))
+          .filter((c) => c && c.name && c.isActive !== false);
+        if (categories.length > 0) {
+          cachedCategories = categories.sort((a, b) => a.displayOrder - b.displayOrder);
+          categoriesTimestamp = now;
+          return cachedCategories;
+        }
       }
     } catch (e) {
-      console.warn("Firestore categories fetch failed, using seed data fallback:", e);
+      console.warn('Firestore categories fetch failed, using seed data fallback:', e);
     }
   }
   const categories = seedData.categories as unknown as AilmentCategory[];
-  cachedCategories = [...categories].sort((a, b) => a.displayOrder - b.displayOrder);
+  cachedCategories = [...categories]
+    .filter((c) => c.isActive !== false)
+    .sort((a, b) => a.displayOrder - b.displayOrder);
   categoriesTimestamp = now;
   return cachedCategories;
 }
@@ -99,12 +120,17 @@ export async function getCategories(): Promise<AilmentCategory[]> {
 export async function getCategoryBySlug(slug: string): Promise<AilmentCategory | null> {
   const categories = await getCategories();
   const cleanSlug = (slug || '').toLowerCase().trim();
-  return categories.find(c => c.slug === cleanSlug || c.id === cleanSlug) || null;
+  return categories.find((c) => c.slug === cleanSlug || c.id === cleanSlug) || null;
 }
 
 export async function getBanners(): Promise<PromotionalBanner[]> {
   const now = Date.now();
-  if (cachedBanners && cachedBanners.length > 0 && (now - bannersTimestamp) < CACHE_TTL_MS) {
+  if (
+    CACHE_TTL_MS > 0 &&
+    cachedBanners &&
+    cachedBanners.length > 0 &&
+    now - bannersTimestamp < CACHE_TTL_MS
+  ) {
     return cachedBanners;
   }
 
@@ -112,26 +138,36 @@ export async function getBanners(): Promise<PromotionalBanner[]> {
     try {
       const snap = await getDocs(collection(db, 'banners'));
       if (!snap.empty) {
-        const banners = snap.docs.map(d => ({ ...d.data(), id: d.id } as PromotionalBanner));
-        cachedBanners = banners.filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+        const banners = snap.docs.map((d) => ({ ...d.data(), id: d.id } as PromotionalBanner));
+        cachedBanners = banners
+          .filter((b) => b.isActive)
+          .sort((a, b) => a.priorityOrder - b.priorityOrder);
         bannersTimestamp = now;
         return cachedBanners;
       }
     } catch (e) {
-      console.warn("Firestore banners fetch failed, using seed data fallback:", e);
+      console.warn('Firestore banners fetch failed, using seed data fallback:', e);
     }
   }
   const banners = seedData.banners as unknown as PromotionalBanner[];
-  cachedBanners = [...banners].filter(b => b.isActive).sort((a, b) => a.priorityOrder - b.priorityOrder);
+  cachedBanners = [...banners]
+    .filter((b) => b.isActive)
+    .sort((a, b) => a.priorityOrder - b.priorityOrder);
   bannersTimestamp = now;
   return cachedBanners;
 }
 
 export function filterRemedies(
   remedies: HerbalRemedy[],
-  { category, search, inStockOnly, form }: { category?: string; search?: string; inStockOnly?: boolean; form?: string } = {}
+  {
+    category,
+    search,
+    inStockOnly,
+    form,
+  }: { category?: string; search?: string; inStockOnly?: boolean; form?: string } = {}
 ): HerbalRemedy[] {
-  return remedies.filter(r => {
+  return remedies.filter((r) => {
+    if (r.isAvailable === false) return false;
     if (category && category !== 'all' && r.categoryId !== category) return false;
     if (form && form !== 'all' && r.form !== form) return false;
     if (inStockOnly && (!r.isAvailable || r.stockQuantity <= 0)) return false;
@@ -139,13 +175,25 @@ export function filterRemedies(
       const sanitized = search.trim().slice(0, 100).toLowerCase();
       const matchesName = r.name.toLowerCase().includes(sanitized);
       const matchesRomanUrdu = (r.romanUrduName || '').toLowerCase().includes(sanitized);
-      const matchesUrdu = r.urduName.includes(search.trim());
+      const matchesUrdu = (r.urduName || '').includes(search.trim());
       const matchesDesc = (r.shortDescription || '').toLowerCase().includes(sanitized);
-      const matchesIndications = (r.therapeuticIndications || []).some(ind => ind.toLowerCase().includes(sanitized));
-      const matchesIngredients = (r.herbalIngredients || []).some(ing =>
-        ing.commonName.toLowerCase().includes(sanitized) || ing.botanicalName.toLowerCase().includes(sanitized)
+      const matchesIndications = (r.therapeuticIndications || []).some((ind) =>
+        ind.toLowerCase().includes(sanitized)
       );
-      if (!matchesName && !matchesRomanUrdu && !matchesUrdu && !matchesDesc && !matchesIndications && !matchesIngredients) return false;
+      const matchesIngredients = (r.herbalIngredients || []).some(
+        (ing) =>
+          ing.commonName.toLowerCase().includes(sanitized) ||
+          ing.botanicalName.toLowerCase().includes(sanitized)
+      );
+      if (
+        !matchesName &&
+        !matchesRomanUrdu &&
+        !matchesUrdu &&
+        !matchesDesc &&
+        !matchesIndications &&
+        !matchesIngredients
+      )
+        return false;
     }
     return true;
   });

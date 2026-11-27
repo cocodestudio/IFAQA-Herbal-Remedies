@@ -51,14 +51,40 @@ export default function ContactPage() {
       tierSpeed: 'Major metro & regional cities: 2 to 4 business days',
       remoteSpeed: 'Remote & hill districts: 4 to 6 business days',
       faqTitle: 'Common questions',
-      faq1Q: 'How do I select the right herbal remedy',
-      faq1A: 'Browse products by health category or send us a message above describing what you need.',
-      faq2Q: 'How long does courier dispatch take',
-      faq2A: 'Orders ship from Saharanpur within 24 hours and arrive across India in 2 to 5 business days.',
-      faq3Q: 'Is my inquiry kept confidential',
-      faq3A: 'Yes. All contact details and customer questions are handled privately by our team.',
-      faq4Q: 'How do I track my parcel',
-      faq4A: 'Your courier tracking reference is sent directly to your registered mobile number upon dispatch.',
+      faqs: [
+        {
+          q: 'How do I select the right herbal remedy?',
+          a: 'Browse our catalog by health concern (Digestive, Vitality, Respiratory, Joint care, Skin, or Immunity), or send us a message above describing your need and we will guide you clearly.',
+        },
+        {
+          q: 'How long does delivery from Saharanpur take?',
+          a: 'Orders placed before evening dispatch leave our Saharanpur dispensary within 24 hours. North India deliveries typically arrive in 1–2 business days, metros in 2–4 days, and remote districts in 4–6 days.',
+        },
+        {
+          q: 'Do you offer Cash on Delivery (COD) and online payment?',
+          a: 'Yes. Cash on Delivery is available across serviceable Indian pincodes alongside prepaid card and bank transfer options at checkout.',
+        },
+        {
+          q: 'How should I take Majun, Safoof, or Sharbat?',
+          a: 'Every bottle and jar carries exact dose and timing on the label (for example, 1 teaspoon with lukewarm water or milk after meals). If you take prescription medicines, consult your doctor first.',
+        },
+        {
+          q: 'Do your products contain chemical steroids or preservatives?',
+          a: 'Never. All 31 formulations are made strictly with whole dried herbs, wild roots, spices, and natural forest honey with zero chemical steroids or artificial colors.',
+        },
+        {
+          q: 'How should I store the herbal jars and what is the shelf life?',
+          a: 'Keep lids tightly closed in a cool, dry cabinet away from direct sunlight and wet spoons. Standard unopened shelf life is up to 24 months as stamped on each label.',
+        },
+        {
+          q: 'How do I track my order after placing it?',
+          a: 'Your Order ID (e.g., IFA202610001) appears right after checkout, and courier tracking is sent to your mobile number upon dispatch. Signed-in customers can view live order status inside Account > My Orders.',
+        },
+        {
+          q: 'What if a bottle arrives damaged or spilled in transit?',
+          a: 'Take a clear photo within 48 hours of delivery and send it on our helpline (+91 97298 40336) or support form with your Order ID—we replace transit-damaged packages quickly.',
+        },
+      ],
     },
     hi: {
       badge: 'संपर्क करें',
@@ -101,14 +127,40 @@ export default function ContactPage() {
       tierSpeed: 'प्रमुख शहर व राज्य: 2 से 4 दिन',
       remoteSpeed: 'दूरदराज व पहाड़ी क्षेत्र: 4 से 6 दिन',
       faqTitle: 'अक्सर पूछे जाने वाले सवाल',
-      faq1Q: 'सही हर्बल दवा कैसे चुनें',
-      faq1A: 'आप कैटेगरी के अनुसार दवाएं देख सकते हैं या ऊपर दिए फॉर्म से मार्गदर्शन प्राप्त कर सकते हैं।',
-      faq2Q: 'ऑर्डर पहुंचने में कितना समय लगता है',
-      faq2A: 'ऑर्डर 24 घंटे में सहारनपुर से डिस्पैच हो जाते हैं और 2 से 5 दिनों में डिलीवर हो जाते हैं।',
-      faq3Q: 'क्या मेरी जानकारी गोपनीय रहेगी',
-      faq3A: 'हाँ, सभी ग्राहक विवरण पूरी तरह सुरक्षित और गोपनीय रखे जाते हैं।',
-      faq4Q: 'ऑर्डर ट्रैक कैसे करें',
-      faq4A: 'ऑर्डर डिस्पैच होते ही आपके मोबाइल नंबर पर कूरियर ट्रैकिंग लिंक भेजा जाता है।',
+      faqs: [
+        {
+          q: 'सही हर्बल दवा कैसे चुनें?',
+          a: 'आप कैटेगरी (पाचन, ताकत, खांसी, जोड़ों का दर्द, त्वचा या इम्युनिटी) के अनुसार उत्पाद देख सकते हैं या ऊपर दिए फॉर्म से मार्गदर्शन प्राप्त कर सकते हैं।',
+        },
+        {
+          q: 'ऑर्डर पहुंचने में कितना समय लगता है?',
+          a: 'ऑर्डर 24 घंटे में सहारनपुर से डिस्पैच हो जाते हैं। उत्तर भारत में 1–2 दिन, बड़े शहरों में 2–4 दिन और दूर के क्षेत्रों में 4–6 दिनों में डिलीवरी हो जाती है।',
+        },
+        {
+          q: 'क्या कैश ऑन डिलीवरी (COD) उपलब्ध है?',
+          a: 'हाँ, भारत के सभी प्रमुख पिनकोड पर कैश ऑन डिलीवरी (COD) और ऑनलाइन भुगतान दोनों विकल्प उपलब्ध हैं।',
+        },
+        {
+          q: 'माजून, चूर्ण या शर्बत कैसे लें?',
+          a: 'हर डिब्बे पर सही मात्रा व समय लिखा होता है (जैसे भोजन के बाद 1 चम्मच गुनगुने पानी या दूध से)। यदि आप कोई एलोपैथिक दवा ले रहे हैं तो डॉक्टर से परामर्श लें।',
+        },
+        {
+          q: 'क्या उत्पादों में स्टेरॉयड या केमिकल मिलावट होती है?',
+          a: 'बिल्कुल नहीं। सभी 31 उत्पाद शुद्ध जड़ी-बूटियों, जड़ों और प्राकृतिक शहद से बिना किसी स्टेरॉयड या कृत्रिम रंग के तैयार किए जाते हैं।',
+        },
+        {
+          q: 'दवाओं को सुरक्षित कैसे रखें और एक्सपायरी क्या है?',
+          a: 'ढक्कन को अच्छी तरह बंद करके ठंडी व सूखी जगह पर रखें और गीली चम्मच का उपयोग न करें। मानक शेल्फ लाइफ 24 माह तक होती है।',
+        },
+        {
+          q: 'अपना ऑर्डर ट्रैक कैसे करें?',
+          a: 'ऑर्डर डिस्पैच होते ही आपके मोबाइल पर ट्रैकिंग जानकारी आती है, और लॉगिन यूजर्स Account > My Orders में लाइव स्टेटस देख सकते हैं।',
+        },
+        {
+          q: 'यदि कूरियर से पैकेट टूट जाए तो क्या होगा?',
+          a: 'डिलीवरी के 48 घंटे के अंदर +91 97298 40336 पर फोटो व ऑर्डर नंबर भेजें — क्षतिग्रस्त उत्पाद को बिना किसी परेशानी के बदल दिया जाता है।',
+        },
+      ],
     },
     ur: {
       badge: 'رابطہ',
@@ -151,14 +203,40 @@ export default function ContactPage() {
       tierSpeed: 'بڑے شہر: 2 سے 4 دن',
       remoteSpeed: 'دور دراز علاقے: 4 سے 6 دن',
       faqTitle: 'عام سوالات',
-      faq1Q: 'صحیح دوا کیسے منتخب کریں',
-      faq1A: 'آپ اقسام کے مطابق مصنوعات دیکھ سکتے ہیں یا اوپر دیے گئے فارم سے پوچھ سکتے ہیں۔',
-      faq2Q: 'ڈلیوری میں کتنا وقت لگتا ہے',
-      faq2A: 'آرڈر 24 گھنٹوں میں سہارنپور سے روانہ ہو کر 2 سے 5 دن میں پہنچ جاتا ہے۔',
-      faq3Q: 'کیا میری معلومات محفوظ رہتی ہیں',
-      faq3A: 'جی ہاں، تمام معلومات مکمل رازداری سے محفوظ رکھی جاتی ہیں۔',
-      faq4Q: 'پارسل کیسے ٹریک کریں',
-      faq4A: 'آرڈر روانہ ہوتے ہی آپ کے موبائل نمبر پر ٹریکنگ تفصیلات بھیجی جاتی ہیں۔',
+      faqs: [
+        {
+          q: 'صحیح دوا کیسے منتخب کریں؟',
+          a: 'آپ اقسام کے مطابق مصنوعات دیکھ سکتے ہیں یا اوپر دیے گئے فارم سے رہنمائی حاصل کر سکتے ہیں۔',
+        },
+        {
+          q: 'ڈلیوری میں کتنا وقت لگتا ہے؟',
+          a: 'آرڈر 24 گھنٹوں میں سہارنپور سے روانہ ہو کر 2 سے 5 کاروباری دن میں پہنچ جاتا ہے۔',
+        },
+        {
+          q: 'کیا کیش آن ڈلیوری (COD) دستیاب ہے؟',
+          a: 'جی ہاں، بھارت کے تمام بڑے شہروں میں کیش آن ڈلیوری اور آن لائن ادائیگی دستیاب ہے۔',
+        },
+        {
+          q: 'معجون، سفوف اور شربت استعمال کرنے کا طریقہ کیا ہے؟',
+          a: 'ہر بوتل اور ڈبے پر خوراک کی واضح مقدار (مثلاً کھانے کے بعد نیم گرم دودھ یا پانی کے ساتھ 1 چمچ) درج ہوتی ہے۔',
+        },
+        {
+          q: 'کیا ادویات میں سٹیرائیڈز یا کیمیکل شامل ہوتے ہیں؟',
+          a: 'ہرگز نہیں۔ تمام مصنوعات خالص جڑی بوٹیوں اور شہد سے بغیر سٹیرائیڈز کے تیار کی جاتی ہیں۔',
+        },
+        {
+          q: 'ادویات کو محفوظ کیسے رکھیں؟',
+          a: 'ڈھکن مضبوطی سے بند رکھیں، دھوپ سے دور ٹھنڈی خشک جگہ پر رکھیں۔ معیار 24 ماہ تک رہتا ہے۔',
+        },
+        {
+          q: 'اپنا پارسل کیسے ٹریک کریں؟',
+          a: 'روانگی پر آپ کے موبائل پر ٹریکنگ تفصیلات بھیجی جاتی ہیں اور Account > My Orders میں بھی اسٹیٹس نظر آتا ہے۔',
+        },
+        {
+          q: 'اگر پارسل راستے میں خراب ہو جائے تو کیا ہوگا؟',
+          a: 'ڈلیوری کے 48 گھنٹوں کے اندر تصویر اور آرڈر نمبر +91 97298 40336 پر بھیجیں، ہم فوراً تبدیلی کر دیں گے۔',
+        },
+      ],
     },
   }[language] || {
     badge: 'Contact',
@@ -201,14 +279,40 @@ export default function ContactPage() {
     tierSpeed: 'Major metro & regional cities: 2 to 4 business days',
     remoteSpeed: 'Remote & hill districts: 4 to 6 business days',
     faqTitle: 'Common questions',
-    faq1Q: 'How do I select the right herbal remedy',
-    faq1A: 'Browse products by health category or send us a message above describing what you need.',
-    faq2Q: 'How long does courier dispatch take',
-    faq2A: 'Orders ship from Saharanpur within 24 hours and arrive across India in 2 to 5 business days.',
-    faq3Q: 'Is my inquiry kept confidential',
-    faq3A: 'Yes. All contact details and customer questions are handled privately by our team.',
-    faq4Q: 'How do I track my parcel',
-    faq4A: 'Your courier tracking reference is sent directly to your registered mobile number upon dispatch.',
+    faqs: [
+      {
+        q: 'How do I select the right herbal remedy?',
+        a: 'Browse our catalog by health concern (Digestive, Vitality, Respiratory, Joint care, Skin, or Immunity), or send us a message above describing your need and we will guide you clearly.',
+      },
+      {
+        q: 'How long does delivery from Saharanpur take?',
+        a: 'Orders placed before evening dispatch leave our Saharanpur dispensary within 24 hours. North India deliveries typically arrive in 1–2 business days, metros in 2–4 days, and remote districts in 4–6 days.',
+      },
+      {
+        q: 'Do you offer Cash on Delivery (COD) and online payment?',
+        a: 'Yes. Cash on Delivery is available across serviceable Indian pincodes alongside prepaid card and bank transfer options at checkout.',
+      },
+      {
+        q: 'How should I take Majun, Safoof, or Sharbat?',
+        a: 'Every bottle and jar carries exact dose and timing on the label (for example, 1 teaspoon with lukewarm water or milk after meals). If you take prescription medicines, consult your doctor first.',
+      },
+      {
+        q: 'Do your products contain chemical steroids or preservatives?',
+        a: 'Never. All 31 formulations are made strictly with whole dried herbs, wild roots, spices, and natural forest honey with zero chemical steroids or artificial colors.',
+      },
+      {
+        q: 'How should I store the herbal jars and what is the shelf life?',
+        a: 'Keep lids tightly closed in a cool, dry cabinet away from direct sunlight and wet spoons. Standard unopened shelf life is up to 24 months as stamped on each label.',
+      },
+      {
+        q: 'How do I track my order after placing it?',
+        a: 'Your Order ID (e.g., IFA202610001) appears right after checkout, and courier tracking is sent to your mobile number upon dispatch. Signed-in customers can view live order status inside Account > My Orders.',
+      },
+      {
+        q: 'What if a bottle arrives damaged or spilled in transit?',
+        a: 'Take a clear photo within 48 hours of delivery and send it on our helpline (+91 97298 40336) or support form with your Order ID—we replace transit-damaged packages quickly.',
+      },
+    ],
   };
 
   const topics = [
@@ -245,9 +349,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ifaqa-linen select-none pb-20 w-full font-sans">
-      <section className="w-full border-b border-ifaqa-plum/10 bg-ifaqa-linen py-10 md:py-16 px-4 sm:px-6 lg:px-10">
-        <div className="max-w-[1440px] mx-auto space-y-3">
+    <div className="min-h-screen bg-ifaqa-linen select-none pb-8 md:pb-10 w-full font-sans">
+      <section className="w-full border-b border-ifaqa-plum/10 bg-ifaqa-linen py-7 md:py-10 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-[1440px] mx-auto space-y-2.5">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#5A6962]">
             <Link href="/" className="hover:text-ifaqa-plum transition-colors">{t('home')}</Link>
             <span aria-hidden="true">/</span>
@@ -262,10 +366,10 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-12 md:py-16 space-y-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-7 md:py-10 space-y-8 md:space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-ifaqa-plum/10 p-6 sm:p-10 shadow-luxury-card space-y-6">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-ifaqa-plum/10 p-6 sm:p-8 shadow-luxury-card space-y-5">
             <div>
               <h2 className="font-serif font-normal text-2xl sm:text-3xl text-ifaqa-plum">
                 {content.formTitle}
@@ -499,19 +603,17 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* FAQ */}
-        <div className="space-y-6 pt-8 border-t border-ifaqa-plum/10">
+        {/* Expanded Real Customer FAQs */}
+        <div className="space-y-4 pt-6 border-t border-ifaqa-plum/10">
           <h3 className="font-serif font-normal text-2xl sm:text-3xl text-ifaqa-plum">
             {content.faqTitle}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              { q: content.faq1Q, a: content.faq1A },
-              { q: content.faq2Q, a: content.faq2A },
-              { q: content.faq3Q, a: content.faq3A },
-              { q: content.faq4Q, a: content.faq4A },
-            ].map((item, idx) => (
-              <div key={idx} className="p-6 rounded-xl bg-white border border-ifaqa-plum/10 space-y-1.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {content.faqs.map((item, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-xl bg-white border border-ifaqa-plum/10 shadow-luxury-card space-y-1.5"
+              >
                 <h4 className="text-sm font-semibold text-ifaqa-plum">{item.q}</h4>
                 <p className="text-sm text-[#5A6962] leading-relaxed">{item.a}</p>
               </div>

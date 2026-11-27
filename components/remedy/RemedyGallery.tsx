@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Leaf } from 'lucide-react';
@@ -12,15 +12,37 @@ interface RemedyGalleryProps {
   urduName: string;
 }
 
-export function RemedyGallery({ primaryImage, images = [], remedyName, urduName }: RemedyGalleryProps) {
-  const allImages = images && images.length > 0 ? images : [primaryImage];
-  const [selectedImage, setSelectedImage] = useState(allImages[0]);
+export function RemedyGallery({
+  primaryImage,
+  images = [],
+  remedyName,
+  urduName,
+}: RemedyGalleryProps) {
+  const allImages = useMemo(() => {
+    const merged: string[] = [];
+    const seen = new Set<string>();
+    for (const src of [primaryImage, ...(images || [])]) {
+      const clean = (src || '').trim();
+      if (clean && !seen.has(clean)) {
+        seen.add(clean);
+        merged.push(clean);
+      }
+    }
+    return merged.slice(0, 10);
+  }, [primaryImage, images]);
+
+  const [selectedImage, setSelectedImage] = useState(allImages[0] || '');
   const [imageError, setImageError] = useState(false);
   const { language } = useLanguage();
 
+  useEffect(() => {
+    setSelectedImage((prev) => (prev && allImages.includes(prev) ? prev : allImages[0] || ''));
+    setImageError(false);
+  }, [allImages]);
+
   return (
     <div className="space-y-3 select-none">
-      {/* Borderless clean product showcase on white ground */}
+      {/* Clean product showcase on white ground */}
       <div className="relative aspect-[4/3] sm:aspect-square w-full bg-white rounded-xl p-4 sm:p-6 flex flex-col items-center justify-center overflow-hidden">
         {selectedImage && !imageError ? (
           <div className="relative w-full h-full flex items-center justify-center">
@@ -51,17 +73,18 @@ export function RemedyGallery({ primaryImage, images = [], remedyName, urduName 
         )}
       </div>
 
-      {/* Thumbnails if multiple images exist */}
+      {/* Gallery Thumbnails (Supports up to 10 photos set in Admin) */}
       {allImages.length > 1 && (
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
           {allImages.map((img, idx) => (
             <button
-              key={idx}
+              key={`${img}-${idx}`}
+              type="button"
               onClick={() => {
                 setSelectedImage(img);
                 setImageError(false);
               }}
-              className={`relative w-16 h-16 rounded-lg border p-1 transition-colors overflow-hidden bg-white ${
+              className={`relative w-16 h-16 rounded-lg border p-1 transition-colors overflow-hidden bg-white shrink-0 ${
                 selectedImage === img
                   ? 'border-ifaqa-plum ring-1 ring-ifaqa-plum/30'
                   : 'border-ifaqa-plum/15 hover:border-ifaqa-plum/40'

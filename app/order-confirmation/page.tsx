@@ -11,7 +11,7 @@ import { formatPriceINR, formatPriceUSD } from '@/lib/formatters';
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get('orderNumber') || 'IFA-2026-1001';
+  const orderNumber = searchParams.get('orderNumber') || 'IFA202610001';
   const orderId = searchParams.get('orderId') || '';
 
   const [order, setOrder] = useState<CustomerOrder | null>(null);

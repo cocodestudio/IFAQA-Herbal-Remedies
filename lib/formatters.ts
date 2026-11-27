@@ -37,7 +37,8 @@ export function validatePostalCode(code: string): boolean {
   return /^[A-Za-z0-9\s-]{3,10}$/.test(code.trim());
 }
 
-export function generateOrderNumber(prefix = 'IFA-2026-'): string {
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  return `${prefix}${randomSuffix}`;
+export function generateOrderNumber(year: number | string = new Date().getFullYear()): string {
+  const cleanYear = String(year).replace(/[^0-9]/g, '').slice(0, 4) || String(new Date().getFullYear());
+  const randomSuffix = String(Math.floor(1 + Math.random() * 99999)).padStart(5, '0');
+  return `IFA${cleanYear}${randomSuffix}`;
 }

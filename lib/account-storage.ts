@@ -76,9 +76,12 @@ function writeJson<T>(key: string, value: T): void {
 
 function resolveCustomerDocId(uid: string): string | null {
   if (process.env.NEXT_PUBLIC_MOCK_FALLBACK === 'true') return null;
-  const target = firebaseAuth?.currentUser?.uid || uid;
-  if (!target || target === 'guest') return null;
-  return target;
+  // Only use Firestore when there is a real Firebase-authenticated user.
+  // If currentUser is null (mock/test session), skip Firestore entirely.
+  const firebaseUid = firebaseAuth?.currentUser?.uid;
+  if (!firebaseUid) return null;
+  if (firebaseUid !== uid && uid && !uid.startsWith('cust_')) return firebaseUid;
+  return firebaseUid;
 }
 
 async function persistCustomerField(uid: string, patch: Record<string, unknown>): Promise<void> {

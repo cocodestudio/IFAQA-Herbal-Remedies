@@ -161,11 +161,71 @@ html[dir="rtl"] .rtl-flip {
   }
 }
 
-/* Respect prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+@keyframes heroFadeRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes editorialReveal {
+  entry 0% {
+    opacity: 0.72;
+    transform: translate3d(0, 16px, 0) scale(0.985);
+  }
+  entry 100%,
+  exit 0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  exit 100% {
+    opacity: 0.92;
+    transform: translate3d(0, -6px, 0) scale(0.995);
+  }
+}
+
+/* Opt-in compositor-only motion respecting prefers-reduced-motion */
+@keyframes announcementMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ifaqa-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .ifaqa-marquee-track {
+    animation: announcementMarquee 18s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ifaqa-hero-rise {
+    animation: heroFadeRise 620ms var(--ease-unslop) both;
+  }
+
+  .ifaqa-hero-rise-delay {
+    animation: heroFadeRise 720ms var(--ease-unslop) 90ms both;
+  }
+
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .ifaqa-scroll-reveal {
+      animation: editorialReveal auto linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% cover 38%;
+    }
   }
 }

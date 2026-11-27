@@ -78,7 +78,17 @@ function CatalogContent() {
     }
   };
 
-  const activeCategoryObj = categories.find(
+  const categoriesWithLiveCounts = useMemo(() => {
+    const activeRemedies = remedies.filter((r) => r.isAvailable !== false);
+    return categories.map((cat) => {
+      const count = activeRemedies.filter(
+        (r) => r.categoryId === cat.id || r.categoryId === cat.slug
+      ).length;
+      return { ...cat, remedyCount: count };
+    });
+  }, [categories, remedies]);
+
+  const activeCategoryObj = categoriesWithLiveCounts.find(
     c => c.slug === selectedCategory || c.id === selectedCategory
   );
 
@@ -121,7 +131,7 @@ function CatalogContent() {
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className={`w-full lg:w-[260px] shrink-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto no-scrollbar ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <FilterSidebar
-            categories={categories}
+            categories={categoriesWithLiveCounts}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
             selectedForm={selectedForm}

@@ -168,7 +168,7 @@ export type PaymentStatus =
 // --- Master Customer Order Contract ---
 export interface CustomerOrder {
   id: string;                    // Firestore Document ID
-  orderNumber: string;           // Human-readable reference: "IFA-2026-1049"
+  orderNumber: string;           // Human-readable reference: "IFA202610492"
   customerId: string;            // Firebase Auth UID or "guest"
   customerName: string;
   customerPhone: string;

@@ -19,8 +19,6 @@ export default function CategoryCatalogPage() {
   const params = useParams();
   const categoryParam = typeof params?.category === 'string' ? params.category.toLowerCase().trim() : '';
 
-  const isInvalidCategory = Boolean(categoryParam && !VALID_CATEGORIES.includes(categoryParam));
-
   const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
   const [categories, setCategories] = useState<AilmentCategory[]>(() => seedData.categories as unknown as AilmentCategory[]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,8 +43,22 @@ export default function CategoryCatalogPage() {
     setCurrentPage(1);
   }, [selectedCategory, search, inStockOnly, selectedForm]);
 
-  const activeCategory = categories.find(
+  const categoriesWithLiveCounts = useMemo(() => {
+    const activeRemedies = remedies.filter((r) => r.isAvailable !== false);
+    return categories.map((cat) => {
+      const count = activeRemedies.filter(
+        (r) => r.categoryId === cat.id || r.categoryId === cat.slug
+      ).length;
+      return { ...cat, remedyCount: count };
+    });
+  }, [categories, remedies]);
+
+  const activeCategory = categoriesWithLiveCounts.find(
     c => c.slug === categoryParam || c.id === categoryParam
+  );
+
+  const isInvalidCategory = Boolean(
+    categoryParam && !VALID_CATEGORIES.includes(categoryParam) && !activeCategory
   );
 
   const filteredRemedies = useMemo(() => {
@@ -150,7 +162,7 @@ export default function CategoryCatalogPage() {
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className={`w-full lg:w-[260px] shrink-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto no-scrollbar ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
           <FilterSidebar
-            categories={categories}
+            categories={categoriesWithLiveCounts}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
             selectedForm={selectedForm}

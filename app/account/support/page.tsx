@@ -197,7 +197,7 @@ function SupportContent() {
                 type="text"
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
-                placeholder="e.g. IFA-2026-1049"
+                placeholder="e.g. IFA202610492"
                 className="w-full h-11 px-3.5 rounded-lg border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:outline-none text-sm font-mono text-ifaqa-plum bg-white"
               />
             )}

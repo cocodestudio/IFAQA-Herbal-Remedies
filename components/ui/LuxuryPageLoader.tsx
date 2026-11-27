@@ -5,6 +5,20 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { NAV_START_EVENT } from '@/lib/nav-progress';
 
+const DATA_HEAVY_PREFIXES = [
+  '/catalog',
+  '/remedy/',
+  '/checkout',
+  '/order-confirmation',
+  '/account/orders',
+  '/account/reviews',
+];
+
+function isDataHeavyRoute(href: string): boolean {
+  const path = (href || '').split('?')[0].toLowerCase();
+  return DATA_HEAVY_PREFIXES.some((prefix) => path.startsWith(prefix));
+}
+
 function resolveRouteLabel(href: string, language: string): string {
   const path = href.toLowerCase();
 
@@ -23,11 +37,6 @@ function resolveRouteLabel(href: string, language: string): string {
     if (language === 'ur') return 'محفوظ چیک آؤٹ کھل رہا ہے...';
     return 'Preparing secure checkout...';
   }
-  if (path.includes('/cart')) {
-    if (language === 'hi') return 'कार्ट खुल रहा है...';
-    if (language === 'ur') return 'کارٹ کھل رہا ہے...';
-    return 'Opening shopping cart...';
-  }
   if (path.includes('/order-confirmation')) {
     if (language === 'hi') return 'ऑर्डर की पुष्टि खुल रही है...';
     if (language === 'ur') return 'آرڈر کی تصدیق کھل رہی ہے...';
@@ -43,46 +52,6 @@ function resolveRouteLabel(href: string, language: string): string {
     if (language === 'ur') return 'آپ کے تبصرے کھل رہے ہیں...';
     return 'Loading your reviews...';
   }
-  if (path.includes('/account/addresses')) {
-    if (language === 'hi') return 'सहेजे गए पते खुल रहे हैं...';
-    if (language === 'ur') return 'محفوظ پتے کھل رہے ہیں...';
-    return 'Opening saved addresses...';
-  }
-  if (path.includes('/account/bank')) {
-    if (language === 'hi') return 'बैंक और UPI विवरण खुल रहा है...';
-    if (language === 'ur') return 'بینک اور یو پی آئی تفصیلات کھل رہی ہیں...';
-    return 'Opening bank & UPI details...';
-  }
-  if (path.includes('/account/support')) {
-    if (language === 'hi') return 'सहायता केंद्र खुल रहा है...';
-    if (language === 'ur') return 'ہیلپ اینڈ سپورٹ کھل رہا ہے...';
-    return 'Opening help & support...';
-  }
-  if (path.includes('/account')) {
-    if (language === 'hi') return 'मेरा खाता खुल रहा है...';
-    if (language === 'ur') return 'میرا اکاؤنٹ کھل رہا ہے...';
-    return 'Opening my account...';
-  }
-  if (path.includes('/sign-in') || path.includes('/login')) {
-    if (language === 'hi') return 'साइन-इन पेज खुल रहा है...';
-    if (language === 'ur') return 'سائن ان صفحہ کھل رہا ہے...';
-    return 'Opening account sign in...';
-  }
-  if (path.includes('/about')) {
-    if (language === 'hi') return 'हमारे बारे में जानकारी खुल रही है...';
-    if (language === 'ur') return 'ہمارے بارے میں صفحہ کھل رہا ہے...';
-    return 'Opening dispensary story...';
-  }
-  if (path.includes('/contact')) {
-    if (language === 'hi') return 'संपर्क पेज खुल रहा है...';
-    if (language === 'ur') return 'رابطہ کا صفحہ کھل رہا ہے...';
-    return 'Opening contact page...';
-  }
-  if (path.includes('/privacy-policy')) {
-    if (language === 'hi') return 'गोपनीयता नीति खुल रही है...';
-    if (language === 'ur') return 'رازداری کی پالیسی کھل رہی ہے...';
-    return 'Opening privacy policy...';
-  }
 
   if (language === 'hi') return 'पेज लोड हो रहा है...';
   if (language === 'ur') return 'صفحہ کھل رہا ہے...';
@@ -90,25 +59,26 @@ function resolveRouteLabel(href: string, language: string): string {
 }
 
 /**
- * Global navigation progress & frosted glassmorphism transition layer.
- * Starts immediately on click/popstate/programmatic navigation so users always
- * see smooth loading activity while moving between pages.
+ * Smart navigation progress & conditional loader:
+ * - Static routes & Back/Forward (popstate) show ONLY a sleek, non-blocking top progress bar (instant UX).
+ * - Data-heavy routes show the top progress bar immediately and reveal the frosted spinner ONLY if
+ *   navigation genuinely takes > 240ms, avoiding jarring loader flashes on fast transitions.
  */
 export function LuxuryPageLoader() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { language } = useLanguage();
 
-  const [visible, setVisible] = useState(false);
+  const [barVisible, setBarVisible] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [statusLabel, setStatusLabel] = useState('Opening page...');
 
   const isFirstMount = useRef(true);
-  const startedAtRef = useRef(0);
   const languageRef = useRef(language);
   const rampTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeNavRef = useRef(false);
@@ -119,57 +89,58 @@ export function LuxuryPageLoader() {
 
   const clearTimers = useCallback(() => {
     if (rampTimerRef.current) clearTimeout(rampTimerRef.current);
-    if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
+    if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current);
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
   }, []);
 
   const finishNavigation = useCallback(() => {
     if (!activeNavRef.current) return;
-    const elapsed = performance.now() - startedAtRef.current;
-    const minHoldMs = 340;
-    const waitMs = Math.max(0, minHoldMs - elapsed);
-
-    if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
-    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    if (rampTimerRef.current) clearTimeout(rampTimerRef.current);
+    if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current);
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
 
-    settleTimerRef.current = setTimeout(() => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setProgress(100);
-          setCompleting(true);
+    setProgress(100);
+    setCompleting(true);
+    setOverlayVisible(false);
 
-          hideTimerRef.current = setTimeout(() => {
-            activeNavRef.current = false;
-            setVisible(false);
-            setCompleting(false);
-            setProgress(0);
-          }, 210);
-        });
-      });
-    }, waitMs);
+    hideTimerRef.current = setTimeout(() => {
+      activeNavRef.current = false;
+      setBarVisible(false);
+      setCompleting(false);
+      setProgress(0);
+    }, 180);
   }, []);
 
   const startNavigation = useCallback(
-    (targetHref: string) => {
+    (targetHref: string, allowOverlay = true) => {
       clearTimers();
       activeNavRef.current = true;
-      startedAtRef.current = performance.now();
       setStatusLabel(resolveRouteLabel(targetHref, languageRef.current));
       setCompleting(false);
-      setProgress(24);
-      setVisible(true);
+      setOverlayVisible(false);
+      setProgress(30);
+      setBarVisible(true);
 
-      // Progressive forward creep so longer page transitions feel active
+      // Gentle forward creep for the top progress bar
       rampTimerRef.current = setTimeout(() => {
-        setProgress(68);
+        setProgress(72);
         rampTimerRef.current = setTimeout(() => {
-          setProgress(86);
-        }, 420);
+          setProgress(90);
+        }, 400);
       }, 60);
 
-      // Safety fallback in case navigation was canceled before route changed
+      // Only reveal the full frosted overlay on slow data-heavy routes (> 240ms)
+      if (allowOverlay && isDataHeavyRoute(targetHref)) {
+        overlayTimerRef.current = setTimeout(() => {
+          if (activeNavRef.current) {
+            setOverlayVisible(true);
+          }
+        }, 240);
+      }
+
+      // Safety cleanup in case route transition was canceled
       safetyTimerRef.current = setTimeout(() => {
         finishNavigation();
       }, 4500);
@@ -177,7 +148,6 @@ export function LuxuryPageLoader() {
     [clearTimers, finishNavigation]
   );
 
-  // Intercept internal anchor clicks, history navigation, and custom nav triggers
   useEffect(() => {
     const handleDocumentClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
@@ -210,7 +180,7 @@ export function LuxuryPageLoader() {
           nextUrl.search === window.location.search;
         if (isSameRoute) return;
 
-        startNavigation(nextUrl.pathname + nextUrl.search);
+        startNavigation(nextUrl.pathname + nextUrl.search, true);
       } catch {
         // Ignore malformed hrefs
       }
@@ -218,11 +188,12 @@ export function LuxuryPageLoader() {
 
     const handleCustomNavStart = (e: Event) => {
       const customEv = e as CustomEvent<{ href?: string }>;
-      startNavigation(customEv.detail?.href || '');
+      startNavigation(customEv.detail?.href || '', true);
     };
 
+    // Browser Back/Forward: instant top bar only, never freeze screen with overlay
     const handlePopState = () => {
-      startNavigation(window.location.pathname + window.location.search);
+      startNavigation(window.location.pathname + window.location.search, false);
     };
 
     document.addEventListener('click', handleDocumentClick, true);
@@ -236,93 +207,90 @@ export function LuxuryPageLoader() {
     };
   }, [startNavigation]);
 
-  // Complete cleanly once Next.js route commits
+  // Complete immediately once Next.js route commits
   useEffect(() => {
     if (isFirstMount.current) {
       isFirstMount.current = false;
       return;
     }
 
-    if (!activeNavRef.current) {
-      // Fallback if navigation happened outside intercepted click/custom event
-      startNavigation(pathname || '/');
+    if (activeNavRef.current) {
+      finishNavigation();
+    } else {
+      // Quick non-blocking top bar pulse for untracked transitions
+      startNavigation(pathname || '/', false);
+      setTimeout(() => finishNavigation(), 80);
     }
-    finishNavigation();
   }, [pathname, searchParams, startNavigation, finishNavigation]);
 
   useEffect(() => {
     return () => clearTimers();
   }, [clearTimers]);
 
-  if (!visible) return null;
+  if (!barVisible && !overlayVisible) return null;
 
   return (
     <>
-      {/* 1. Top Progress Track (Crisp 3px Emerald + Gold Bar) */}
-      <div
-        aria-hidden="true"
-        className="fixed top-0 inset-x-0 z-[70] h-[3px] bg-ifaqa-plum/10 pointer-events-none"
-      >
+      {/* 1. Sleek Top Progress Track on All Routes (Zero blocking) */}
+      {barVisible && (
         <div
-          style={{ width: `${progress}%` }}
-          className="h-full bg-gradient-to-r from-ifaqa-plum via-ifaqa-blackberry to-ifaqa-mauve transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
-        />
-      </div>
+          aria-hidden="true"
+          className={`fixed top-0 inset-x-0 z-[70] h-[3px] bg-ifaqa-plum/10 pointer-events-none transition-opacity duration-150 ${
+            completing ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <div
+            style={{ width: `${progress}%` }}
+            className="h-full bg-gradient-to-r from-ifaqa-plum via-ifaqa-blackberry to-ifaqa-mauve transition-[width] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          />
+        </div>
+      )}
 
-      {/* 2. Frosted Transparent Backdrop + Centered Geometric Spinner (Zero Box/Border) */}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-label={statusLabel}
-        className={`fixed inset-0 z-[65] flex flex-col items-center justify-center backdrop-blur-[5px] bg-ifaqa-linen/55 transition-opacity duration-200 ${
-          completing ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-        }`}
-      >
-        <div className="flex flex-col items-center gap-3.5 px-6 text-center select-none">
-          {/* Geometric Rotating 3D Triangular Emblem (Transparent, Zero Border Box) */}
-          <div className="relative w-14 h-14 flex items-center justify-center">
-            <svg
-              viewBox="0 0 64 64"
-              className="w-14 h-14 animate-[spin_2.2s_linear_infinite]"
-              aria-hidden="true"
-            >
-              <polygon
-                points="32,6 56,48 8,48"
-                fill="none"
-                stroke="#0B2D22"
-                strokeWidth="2.2"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <svg
-              viewBox="0 0 64 64"
-              className="w-9 h-9 absolute animate-[spin_1.6s_linear_infinite_reverse]"
-              aria-hidden="true"
-            >
-              <polygon
-                points="32,12 50,46 14,46"
-                fill="none"
-                stroke="#C5A059"
-                strokeWidth="2"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="w-2 h-2 rounded-sm rotate-45 bg-ifaqa-plum absolute" />
-          </div>
+      {/* 2. Delayed Frosted Loader (Only on slow >240ms data-heavy routes) */}
+      {overlayVisible && (
+        <div
+          role="status"
+          aria-live="polite"
+          aria-label={statusLabel}
+          className="fixed inset-0 z-[65] flex flex-col items-center justify-center backdrop-blur-[4px] bg-ifaqa-linen/50 pointer-events-auto transition-opacity duration-150"
+        >
+          <div className="flex flex-col items-center gap-3.5 px-6 text-center select-none">
+            <div className="relative w-12 h-12 flex items-center justify-center">
+              <svg
+                viewBox="0 0 64 64"
+                className="w-12 h-12 animate-[spin_2.2s_linear_infinite]"
+                aria-hidden="true"
+              >
+                <polygon
+                  points="32,6 56,48 8,48"
+                  fill="none"
+                  stroke="#0B2D22"
+                  strokeWidth="2.2"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <svg
+                viewBox="0 0 64 64"
+                className="w-8 h-8 absolute animate-[spin_1.6s_linear_infinite_reverse]"
+                aria-hidden="true"
+              >
+                <polygon
+                  points="32,12 50,46 14,46"
+                  fill="none"
+                  stroke="#C5A059"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="w-2 h-2 rounded-sm rotate-45 bg-ifaqa-plum absolute" />
+            </div>
 
-          <p className="font-sans text-xs sm:text-sm font-medium text-ifaqa-plum tracking-wide">
-            {statusLabel}
-          </p>
-
-          {/* Compact Inline Progress Track */}
-          <div className="w-36 h-[2px] bg-ifaqa-plum/15 rounded-sm overflow-hidden">
-            <div
-              style={{ width: `${progress}%` }}
-              className="h-full bg-ifaqa-plum transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            />
+            <p className="font-sans text-xs sm:text-sm font-medium text-ifaqa-plum tracking-wide">
+              {statusLabel}
+            </p>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
