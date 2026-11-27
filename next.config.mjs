@@ -18,7 +18,16 @@ const nextConfig = {
     '@firebase/util',
   ],
   webpack: (config, { isServer }) => {
-    if (!isServer) {
+    if (isServer) {
+      const firebaseStub = path.join(__dirname, 'lib/firebase-ssr-stub.mjs');
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'firebase/app': firebaseStub,
+        'firebase/auth': firebaseStub,
+        'firebase/firestore': firebaseStub,
+        'firebase/storage': firebaseStub,
+      };
+    } else {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,

@@ -19,7 +19,7 @@ let auth: Auth | undefined;
 let storage: FirebaseStorage | undefined;
 
 try {
-  if (typeof window !== 'undefined' || process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+  if (typeof window !== 'undefined') {
     app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
