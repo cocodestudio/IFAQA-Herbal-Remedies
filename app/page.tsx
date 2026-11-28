@@ -7,6 +7,7 @@ import {
   getStorefrontData,
   getCachedStorefrontSnapshot,
   hasWarmMemoryCache,
+  resolveCategoryBanner,
 } from '@/lib/remedies-service';
 import { HerbalRemedy, AilmentCategory, PromotionalBanner } from '@/lib/types';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
@@ -328,31 +329,79 @@ export default function HomePage() {
           <CategoryGridSkeleton count={6} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr ifaqa-content-appear">
-            {categoriesWithLiveCounts.map((category) => (
-              <Link
-                key={category.id}
-                href={`/catalog/${category.slug}`}
-                className="group flex flex-col justify-between p-5 sm:p-6 rounded-xl bg-white border border-ifaqa-plum/10 hover:border-ifaqa-plum/25 shadow-luxury-card hover:shadow-luxury-lifted transition-[border-color,box-shadow] duration-150"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <h3 className="font-sans font-semibold text-base sm:text-lg text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors truncate">
-                      {getCategoryTitle(category)}
-                    </h3>
-                    <span className="font-mono text-xs text-[#5A6962] bg-ifaqa-cashmere px-2 py-0.5 rounded shrink-0 tabular-nums">
-                      {category.remedyCount}
+            {categoriesWithLiveCounts.map((category) => {
+              const cardImage = resolveCategoryBanner(category);
+              return (
+                <Link
+                  key={category.id}
+                  href={`/catalog/${category.slug}`}
+                  className="group relative flex flex-col justify-between min-h-[224px] sm:min-h-[244px] p-5 sm:p-6 rounded-2xl overflow-hidden bg-[#0B2D22] border border-ifaqa-plum/15 hover:border-[#C5A059]/60 shadow-luxury-card hover:shadow-luxury-lifted transition-[border-color,box-shadow,transform] duration-200 active:scale-[0.99]"
+                >
+                  {/* Full-bleed Category Botanical Photo */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <ShimmerImage
+                      src={cardImage}
+                      alt={getCategoryTitle(category)}
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-right transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+                    />
+                    {/* Multi-stop Deep Botanical Emerald Gradient Scrim for Razor-Sharp Typography */}
+                    <div
+                      className="absolute inset-0 rtl:hidden"
+                      style={{
+                        background:
+                          'linear-gradient(155deg, rgba(11,45,34,0.32) 0%, rgba(11,45,34,0.74) 48%, rgba(6,24,18,0.94) 100%)',
+                      }}
+                    />
+                    <div
+                      className="hidden rtl:block absolute inset-0"
+                      style={{
+                        background:
+                          'linear-gradient(205deg, rgba(11,45,34,0.32) 0%, rgba(11,45,34,0.74) 48%, rgba(6,24,18,0.94) 100%)',
+                      }}
+                    />
+                    {/* Soft subtle warm gold top hairline sheen */}
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#DFBA73]/40 to-transparent" />
+                  </div>
+
+                  {/* Top Metadata Bar */}
+                  <div className="relative z-10 flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs text-[#FAF8F5] bg-[#061812]/55 backdrop-blur-md border border-white/15 px-2.5 py-1 rounded-md shrink-0 tabular-nums">
+                      {category.remedyCount}{' '}
+                      {language === 'hi'
+                        ? 'उत्पाद'
+                        : language === 'ur'
+                        ? 'مرکبات'
+                        : 'remedies'}
+                    </span>
+                    <span className="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 text-[#DFBA73] flex items-center justify-center group-hover:bg-[#C5A059] group-hover:text-[#0B2D22] group-hover:border-[#C5A059] transition-colors shrink-0">
+                      <ArrowRight
+                        className="w-4 h-4 rtl-flip transition-transform duration-150 group-hover:translate-x-0.5"
+                        strokeWidth={1.6}
+                      />
                     </span>
                   </div>
-                  <p className="text-sm text-[#5A6962] font-sans line-clamp-2 leading-relaxed">
-                    {category.description}
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-ifaqa-plum/10 flex items-center justify-between text-xs font-sans font-medium text-ifaqa-plum">
-                  <span>{t('explorePharmacopoeia')}</span>
-                  <ArrowRight className="w-4 h-4 text-[#5A6962] group-hover:text-ifaqa-plum rtl-flip" strokeWidth={1.5} />
-                </div>
-              </Link>
-            ))}
+
+                  {/* Bottom Editorial Title & Copy */}
+                  <div className="relative z-10 mt-auto pt-10 space-y-1.5">
+                    <h3 className="font-serif font-normal text-xl sm:text-[22px] text-[#FAF8F5] group-hover:text-[#DFBA73] transition-colors leading-snug line-clamp-1">
+                      {getCategoryTitle(category)}
+                    </h3>
+                    <p className="text-xs sm:text-[13px] text-[#FAF8F5]/80 font-sans line-clamp-2 leading-relaxed">
+                      {category.description || category.tagline}
+                    </p>
+                    <div className="pt-2.5 border-t border-white/15 flex items-center justify-between text-xs font-sans font-medium text-[#DFBA73]">
+                      <span>{t('explorePharmacopoeia')}</span>
+                      <span className="text-[#FAF8F5]/75 group-hover:text-[#DFBA73] transition-colors">
+                        {language === 'hi' ? 'देखें' : language === 'ur' ? 'دیکھیں' : 'Browse →'}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>

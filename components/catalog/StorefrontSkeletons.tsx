@@ -12,21 +12,20 @@ export function CategoryGridSkeleton({ count = 6 }: { count?: number }) {
       {Array.from({ length: count }).map((_, idx) => (
         <div
           key={idx}
-          className="flex flex-col justify-between p-5 sm:p-6 rounded-xl bg-white border border-ifaqa-plum/10 shadow-luxury-card"
+          className="flex flex-col justify-between min-h-[224px] sm:min-h-[244px] p-5 sm:p-6 rounded-2xl ifaqa-shimmer-surface border border-ifaqa-plum/10 shadow-luxury-card"
         >
-          <div>
-            <div className="flex items-center justify-between gap-2 mb-3">
-              <div className="h-5 w-44 rounded-md ifaqa-shimmer-surface" />
-              <div className="h-5 w-8 rounded ifaqa-shimmer-surface shrink-0" />
-            </div>
-            <div className="space-y-2">
-              <div className="h-3.5 w-full rounded ifaqa-shimmer-surface" />
-              <div className="h-3.5 w-4/5 rounded ifaqa-shimmer-surface" />
-            </div>
+          <div className="flex items-center justify-between gap-2">
+            <div className="h-6 w-24 rounded-md bg-white/55" />
+            <div className="h-8 w-8 rounded-lg bg-white/55 shrink-0" />
           </div>
-          <div className="mt-4 pt-3 border-t border-ifaqa-plum/10 flex items-center justify-between">
-            <div className="h-3.5 w-28 rounded ifaqa-shimmer-surface" />
-            <div className="h-4 w-4 rounded ifaqa-shimmer-surface" />
+          <div className="space-y-2.5 pt-12">
+            <div className="h-6 w-48 rounded-md bg-white/60" />
+            <div className="h-3.5 w-full rounded bg-white/45" />
+            <div className="h-3.5 w-4/5 rounded bg-white/45" />
+            <div className="pt-2.5 border-t border-ifaqa-plum/10 flex items-center justify-between">
+              <div className="h-3.5 w-28 rounded bg-white/55" />
+              <div className="h-4 w-4 rounded bg-white/55" />
+            </div>
           </div>
         </div>
       ))}

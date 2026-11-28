@@ -9,7 +9,7 @@
       "tagline": "Classical remedies for gastric ease, indigestion, and metabolic balance",
       "description": "Centuries-proven herbal formulations engineered to rekindle digestive fire, ease bloating, and optimize gut flora.",
       "iconIdentifier": "stomach",
-      "bannerImage": "/banners/hazim-header.jpg",
+      "bannerImage": "/images/cat-hazim.webp",
       "displayOrder": 1,
       "remedyCount": 7,
       "isActive": true
@@ -23,7 +23,7 @@
       "tagline": "Rejuvenating formulations for nervous vigor, heart stamina, and youthfulness",
       "description": "Nobility-grade Unani tonics featuring pearls, amber, and rare botanicals to restore somatic and cerebral vigor.",
       "iconIdentifier": "sparkles",
-      "bannerImage": "/banners/muqawwi-header.jpg",
+      "bannerImage": "/images/cat-muqawwi.webp",
       "displayOrder": 2,
       "remedyCount": 10,
       "isActive": true
@@ -37,7 +37,7 @@
       "tagline": "Soothing elixirs for bronchial relief, lingering coughs, and throat comfort",
       "description": "Expectorant and anti-tussive decoctions prepared with black mulberry, licorice, and Cordia myxa.",
       "iconIdentifier": "wind",
-      "bannerImage": "/banners/sual-header.jpg",
+      "bannerImage": "/images/cat-sual.webp",
       "displayOrder": 3,
       "remedyCount": 2,
       "isActive": true
@@ -51,7 +51,7 @@
       "tagline": "Colchicum-rich formulas and warming oils for arthritic stiffness and backache",
       "description": "Potent formulations combining Suranjan (Colchicum autumnale) with anti-inflammatory herbs to dissolve uric crystalline buildup.",
       "iconIdentifier": "shield",
-      "bannerImage": "/banners/mafasil-header.jpg",
+      "bannerImage": "/images/cat-mafasil.webp",
       "displayOrder": 4,
       "remedyCount": 2,
       "isActive": true
@@ -65,7 +65,7 @@
       "tagline": "Purifying hydrolats and cooling ointments for radiant complexion and healing",
       "description": "Hydro-distilled pure rose water and camphorated zinc ointments crafted to purify cutaneous microcirculation.",
       "iconIdentifier": "flower",
-      "bannerImage": "/banners/jild-header.jpg",
+      "bannerImage": "/images/cat-jild.webp",
       "displayOrder": 5,
       "remedyCount": 3,
       "isActive": true
@@ -79,7 +79,7 @@
       "tagline": "Deep immunological fortification and celestial cardiac cardioprotection",
       "description": "Precious gem-infused electuaries strengthening vital organs against pestilence, seasonal weakness, and oxidation.",
       "iconIdentifier": "shield-check",
-      "bannerImage": "/banners/mudafiat-header.jpg",
+      "bannerImage": "/images/cat-quwwat-e-mudafiat.webp",
       "displayOrder": 6,
       "remedyCount": 7,
       "isActive": true

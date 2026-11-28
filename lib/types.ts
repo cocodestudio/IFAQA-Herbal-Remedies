@@ -80,7 +80,7 @@ export type AilmentCategoryId =
 
 // --- Ailment Category Contract ---
 export interface AilmentCategory {
-  id: AilmentCategoryId;
+  id: AilmentCategoryId | (string & {});
   name: string;                  // e.g. "Digestive & Gastrointestinal"
   urduName: string;              // e.g. "ہاضمہ اور معدہ"
   romanName: string;             // e.g. "Hazim"

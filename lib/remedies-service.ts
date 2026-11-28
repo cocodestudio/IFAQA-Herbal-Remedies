@@ -419,6 +419,30 @@ export async function getBanners(forceRefresh = false): Promise<PromotionalBanne
   return job;
 }
 
+const DEFAULT_CATEGORY_IMAGES: Record<string, string> = {
+  hazim: '/images/cat-hazim.webp',
+  muqawwi: '/images/cat-muqawwi.webp',
+  sual: '/images/cat-sual.webp',
+  mafasil: '/images/cat-mafasil.webp',
+  jild: '/images/cat-jild.webp',
+  'quwwat-e-mudafiat': '/images/cat-quwwat-e-mudafiat.webp',
+};
+
+export function resolveCategoryBanner(category: Partial<AilmentCategory>): string {
+  const img = (category.bannerImage || '').trim();
+  if (
+    img &&
+    (img.startsWith('http://') ||
+      img.startsWith('https://') ||
+      img.startsWith('data:') ||
+      img.startsWith('/images/'))
+  ) {
+    return img;
+  }
+  const key = (category.slug || category.id || '').toLowerCase();
+  return DEFAULT_CATEGORY_IMAGES[key] || '/images/hero-mortar-botanical.webp';
+}
+
 export function filterRemedies(
   remedies: HerbalRemedy[],
   {

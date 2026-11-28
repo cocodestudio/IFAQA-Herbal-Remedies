@@ -21,6 +21,7 @@ export default function CategoryCatalogPage() {
 
   const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
   const [categories, setCategories] = useState<AilmentCategory[]>(() => seedData.categories as unknown as AilmentCategory[]);
+  const [categoriesSynced, setCategoriesSynced] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const { t, getCategoryTitle } = useLanguage();
 
@@ -32,9 +33,13 @@ export default function CategoryCatalogPage() {
 
   useEffect(() => {
     async function refresh() {
-      const [r, c] = await Promise.all([getRemedies(), getCategories()]);
-      if (r && r.length > 0) setRemedies(r);
-      if (c && c.length > 0) setCategories(c);
+      try {
+        const [r, c] = await Promise.all([getRemedies(), getCategories()]);
+        if (r && r.length > 0) setRemedies(r);
+        if (c && c.length > 0) setCategories(c);
+      } finally {
+        setCategoriesSynced(true);
+      }
     }
     refresh();
   }, []);
@@ -58,7 +63,10 @@ export default function CategoryCatalogPage() {
   );
 
   const isInvalidCategory = Boolean(
-    categoryParam && !VALID_CATEGORIES.includes(categoryParam) && !activeCategory
+    categoriesSynced &&
+      categoryParam &&
+      !VALID_CATEGORIES.includes(categoryParam) &&
+      !activeCategory
   );
 
   const filteredRemedies = useMemo(() => {
