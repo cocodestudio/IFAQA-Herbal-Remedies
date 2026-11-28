@@ -35,6 +35,11 @@ export function ShimmerImage({
     onImageLoad?.();
   };
 
+  const handleError: React.ReactEventHandler<HTMLImageElement> = (e) => {
+    setLoaded(true);
+    rest.onError?.(e);
+  };
+
   const showImageImmediately = Boolean(rest.priority || hideShimmer);
   const opacityClass = loaded || showImageImmediately ? 'opacity-100' : 'opacity-0';
 
@@ -53,6 +58,7 @@ export function ShimmerImage({
           fill
           alt={alt}
           onLoad={handleLoad}
+          onError={handleError}
           className={`${className} transition-opacity duration-300 ease-out ${opacityClass}`}
         />
       </>
@@ -72,6 +78,7 @@ export function ShimmerImage({
         ref={imgRef}
         alt={alt}
         onLoad={handleLoad}
+        onError={handleError}
         className={`${className} transition-opacity duration-300 ease-out ${opacityClass}`}
       />
     </span>

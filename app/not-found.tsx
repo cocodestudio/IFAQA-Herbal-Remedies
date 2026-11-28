@@ -23,7 +23,7 @@ export default function NotFound() {
       <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link href="/">
           <Button3D variant="secondary" size="md">
-            <ArrowLeft className="w-4 h-4 me-2 rtl-flip" strokeWidth={1.5} />
+            <ArrowLeft className="w-4 h-4 me-2" strokeWidth={1.5} />
             <span>Back to home</span>
           </Button3D>
         </Link>

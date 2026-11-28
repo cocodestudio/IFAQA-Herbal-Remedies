@@ -21,7 +21,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
   const [deliveryDateLabel, setDeliveryDateLabel] = useState('');
   const [extraReviews, setExtraReviews] = useState(0);
   const { addToCart } = useCart();
-  const { language, t, getRemedyTitle, getRemedySubtitle } = useLanguage();
+  const { t, getRemedyTitle, getRemedySubtitle } = useLanguage();
 
   useEffect(() => {
     const estDate = new Date();
@@ -72,12 +72,7 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
     </div>
   );
 
-  const freeDeliveryLabel =
-    language === 'hi'
-      ? 'मुफ़्त डिलीवरी'
-      : language === 'ur'
-      ? 'مفت ڈلیوری'
-      : 'FREE delivery';
+  const freeDeliveryLabel = 'FREE delivery';
 
   const handleMouseEnter = () => {
     if (remedy.slug) {

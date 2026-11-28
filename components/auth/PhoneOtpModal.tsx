@@ -179,7 +179,7 @@ export function PhoneOtpModal() {
               className="w-full"
             >
               <span>{loading ? 'Sending code' : 'Get verification code'}</span>
-              <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+              <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
             </Button3D>
           </form>
         ) : (

@@ -8,178 +8,9 @@ import { Button3D } from '@/components/ui/Button3D';
 import { Leaf, ShieldCheck, Award, Truck, ArrowRight } from 'lucide-react';
 
 export default function AboutPage() {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
 
   const content = {
-    en: {
-      badge: 'About',
-      title: 'About IFAQA Herbal Remedies',
-      subtitle: 'Authentic Unani and Ayurvedic medicines compounded from whole wildcrafted herbs, roots, spices, and natural forest honey in Saharanpur.',
-      storyTitle: 'Our craft and everyday commitment',
-      storyP1: 'IFAQA Herbal Remedies was built on a straightforward principle: herbal care should be honest, clearly labeled, and free from hidden synthetic additives. Instead of extracted shortcuts or steroid mixtures, every jar and bottle begins with raw medicinal seeds, aromatic roots, dry blossoms, and pure unheated honey.',
-      storyP2: 'At our Saharanpur dispensary, formulations are milled, simmered, and blended in small, trackable batches according to classical Unani and Ayurvedic pharmacopoeia standards so families across India receive consistent, fresh preparations directly from source.',
-      storyP3: 'Every label states its botanical composition, dosage instructions, and precautions plainly—whether you are ordering a soothing Sharbat for seasonal cough or a daily restorative Majun.',
-      oathTitle: 'Purity standard',
-      oathQuote: '100% botanical composition — crafted with zero chemical steroids, artificial food coloring, or synthetic bulk fillers.',
-      formsTitle: 'Classical dosage forms we prepare',
-      formsSubtitle: 'Simple, traditional preparations designed for practical daily use at home.',
-      form1Name: 'Majun & Khamira (Herbal Electuaries)',
-      form1Desc: 'Fine botanical powders blended slowly into pure honey or raw cane base. Typically taken as 1 teaspoon with lukewarm milk or water.',
-      form2Name: 'Safoof (Finely Milled Powders)',
-      form2Desc: 'Single-origin dried roots and seeds cleaned by hand and milled without chemical binders for gentle digestive and metabolic support.',
-      form3Name: 'Sharbat & Arq (Syrups & Distillates)',
-      form3Desc: 'Slow-boiled herbal decoctions and floral/root distillates prepared to soothe cough, throat irritation, liver heat, and general vitality.',
-      form4Name: 'Raughan & Marham (Oils & Topical Balms)',
-      form4Desc: 'Herb-infused botanical oils and beeswax ointments meant strictly for external massage on joints, muscles, scalp, and skin.',
-      whyChooseTitle: 'What sets our formulations apart',
-      pillar1Title: 'Whole natural herbs',
-      pillar1Desc: 'Whole roots, resin extracts, cardamom, and Kashmiri saffron sourced cleanly with zero filler dilution.',
-      pillar2Title: 'Zero chemicals or steroids',
-      pillar2Desc: 'Strict batch screening — no hidden corticosteroids, heavy metals, or artificial stabilizers.',
-      pillar3Title: 'Small-batch freshness',
-      pillar3Desc: 'Prepared in frequent small batches in Saharanpur rather than sitting in distant warehouses for years.',
-      pillar4Title: 'Protected Pan-India delivery',
-      pillar4Desc: 'Sealed in UV-protective amber glass or food-safe containers and dispatched within 24 business hours.',
-      processTitle: 'Four-stage compounding process',
-      step1Title: 'Herb selection',
-      step1Desc: 'Every batch of dried bark, seed, and blossom is checked for aroma, color, and natural maturity before milling.',
-      step2Title: 'Hand cleaning & sorting',
-      step2Desc: 'Raw herbs are carefully sifted to clear dust, stems, moisture clumps, and inert matter.',
-      step3Title: 'Controlled preparation',
-      step3Desc: 'Slow decoction boiling and gentle honey compounding protect delicate active plant compounds.',
-      step4Title: 'Sealed glass & pack dispatch',
-      step4Desc: 'Packed immediately into moisture-locked jars with clear batch coding and shipped with live tracking.',
-      craftCaption: 'Four graded botanical stages on white marble: dried blossoms, wild leaves, whole herbs, and milled roots ready for compounding.',
-      aboutPhotoAlt: 'Four wooden apothecary spoons holding dried medicinal flowers, crushed botanical leaves, herbs, and lavender on white marble',
-      mortarSectionTitle: 'Hand-compounded botanicals, shipped straight from Saharanpur',
-      mortarSectionBody: 'Whether you need a digestive powder after meals, seasonal respiratory comfort, or gentle joint care, our dispensary team keeps every preparation simple, transparent, and authentic.',
-      mortarCaption: 'Stone-mortar grinding of colorful medicinal flowers and wild herbs at our Saharanpur preparation house.',
-      fact1Val: '31',
-      fact1Lbl: 'Active remedies',
-      fact2Val: '0%',
-      fact2Lbl: 'Synthetic fillers',
-      fact3Val: '24 hrs',
-      fact3Lbl: 'Dispatch window',
-      fact4Val: '24 mo',
-      fact4Lbl: 'Standard shelf life',
-      ctaTitle: 'Explore our herbal catalog',
-      ctaSubtitle: 'Browse powders, electuaries, syrups, and oils by health category or message our Saharanpur team for dosage help.',
-      shopBtn: 'Shop products',
-      contactBtn: 'Contact us',
-    },
-    hi: {
-      badge: 'हमारे बारे में',
-      title: 'IFAQA हर्बल रेमेडीज़ के बारे में',
-      subtitle: 'सहारनपुर में शुद्ध जड़ों, जड़ी-बूटियों, मसालों और प्राकृतिक जंगली शहद से तैयार यूनानी व आयुर्वेदिक औषधियां।',
-      storyTitle: 'हमारा उद्देश्य और निर्माण पद्धति',
-      storyP1: 'IFAQA हर्बल रेमेडीज़ की शुरुआत एक सरल सिद्धांत पर हुई — हर परिवार को मिलने वाली प्राकृतिक दवा शुद्ध, साफ़ लेबल वाली और बिना किसी छिपे केमिकल या स्टेरॉयड के होनी चाहिए।',
-      storyP2: 'हमारी सहारनपुर डिस्पेंसरी में प्रत्येक माजून, चूर्ण, शर्बत और तेल पारंपरिक यूनानी और आयुर्वेदिक ग्रंथों के अनुसार छोटे बैच में तैयार किया जाता है ताकि कच्ची जड़ी-बूटियों का प्राकृतिक असर बना रहे।',
-      storyP3: 'हर डिब्बे पर सामग्री और सेवन विधि सरल भाषा में लिखी होती है, ताकि आप घर पर सुरक्षित और आसान तरीके से उपयोग कर सकें।',
-      oathTitle: 'गुणवत्ता एवं शुद्धता मानक',
-      oathQuote: '100% प्राकृतिक जड़ी-बूटियां — बिना किसी स्टेरॉयड, कृत्रिम रंग या रासायनिक मिलावट के तैयार।',
-      formsTitle: 'हमारी मुख्य औषधि श्रेणियां (कैसे तैयार होती हैं)',
-      formsSubtitle: 'दैनिक उपयोग के लिए आसान और पारंपरिक प्राकृतिक रूप।',
-      form1Name: 'माजून और खमीरा (हर्बल पेस्ट)',
-      form1Desc: 'बारीक जड़ी-बूटियों को शुद्ध शहद के साथ धीमी आंच पर मिलाया जाता है। आमतौर पर 1 चम्मच गुनगुने दूध या पानी के साथ लिया जाता है।',
-      form2Name: 'सफूफ (शुद्ध हर्बल चूर्ण)',
-      form2Desc: 'धूप में सुखाई गई जड़ों और बीजों को हाथ से साफ कर बिना किसी केमिकल बाइंडर के बारीक पीसा जाता है।',
-      form3Name: 'शर्बत और अर्क (सिरप व डिस्टिलेट)',
-      form3Desc: 'धीमी आंच पर बने काढ़े और फूलों के अर्क जो खांसी, गले की खराश और पेट की गर्मी में आराम देते हैं।',
-      form4Name: 'रोग़न और मरहम (तेल व लेप)',
-      form4Desc: 'जड़ी-बूटियों से पके तेल और बाहरी उपयोग वाले मरहम — जोड़ों के दर्द, मांसपेशियों और त्वचा देखभाल के लिए।',
-      whyChooseTitle: 'हमारी विशेषताएं',
-      pillar1Title: 'असली जड़ी-बूटियां',
-      pillar1Desc: 'बिना किसी मिलावट के चुनी गई पहाड़ी जड़ें, बीज, इलायची और कश्मीरी केसर।',
-      pillar2Title: 'केमिकल और स्टेरॉयड मुक्त',
-      pillar2Desc: 'कोई सिंथेटिक बाइंडिंग एजेंट, कृत्रिम रंग या रासायनिक प्रिजर्वेटिव नहीं।',
-      pillar3Title: 'छोटे ताज़ा बैच',
-      pillar3Desc: 'सालों पुरानी गोदाम की दवा के बजाय छोटे-छोटे ताज़ा बैच में सहारनपुर में निर्माण।',
-      pillar4Title: 'पूरे भारत में सुरक्षित डिलीवरी',
-      pillar4Desc: 'मजबूत सीलबंद डिब्बों में पैक होकर 24 कार्य घंटों में सहारनपुर से डिस्पैच।',
-      processTitle: 'चार-चरणीय निर्माण प्रक्रिया',
-      step1Title: 'जड़ी-बूटियों का चयन',
-      step1Desc: 'पीसने से पहले प्रत्येक कच्ची जड़ी-बूटी की सुगंध, रंग और गुणवत्ता की जांच।',
-      step2Title: 'सफाई एवं छंटाई',
-      step2Desc: 'धूल, तिनके और अशुद्धियों को हाथ से पूरी तरह अलग करना।',
-      step3Title: 'नियंत्रित निर्माण',
-      step3Desc: 'नियंत्रित तापमान पर काढ़ा और मिश्रण ताकि प्राकृतिक तत्व सुरक्षित रहें।',
-      step4Title: 'सुरक्षित सील पैकिंग',
-      step4Desc: 'नमी और धूप से बचाने के लिए सीलबंद पैकेजिंग और कूरियर ट्रैकिंग।',
-      craftCaption: 'चार लकड़ी की चम्मचों में अलग-अलग चुनी गई जड़ी-बूटियां — फूल, पत्तियां, सूखे अर्क और शुद्ध मसाले।',
-      aboutPhotoAlt: 'सफेद संगमरमर पर चार लकड़ी की चम्मचों में सूखे औषधीय फूल, पत्तियां और जड़ी-बूटियां',
-      mortarSectionTitle: 'सहारनपुर में पारंपरिक खरल-मूसल से शुद्ध निर्माण',
-      mortarSectionBody: 'पाचन चूर्ण हो, खांसी का शर्बत हो या जोड़ों का तेल — हर उत्पाद पारदर्शिता और असली सामग्री के साथ तैयार कर सीधे आपके घर भेजा जाता है।',
-      mortarCaption: 'रंगीन प्राकृतिक फूलों और जड़ी-बूटियों की पारंपरिक पत्थर के खरल में कुटाई व मिलावट-मुक्त तैयारी।',
-      fact1Val: '31',
-      fact1Lbl: 'सक्रिय हर्बल उत्पाद',
-      fact2Val: '0%',
-      fact2Lbl: 'केमिकल मिलावट',
-      fact3Val: '24 घंटे',
-      fact3Lbl: 'ऑर्डर डिस्पैच समय',
-      fact4Val: '24 माह',
-      fact4Lbl: 'मानक शेल्फ लाइफ',
-      ctaTitle: 'सभी हर्बल उत्पाद देखें',
-      ctaSubtitle: 'पाचन, शक्ति, खांसी और जोड़ों के दर्द की औषधियां देखें या उपयोग संबंधी जानकारी के लिए संपर्क करें।',
-      shopBtn: 'उत्पाद देखें',
-      contactBtn: 'संपर्क करें',
-    },
-    ur: {
-      badge: 'ہمارے متعلق',
-      title: 'IFAQA ہربل ریمیڈیز کے متعلق',
-      subtitle: 'سہارنپور میں خالص جڑوں، جڑی بوٹیوں اور قدرتی شہد سے تیار کردہ یونانی اور آیورویدک ادویات۔',
-      storyTitle: 'ہمارا طریقہ کار اور عزم',
-      storyP1: 'IFAQA ہربل ریمیڈیز کا مقصد خالص اور مستند نباتاتی ادویات کو بغیر کسی کیمیائی ملاوٹ کے ہر گھر تک پہنچانا ہے۔',
-      storyP2: 'ہماری سہارنپور ڈسپنسری میں ہر شربت، معجون، سفوف اور روغن روایتی اصولوں کے مطابق چھوٹے بیجز میں تیار کیا جاتا ہے۔',
-      storyP3: 'ہر پیکٹ پر خوراک اور اجزاء کی تفصیل واضح لکھی ہوتی ہے تاکہ گھر پر استعمال آسان رہے۔',
-      oathTitle: 'معیار کا معیار',
-      oathQuote: '100% خالص نباتاتی اجزاء — کیمیائی سٹیرائیڈز، مصنوعی رنگوں اور ملاوٹ سے مکمل پاک۔',
-      formsTitle: 'ہماری تیار کردہ ادویات کی اقسام',
-      formsSubtitle: 'روزمرہ صحت کے لیے روایتی اور آسان قدرتی طریقے۔',
-      form1Name: 'معجون اور خمیرہ',
-      form1Desc: 'خالص شہد اور جڑی بوٹیوں کا مرکب، عموماً نیم گرم دودھ یا پانی کے ساتھ لیا جاتا ہے۔',
-      form2Name: 'سفوف (خالص پاؤڈر)',
-      form2Desc: 'اصلی جڑوں اور بیجوں کو ہاتھ سے صاف کرکے بغیر کیمیکل کے پیسا جاتا ہے۔',
-      form3Name: 'شربت اور عرق',
-      form3Desc: 'کھانسی، گلے کی خراش اور معدے کی گرمی کے لیے دھیمی آنچ پر تیار جوشاندے۔',
-      form4Name: 'روغن اور مرہم',
-      form4Desc: 'جوڑوں کے درد، پٹھوں اور جلد کے بیرونی مساج کے لیے قدرتی تیل اور مرہم۔',
-      whyChooseTitle: 'ہماری تیاری کے اصول',
-      pillar1Title: 'خالص قدرتی جڑی بوٹیاں',
-      pillar1Desc: 'اصلی جڑیں، بیج اور کشمیری زعفران بغیر کسی ملاوٹ کے۔',
-      pillar2Title: 'کیمیکلز سے پاک',
-      pillar2Desc: 'مصنوعی رنگوں، کیمیائی اجزاء اور سٹیرائیڈز سے مکمل پاک۔',
-      pillar3Title: 'تازہ چھوٹے بیجز',
-      pillar3Desc: 'سہارنپور میں باقاعدگی سے تازہ چھوٹے بیجز میں تیاری۔',
-      pillar4Title: 'سہارنپور سے محفوظ ترسیل',
-      pillar4Desc: 'مضبوط پیکنگ میں 24 گھنٹوں کے اندر پورے بھارت میں روانگی۔',
-      processTitle: 'تیاری کے چار مراحل',
-      step1Title: 'انتخاب',
-      step1Desc: 'ہر جڑی بوٹی کی خوشبو اور تازگی کی جانچ۔',
-      step2Title: 'صفائی اور چھانٹی',
-      step2Desc: 'گرد اور غیر ضروری حصوں کو ہاتھ سے صاف کرنا۔',
-      step3Title: 'بیج کی تیاری',
-      step3Desc: 'مناسب درجہ حرارت پر تیاری تاکہ قدرتی اثر محفوظ رہے۔',
-      step4Title: 'محفوظ پیکنگ',
-      step4Desc: 'نمی سے بچاؤ کے لیے محفوظ سیل پیکنگ اور ٹریکنگ۔',
-      craftCaption: 'سنگ مرمر پر چار لکڑی کے چمچوں میں منتخب پھول، سبز پتیاں اور خالص نباتاتی اجزاء۔',
-      aboutPhotoAlt: 'سفید سنگ مرمر پر چار لکڑی کے چمچوں میں خشک جڑی بوٹیاں اور پھول',
-      mortarSectionTitle: 'سہارنپور میں روایتی کھرل موسل سے خالص تیاری',
-      mortarSectionBody: 'ہاضمے کا سفوف ہو، کھانسی کا شربت یا جوڑوں کا روغن — ہر دوا خالص اجزاء اور مکمل شفافیت کے ساتھ تیار کی جاتی ہے۔',
-      mortarCaption: 'قدرتی پھولوں اور جڑی بوٹیوں کی روایتی پتھر کے کھرل میں تیاری۔',
-      fact1Val: '31',
-      fact1Lbl: 'مستند مصنوعات',
-      fact2Val: '0%',
-      fact2Lbl: 'کیمیائی ملاوٹ',
-      fact3Val: '24 گھنٹے',
-      fact3Lbl: 'روانگی کا وقت',
-      fact4Val: '24 ماہ',
-      fact4Lbl: 'میعاد',
-      ctaTitle: 'تمام مصنوعات دیکھیں',
-      ctaSubtitle: 'ہاضمے، توانائی اور روزمرہ صحت کے لیے خالص مرکبات دیکھیں یا ہم سے رابطہ کریں۔',
-      shopBtn: 'مصنوعات دیکھیں',
-      contactBtn: 'رابطہ کریں',
-    },
-  }[language] || {
     badge: 'About',
     title: 'About IFAQA Herbal Remedies',
     subtitle: 'Authentic Unani and Ayurvedic medicines compounded from whole wildcrafted herbs, roots, spices, and natural forest honey in Saharanpur.',
@@ -276,7 +107,7 @@ export default function AboutPage() {
             priority
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover object-[center_bottom] lg:object-[76%_center] rtl:lg:object-[24%_center]"
+            className="object-cover object-[center_bottom] lg:object-[76%_center]"
           />
           <div
             className="lg:hidden absolute inset-0"
@@ -286,17 +117,10 @@ export default function AboutPage() {
             }}
           />
           <div
-            className="hidden lg:block rtl:hidden absolute inset-0"
+            className="hidden lg:block absolute inset-0"
             style={{
               background:
                 'linear-gradient(90deg, rgba(250,248,245,0.97) 0%, rgba(250,248,245,0.93) 40%, rgba(250,248,245,0.55) 60%, rgba(250,248,245,0.06) 80%, rgba(250,248,245,0) 100%)',
-            }}
-          />
-          <div
-            className="hidden rtl:lg:block absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(270deg, rgba(250,248,245,0.97) 0%, rgba(250,248,245,0.93) 40%, rgba(250,248,245,0.55) 60%, rgba(250,248,245,0.06) 80%, rgba(250,248,245,0) 100%)',
             }}
           />
           <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ifaqa-linen/80 to-transparent" />
@@ -575,7 +399,7 @@ export default function AboutPage() {
               <Link href="/catalog">
                 <Button3D variant="primary" size="md">
                   <span>{content.shopBtn}</span>
-                  <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+                  <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
                 </Button3D>
               </Link>
               <Link href="/contact">

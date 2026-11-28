@@ -186,7 +186,7 @@ export function AccountShell({ title, subtitle, children }: AccountShellProps) {
               className="w-full sm:w-auto h-11 px-6 rounded-lg bg-ifaqa-plum text-ifaqa-linen hover:bg-ifaqa-blackberry text-sm font-medium inline-flex items-center justify-center gap-2 transition-colors"
             >
               <span>{labels.signInCta}</span>
-              <ArrowRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
             </Link>
             <Link
               href="/catalog"
@@ -310,7 +310,7 @@ export function AccountShell({ title, subtitle, children }: AccountShellProps) {
                     </div>
                   </div>
                   <ChevronRight
-                    className={`w-4 h-4 shrink-0 rtl-flip ${
+                    className={`w-4 h-4 shrink-0 ${
                       isActive ? 'text-ifaqa-plum' : 'text-[#5A6962]/50 group-hover:text-ifaqa-plum'
                     }`}
                     strokeWidth={1.5}

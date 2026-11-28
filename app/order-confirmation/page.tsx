@@ -148,7 +148,7 @@ function OrderConfirmationContent() {
           <Link href="/catalog" className="w-full sm:w-auto">
             <Button3D variant="primary" size="md" className="w-full sm:w-auto">
               <span>Continue shopping</span>
-              <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+              <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
             </Button3D>
           </Link>
         </div>

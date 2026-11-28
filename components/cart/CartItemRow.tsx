@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Minus, Plus, Trash2, Leaf } from 'lucide-react';
 import { CartLineItem, useCart } from '@/context/CartContext';
-import { useLanguage } from '@/context/LanguageContext';
 import { formatPriceINR } from '@/lib/formatters';
 
 interface CartItemRowProps {
@@ -14,7 +13,6 @@ interface CartItemRowProps {
 
 export function CartItemRow({ item }: CartItemRowProps) {
   const { decrementItem, updateQuantity, removeItem } = useCart();
-  const { language } = useLanguage();
   const [imgError, setImgError] = useState(false);
 
   const handleIncrement = () => {
@@ -53,12 +51,6 @@ export function CartItemRow({ item }: CartItemRowProps) {
               {item.name}
             </Link>
           </h4>
-
-          {language === 'ur' && item.urduName && (
-            <p dir="rtl" lang="ur" className="text-sm font-urdu text-[#5A6962]">
-              {item.urduName}
-            </p>
-          )}
 
           <div className="flex items-center gap-2 text-xs font-sans text-[#5A6962] flex-wrap">
             {item.size && (

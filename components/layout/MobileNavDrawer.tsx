@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { X, ShoppingBag, UserCheck, ChevronRight, User } from 'lucide-react';
+import { X, ShoppingBag, UserCheck, ChevronRight, User, Globe } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -15,7 +15,7 @@ interface MobileNavDrawerProps {
 export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const { openCart, itemCount } = useCart();
   const { user, isAuthenticated, signOut } = useAuth();
-  const { t, getCategoryTitle } = useLanguage();
+  const { language, setLanguage, supportedLanguages, t, getCategoryTitle } = useLanguage();
 
   const primaryLinks = [
     { name: t('home'), path: '/' },
@@ -39,10 +39,9 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
         onClick={onClose}
       />
 
-      {/* Drawer anchored to inline start so RTL flips cleanly */}
       <div
         className={`relative w-4/5 max-w-xs bg-ifaqa-linen border-e border-ifaqa-plum/10 h-full flex flex-col justify-between z-10 shadow-luxury-lifted overflow-y-auto transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isOpen ? 'translate-x-0' : '-translate-x-full rtl:translate-x-full'
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div>
@@ -73,13 +72,13 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
                 className="flex items-center justify-between h-10 px-3 rounded-lg text-sm font-sans font-medium text-ifaqa-plum hover:bg-ifaqa-cashmere transition-colors"
               >
                 <span>{link.name}</span>
-                <ChevronRight className="w-4 h-4 text-[#5A6962] rtl-flip" strokeWidth={1.5} />
+                <ChevronRight className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
               </Link>
             ))}
           </nav>
 
-          {/* Quick cart trigger */}
-          <div className="p-4 border-b border-ifaqa-plum/10">
+          {/* Quick cart & language selector */}
+          <div className="p-4 border-b border-ifaqa-plum/10 space-y-2.5">
             <button
               onClick={() => {
                 onClose();
@@ -95,6 +94,25 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
                 {itemCount}
               </span>
             </button>
+
+            <div
+              translate="no"
+              className="flex items-center gap-2 h-10 px-3 rounded-lg bg-white border border-ifaqa-plum/15"
+            >
+              <Globe className="w-4 h-4 text-[#5A6962] shrink-0" strokeWidth={1.5} />
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                aria-label="Choose language"
+                className="flex-1 bg-transparent text-xs font-medium text-ifaqa-plum focus:outline-none"
+              >
+                {supportedLanguages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.nativeName} ({lang.name})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Categories */}

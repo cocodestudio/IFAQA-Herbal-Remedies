@@ -142,7 +142,7 @@ export default function CategoryCatalogPage() {
             href="/catalog"
             className="text-sm font-sans font-medium text-ifaqa-plum hover:underline inline-flex items-center gap-1.5"
           >
-            <ArrowLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
             <span>All categories</span>
           </Link>
         </div>
@@ -227,7 +227,7 @@ export default function CategoryCatalogPage() {
                       className="h-9 px-3 rounded-lg text-xs font-sans font-medium border border-ifaqa-plum/15 bg-white hover:bg-ifaqa-cashmere text-ifaqa-plum disabled:opacity-40 disabled:cursor-not-allowed transition-colors inline-flex items-center gap-1"
                       aria-label="Previous page"
                     >
-                      <ChevronLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+                      <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
                       <span>Prev</span>
                     </button>
 
@@ -253,7 +253,7 @@ export default function CategoryCatalogPage() {
                       aria-label="Next page"
                     >
                       <span>Next</span>
-                      <ChevronRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+                      <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
                     </button>
                   </div>
                 </div>

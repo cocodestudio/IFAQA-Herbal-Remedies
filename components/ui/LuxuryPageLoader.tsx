@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useLanguage } from '@/context/LanguageContext';
 import { NAV_START_EVENT } from '@/lib/nav-progress';
 
 const DATA_HEAVY_PREFIXES = [
@@ -19,42 +18,14 @@ function isDataHeavyRoute(href: string): boolean {
   return DATA_HEAVY_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
-function resolveRouteLabel(href: string, language: string): string {
+function resolveRouteLabel(href: string): string {
   const path = href.toLowerCase();
-
-  if (path.includes('/remedy/')) {
-    if (language === 'hi') return 'उत्पाद विवरण खुल रहा है...';
-    if (language === 'ur') return 'دوا کی تفصیلات کھل رہی ہیں...';
-    return 'Opening product details...';
-  }
-  if (path.includes('/catalog')) {
-    if (language === 'hi') return 'उत्पाद सूची लोड हो रही है...';
-    if (language === 'ur') return 'مصنوعات کی فہرست کھل رہی ہے...';
-    return 'Browsing formulations...';
-  }
-  if (path.includes('/checkout')) {
-    if (language === 'hi') return 'सुरक्षित चेकआउट तैयार हो रहा है...';
-    if (language === 'ur') return 'محفوظ چیک آؤٹ کھل رہا ہے...';
-    return 'Preparing secure checkout...';
-  }
-  if (path.includes('/order-confirmation')) {
-    if (language === 'hi') return 'ऑर्डर की पुष्टि खुल रही है...';
-    if (language === 'ur') return 'آرڈر کی تصدیق کھل رہی ہے...';
-    return 'Confirming your order...';
-  }
-  if (path.includes('/account/orders')) {
-    if (language === 'hi') return 'आपके ऑर्डर लोड हो रहे हैं...';
-    if (language === 'ur') return 'آپ کے آرڈرز کھل رہے ہیں...';
-    return 'Loading your orders...';
-  }
-  if (path.includes('/account/reviews')) {
-    if (language === 'hi') return 'आपकी समीक्षाएं खुल रही हैं...';
-    if (language === 'ur') return 'آپ کے تبصرے کھل رہے ہیں...';
-    return 'Loading your reviews...';
-  }
-
-  if (language === 'hi') return 'पेज लोड हो रहा है...';
-  if (language === 'ur') return 'صفحہ کھل رہا ہے...';
+  if (path.includes('/remedy/')) return 'Opening product details...';
+  if (path.includes('/catalog')) return 'Browsing formulations...';
+  if (path.includes('/checkout')) return 'Preparing secure checkout...';
+  if (path.includes('/order-confirmation')) return 'Confirming your order...';
+  if (path.includes('/account/orders')) return 'Loading your orders...';
+  if (path.includes('/account/reviews')) return 'Loading your reviews...';
   return 'Opening page...';
 }
 
@@ -67,7 +38,6 @@ function resolveRouteLabel(href: string, language: string): string {
 export function LuxuryPageLoader() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { language } = useLanguage();
 
   const [barVisible, setBarVisible] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -76,16 +46,11 @@ export function LuxuryPageLoader() {
   const [statusLabel, setStatusLabel] = useState('Opening page...');
 
   const isFirstMount = useRef(true);
-  const languageRef = useRef(language);
   const rampTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeNavRef = useRef(false);
-
-  useEffect(() => {
-    languageRef.current = language;
-  }, [language]);
 
   const clearTimers = useCallback(() => {
     if (rampTimerRef.current) clearTimeout(rampTimerRef.current);
@@ -117,7 +82,7 @@ export function LuxuryPageLoader() {
     (targetHref: string, allowOverlay = true) => {
       clearTimers();
       activeNavRef.current = true;
-      setStatusLabel(resolveRouteLabel(targetHref, languageRef.current));
+      setStatusLabel(resolveRouteLabel(targetHref));
       setCompleting(false);
       setOverlayVisible(false);
       setProgress(30);

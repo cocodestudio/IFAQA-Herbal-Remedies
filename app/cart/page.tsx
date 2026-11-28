@@ -37,7 +37,7 @@ export default function CartPage() {
             href="/catalog"
             className="text-sm font-sans font-medium text-ifaqa-plum hover:underline inline-flex items-center gap-1.5"
           >
-            <ArrowLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
             <span>Continue shopping</span>
           </Link>
           {items.length > 0 && (
@@ -69,7 +69,7 @@ export default function CartPage() {
             <Link href="/catalog">
               <Button3D variant="primary" size="md">
                 <span>{t('shopProducts')}</span>
-                <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+                <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
               </Button3D>
             </Link>
           </div>
@@ -123,7 +123,7 @@ export default function CartPage() {
             <Link href="/checkout" className="block w-full">
               <Button3D variant="primary" size="lg" className="w-full justify-between">
                 <span>{t('proceedToCheckout')}</span>
-                <ArrowRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
               </Button3D>
             </Link>
 

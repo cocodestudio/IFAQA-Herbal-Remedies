@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { useLanguage } from '@/context/LanguageContext';
 import { Leaf } from 'lucide-react';
 
 interface RemedyGalleryProps {
@@ -16,7 +15,6 @@ export function RemedyGallery({
   primaryImage,
   images = [],
   remedyName,
-  urduName,
 }: RemedyGalleryProps) {
   const allImages = useMemo(() => {
     const merged: string[] = [];
@@ -33,7 +31,6 @@ export function RemedyGallery({
 
   const [selectedImage, setSelectedImage] = useState(allImages[0] || '');
   const [imageError, setImageError] = useState(false);
-  const { language } = useLanguage();
 
   useEffect(() => {
     setSelectedImage((prev) => (prev && allImages.includes(prev) ? prev : allImages[0] || ''));
@@ -64,11 +61,6 @@ export function RemedyGallery({
             <h3 className="font-serif text-lg font-medium text-ifaqa-plum">
               {remedyName}
             </h3>
-            {language === 'ur' && urduName && (
-              <p dir="rtl" lang="ur" className="font-urdu text-base text-[#5A6962]">
-                {urduName}
-              </p>
-            )}
           </div>
         )}
       </div>

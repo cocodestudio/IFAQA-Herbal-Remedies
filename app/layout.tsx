@@ -9,6 +9,7 @@ import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { LuxuryPageLoader } from '@/components/ui/LuxuryPageLoader';
+import { SectionErrorBoundary } from '@/components/ui/SectionErrorBoundary';
 import { Suspense } from 'react';
 
 const displaySerif = Newsreader({
@@ -59,6 +60,7 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
+      suppressHydrationWarning
       className={`${displaySerif.variable} ${interfaceSans.variable} ${metaMono.variable} ${urduNastaliq.variable}`}
     >
       <body className="bg-ifaqa-linen text-ifaqa-plum antialiased min-h-screen flex flex-col font-sans overflow-x-clip selection:bg-ifaqa-plum selection:text-ifaqa-linen">
@@ -68,11 +70,17 @@ export default function RootLayout({
               <Suspense fallback={null}>
                 <LuxuryPageLoader />
               </Suspense>
-              <Header />
+              <SectionErrorBoundary sectionName="Header">
+                <Header />
+              </SectionErrorBoundary>
               <main className="flex-1 w-full min-h-[calc(100vh-4.5rem)] overflow-x-clip">
-                {children}
+                <SectionErrorBoundary sectionName="PageContent">
+                  {children}
+                </SectionErrorBoundary>
               </main>
-              <Footer />
+              <SectionErrorBoundary sectionName="Footer">
+                <Footer />
+              </SectionErrorBoundary>
               <CartDrawer />
               <PhoneOtpModal />
             </CartProvider>

@@ -43,7 +43,7 @@ export function CartDrawer() {
 
       <div
         className={`relative w-full max-w-md bg-ifaqa-linen border-s border-ifaqa-plum/10 h-full flex flex-col justify-between z-10 shadow-luxury-lifted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isOpen ? 'translate-x-0' : 'translate-x-full rtl:-translate-x-full'
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
@@ -87,7 +87,7 @@ export function CartDrawer() {
                 className="h-10 px-5 rounded-lg bg-ifaqa-plum text-ifaqa-linen text-sm font-sans font-medium inline-flex items-center gap-2 hover:bg-ifaqa-blackberry transition-colors"
               >
                 <span>{t('shopProducts')}</span>
-                <ArrowRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
               </Link>
             </div>
           ) : (
@@ -117,7 +117,7 @@ export function CartDrawer() {
               <Link href="/checkout" onClick={closeCart} className="block w-full">
                 <Button3D variant="primary" size="md" className="w-full justify-between">
                   <span>{t('proceedToCheckout')}</span>
-                  <ArrowRight className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+                  <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
                 </Button3D>
               </Link>
               <Link

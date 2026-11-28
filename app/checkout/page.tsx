@@ -29,7 +29,7 @@ export default function CheckoutPage() {
           href="/cart"
           className="text-sm font-sans font-medium text-ifaqa-plum hover:underline inline-flex items-center gap-1.5"
         >
-          <ArrowLeft className="w-4 h-4 rtl-flip" strokeWidth={1.5} />
+          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
           <span>Return to cart</span>
         </Link>
       </div>
@@ -50,7 +50,7 @@ export default function CheckoutPage() {
           <Link href="/catalog" className="inline-block">
             <Button3D variant="primary" size="md">
               <span>{t('shopProducts')}</span>
-              <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+              <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
             </Button3D>
           </Link>
         </div>

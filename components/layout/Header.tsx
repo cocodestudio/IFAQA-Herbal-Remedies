@@ -31,9 +31,18 @@ export function Header() {
   const router = useRouter();
   const { itemCount, openCart } = useCart();
   const { user, isAuthenticated } = useAuth();
-  const { language, setLanguage, t, getRemedyTitle } = useLanguage();
+  const {
+    language,
+    setLanguage,
+    isTranslating,
+    supportedLanguages,
+    currentLanguageMeta,
+    t,
+    getRemedyTitle,
+  } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [langSearch, setLangSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -79,20 +88,19 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const languageOptions: { code: LanguageCode; nativeName: string }[] = [
-    { code: 'en', nativeName: 'English' },
-    { code: 'hi', nativeName: 'हिंदी' },
-    { code: 'ur', nativeName: 'اردو' },
-  ];
+  const filteredLanguages = useMemo(() => {
+    const q = langSearch.trim().toLowerCase();
+    if (!q) return supportedLanguages;
+    return supportedLanguages.filter(
+      (l) =>
+        l.name.toLowerCase().includes(q) ||
+        l.nativeName.toLowerCase().includes(q) ||
+        l.code.toLowerCase().includes(q) ||
+        l.region.toLowerCase().includes(q)
+    );
+  }, [langSearch, supportedLanguages]);
 
-  const currentLangObj = languageOptions.find((l) => l.code === language) || languageOptions[0];
-
-  const searchPlaceholder =
-    language === 'hi'
-      ? 'हर्बल औषधियां, रोग या सामग्री खोजें...'
-      : language === 'ur'
-      ? 'یونانی و آیورویدک ادویات تلاش کریں...'
-      : 'Search IFAQA herbal remedies, ailments, or ingredients...';
+  const searchPlaceholder = 'Search IFAQA herbal remedies, ailments, or ingredients...';
 
   const quickMatches = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -338,8 +346,8 @@ export function Header() {
 
             {/* Right Actions: Language Switcher, Profile / Account, Cart */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              {/* Language Switcher */}
-              <div className="relative" ref={langRef}>
+              {/* Language Switcher (All Languages, Fixed LTR Layout) */}
+              <div className="relative" ref={langRef} translate="no">
                 <button
                   onClick={() => setLangMenuOpen(!langMenuOpen)}
                   className="h-9 px-2.5 sm:px-3 rounded-lg border border-ifaqa-plum/15 bg-white hover:bg-ifaqa-cashmere text-ifaqa-plum transition-colors inline-flex items-center gap-1.5 text-xs font-sans font-medium"
@@ -347,11 +355,17 @@ export function Header() {
                 >
                   <Globe className="w-4 h-4 text-[#5A6962] shrink-0" strokeWidth={1.5} />
                   <span className="font-mono text-xs tabular-nums">
-                    {currentLangObj.code.toUpperCase()}
+                    {currentLanguageMeta.code.toUpperCase()}
                   </span>
                   <span className="hidden lg:inline text-ifaqa-plum">
-                    {currentLangObj.nativeName}
+                    {currentLanguageMeta.nativeName}
                   </span>
+                  {isTranslating && (
+                    <span
+                      aria-hidden="true"
+                      className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse"
+                    />
+                  )}
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-[#5A6962] transition-transform duration-150 ${langMenuOpen ? 'rotate-180' : ''}`}
                     strokeWidth={1.5}
@@ -359,35 +373,56 @@ export function Header() {
                 </button>
 
                 {langMenuOpen && (
-                  <div className="absolute end-0 mt-2 w-44 rounded-xl bg-white border border-ifaqa-plum/10 shadow-luxury-lifted z-50 py-1.5">
-                    <div className="px-3 py-1.5 border-b border-ifaqa-plum/10 text-xs font-sans text-[#5A6962]">
-                      {t('languageSelect')}
+                  <div className="absolute end-0 mt-2 w-60 rounded-xl bg-white border border-ifaqa-plum/10 shadow-luxury-lifted z-50 py-1.5 overflow-hidden">
+                    <div className="px-3 py-2 border-b border-ifaqa-plum/10 space-y-1.5">
+                      <div className="text-[11px] font-sans font-medium text-[#5A6962] flex items-center justify-between">
+                        <span>Choose storefront language</span>
+                        <span className="font-mono text-[10px] text-[#165A45]">AUTO</span>
+                      </div>
+                      <input
+                        type="text"
+                        value={langSearch}
+                        onChange={(e) => setLangSearch(e.target.value)}
+                        placeholder="Filter language..."
+                        className="w-full h-7 px-2.5 rounded-md border border-ifaqa-plum/15 bg-ifaqa-linen text-xs text-ifaqa-plum focus:outline-none focus:border-ifaqa-plum"
+                      />
                     </div>
-                    {languageOptions.map((opt) => {
-                      const isSelected = language === opt.code;
-                      return (
-                        <button
-                          key={opt.code}
-                          onClick={() => {
-                            setLanguage(opt.code);
-                            setLangMenuOpen(false);
-                          }}
-                          className={`w-full px-3 py-2 text-start text-xs font-sans flex items-center justify-between transition-colors ${
-                            isSelected
-                              ? 'bg-ifaqa-cashmere text-ifaqa-plum font-medium'
-                              : 'text-[#5A6962] hover:bg-ifaqa-linen hover:text-ifaqa-plum'
-                          }`}
-                        >
-                          <span className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-ifaqa-plum">
-                              {opt.code.toUpperCase()}
+                    <div className="max-h-64 overflow-y-auto py-1">
+                      {filteredLanguages.map((opt) => {
+                        const isSelected = language === opt.code;
+                        return (
+                          <button
+                            key={opt.code}
+                            onClick={() => {
+                              setLanguage(opt.code);
+                              setLangMenuOpen(false);
+                              setLangSearch('');
+                            }}
+                            className={`w-full px-3 py-2 text-start text-xs font-sans flex items-center justify-between transition-colors ${
+                              isSelected
+                                ? 'bg-ifaqa-cashmere text-ifaqa-plum font-medium'
+                                : 'text-[#5A6962] hover:bg-ifaqa-linen hover:text-ifaqa-plum'
+                            }`}
+                          >
+                            <span className="flex items-center gap-2 min-w-0">
+                              <span className="font-mono text-[11px] text-ifaqa-plum w-9 shrink-0">
+                                {opt.code.toUpperCase()}
+                              </span>
+                              <span className="truncate text-ifaqa-plum">{opt.nativeName}</span>
+                              <span className="text-[10px] text-[#5A6962] truncate">
+                                {opt.name !== opt.nativeName ? opt.name : ''}
+                              </span>
                             </span>
-                            <span>{opt.nativeName}</span>
-                          </span>
-                          {isSelected && <Check className="w-4 h-4 text-ifaqa-plum" strokeWidth={1.5} />}
-                        </button>
-                      );
-                    })}
+                            {isSelected && <Check className="w-4 h-4 text-[#165A45] shrink-0" strokeWidth={1.6} />}
+                          </button>
+                        );
+                      })}
+                      {filteredLanguages.length === 0 && (
+                        <div className="px-3 py-3 text-xs text-[#5A6962] text-center">
+                          No matching language
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

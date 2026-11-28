@@ -73,7 +73,7 @@ export default function RemedyDetailPage() {
   const [reviews, setReviews] = useState<ProductReviewRecord[]>([]);
 
   const { addToCart } = useCart();
-  const { language, t, getRemedyTitle, getRemedySubtitle, getCategoryTitle } = useLanguage();
+  const { t, getRemedyTitle, getRemedySubtitle, getCategoryTitle } = useLanguage();
 
   useEffect(() => {
     async function load() {
@@ -186,12 +186,6 @@ export default function RemedyDetailPage() {
             <h1 className="font-serif font-normal text-3xl sm:text-4xl text-ifaqa-plum leading-tight">
               {displayTitle}
             </h1>
-
-            {language === 'ur' && remedy.urduName && (
-              <p dir="rtl" lang="ur" className="font-urdu text-lg text-[#3E524A]">
-                {remedy.urduName}
-              </p>
-            )}
 
             <p className="text-sm font-sans text-[#5A6962]">
               {displaySubtitle}{remedy.packaging?.size ? ` · ${remedy.packaging.size}` : ''}

@@ -20,7 +20,7 @@ import {
 
 export default function AccountNotificationsPage() {
   const { user } = useAuth();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, supportedLanguages } = useLanguage();
 
   const [prefs, setPrefs] = useState<CustomerPreferences>({
     orderSms: true,
@@ -167,26 +167,24 @@ export default function AccountNotificationsPage() {
           <Globe className="w-4 h-4 text-[#5A6962]" strokeWidth={1.5} />
           <h2 className="font-serif text-xl text-ifaqa-plum">Preferred language</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {(
-            [
-              { code: 'en', name: 'English', note: 'International default' },
-              { code: 'hi', name: 'हिंदी (Hindi)', note: 'Devanagari UI' },
-              { code: 'ur', name: 'اردو (Urdu)', note: 'Right-to-left (RTL)' },
-            ] as Array<{ code: LanguageCode; name: string; note: string }>
-          ).map((opt) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" translate="no">
+          {supportedLanguages.map((opt) => (
             <button
               key={opt.code}
               type="button"
-              onClick={() => setLanguage(opt.code)}
-              className={`p-3.5 rounded-lg border text-start transition-colors ${
+              onClick={() => setLanguage(opt.code as LanguageCode)}
+              className={`p-3 rounded-lg border text-start transition-colors ${
                 language === opt.code
                   ? 'bg-ifaqa-cashmere border-ifaqa-plum text-ifaqa-plum'
                   : 'bg-white border-ifaqa-plum/15 text-[#5A6962] hover:bg-ifaqa-linen'
               }`}
             >
-              <span className="text-sm font-semibold text-ifaqa-plum block">{opt.name}</span>
-              <span className="text-xs text-[#5A6962] block mt-0.5">{opt.note}</span>
+              <span className="text-sm font-semibold text-ifaqa-plum block truncate">
+                {opt.nativeName}
+              </span>
+              <span className="text-[11px] text-[#5A6962] block mt-0.5 truncate">
+                {opt.name}
+              </span>
             </button>
           ))}
         </div>

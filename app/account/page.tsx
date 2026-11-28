@@ -31,7 +31,7 @@ import { Button3D } from '@/components/ui/Button3D';
 
 export default function MyAccountPage() {
   const { user, updateDisplayName } = useAuth();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, supportedLanguages } = useLanguage();
 
   const [profile, setProfile] = useState<CustomerAccountProfile>({
     fullName: '',
@@ -140,7 +140,7 @@ export default function MyAccountPage() {
           </div>
           <span className="text-xs text-[#165A45] font-medium mt-1 inline-flex items-center gap-1">
             <span>View order history</span>
-            <ArrowRight className="w-3.5 h-3.5 rtl-flip" strokeWidth={1.5} />
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
           </span>
         </Link>
 
@@ -157,7 +157,7 @@ export default function MyAccountPage() {
           </div>
           <span className="text-xs text-[#165A45] font-medium mt-1 inline-flex items-center gap-1">
             <span>Manage addresses</span>
-            <ArrowRight className="w-3.5 h-3.5 rtl-flip" strokeWidth={1.5} />
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
           </span>
         </Link>
 
@@ -174,7 +174,7 @@ export default function MyAccountPage() {
           </div>
           <span className="text-xs text-[#165A45] font-medium mt-1 inline-flex items-center gap-1">
             <span>Configure refund details</span>
-            <ArrowRight className="w-3.5 h-3.5 rtl-flip" strokeWidth={1.5} />
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
           </span>
         </Link>
       </div>
@@ -279,11 +279,14 @@ export default function MyAccountPage() {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+              translate="no"
               className="w-full h-11 px-3.5 rounded-lg border border-ifaqa-plum/15 focus:border-ifaqa-plum focus:outline-none text-sm text-ifaqa-plum bg-white"
             >
-              <option value="en">English (Default)</option>
-              <option value="hi">हिंदी (Hindi)</option>
-              <option value="ur">اردو (Urdu - RTL)</option>
+              {supportedLanguages.map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.nativeName} ({lang.name})
+                </option>
+              ))}
             </select>
           </div>
         </div>

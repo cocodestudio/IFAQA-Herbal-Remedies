@@ -25,7 +25,7 @@ import {
 export default function SignInPage() {
   const router = useRouter();
   const { user, isAuthenticated, signInWithTestAccount, signOut } = useAuth();
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
@@ -36,97 +36,6 @@ export default function SignInPage() {
   const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
 
   const content = {
-    en: {
-      badge: 'Sign in',
-      title: 'Sign in to your account',
-      subtitle: 'Use your 10-digit mobile number to view your orders and saved delivery details.',
-      perksTitle: 'Customer benefits',
-      trackTitle: 'Order tracking',
-      trackDesc: 'Courier dispatch reference and status updates by SMS.',
-      genuineTitle: 'Small-batch herbal products',
-      genuineDesc: 'Prepared in Saharanpur from whole roots, seeds, and honey.',
-      secureTitle: 'Confidential customer details',
-      secureDesc: 'Your phone number and delivery address remain private.',
-      mobileLabel: 'Mobile number',
-      placeholder: '98765 43210',
-      helpText: 'We will send a 6-digit verification code to this number.',
-      sendOtpBtn: 'Get verification code',
-      demoBtn: 'Continue with test account (+91 97298 40336)',
-      enterOtpTitle: 'Enter 6-digit code',
-      enterOtpSubtitle: 'Code sent to +91',
-      changeNumber: 'Change number',
-      resendIn: 'Resend in',
-      resendNow: 'Resend code',
-      verifyBtn: 'Verify and sign in',
-      bypassDemo: 'Or sign in directly with test account',
-      welcomeBack: 'Account active',
-      registeredPhone: 'Mobile number',
-      browseShop: 'Shop products',
-      signOutBtn: 'Sign out',
-      errValidPhone: 'Enter a valid 10-digit mobile number.',
-      errValidOtp: 'Enter all 6 digits of your verification code.',
-    },
-    hi: {
-      badge: 'लॉग इन',
-      title: 'अपने खाते में लॉग इन करें',
-      subtitle: 'अपने ऑर्डर और सुरक्षित डिलीवरी पते देखने के लिए अपना 10 अंकों का मोबाइल नंबर दर्ज करें।',
-      perksTitle: 'खाते के लाभ',
-      trackTitle: 'ऑर्डर ट्रैकिंग',
-      trackDesc: 'SMS पर कूरियर डिस्पैच और डिलीवरी अपडेट प्राप्त करें।',
-      genuineTitle: 'शुद्ध जड़ी-बूटी उत्पाद',
-      genuineDesc: 'सहारनपुर में शुद्ध जड़ों, बीजों और शहद से निर्मित।',
-      secureTitle: 'सुरक्षित जानकारी',
-      secureDesc: 'आपका फोन नंबर और पता हमेशा गोपनीय रहता है।',
-      mobileLabel: 'मोबाइल नंबर',
-      placeholder: '98765 43210',
-      helpText: 'इस नंबर पर 6 अंकों का सत्यापन कोड भेजा जाएगा।',
-      sendOtpBtn: 'कोड प्राप्त करें',
-      demoBtn: 'टेस्ट खाते से जारी रखें (+91 97298 40336)',
-      enterOtpTitle: '6 अंकों का कोड दर्ज करें',
-      enterOtpSubtitle: 'भेजा गया कोड +91',
-      changeNumber: 'नंबर बदलें',
-      resendIn: 'पुनः भेजें:',
-      resendNow: 'कोड दोबारा भेजें',
-      verifyBtn: 'सत्यापित करें और लॉग इन करें',
-      bypassDemo: 'या सीधे टेस्ट खाते से लॉग इन करें',
-      welcomeBack: 'खाता सक्रिय है',
-      registeredPhone: 'मोबाइल नंबर',
-      browseShop: 'उत्पाद देखें',
-      signOutBtn: 'लॉग आउट',
-      errValidPhone: 'मान्य 10 अंकों का मोबाइल नंबर दर्ज करें।',
-      errValidOtp: 'कृपया पूरा 6 अंकों का कोड दर्ज करें।',
-    },
-    ur: {
-      badge: 'لاگ ان',
-      title: 'اپنے اکاؤنٹ میں لاگ ان کریں',
-      subtitle: 'اپنے آرڈرز اور محفوظ پتہ دیکھنے کے لیے 10 ہندسوں کا موبائل نمبر درج کریں۔',
-      perksTitle: 'گاہک کی سہولیات',
-      trackTitle: 'آرڈر ٹریکنگ',
-      trackDesc: 'SMS کے ذریعے کوریئر اور ترسیل کی تازہ صورتحال حاصل کریں۔',
-      genuineTitle: 'خالص نباتاتی مرکبات',
-      genuineDesc: 'سہارنپور میں اصلی جڑوں، بیجوں اور شہد سے تیار کردہ۔',
-      secureTitle: 'محفوظ معلومات',
-      secureDesc: 'آپ کا موبائل نمبر اور پتہ مکمل خفیہ رہتا ہے۔',
-      mobileLabel: 'موبائل نمبر',
-      placeholder: '98765 43210',
-      helpText: 'اس نمبر پر 6 ہندسوں کا تصدیقی کوڈ بھیجا جائے گا۔',
-      sendOtpBtn: 'کوڈ حاصل کریں',
-      demoBtn: 'ٹیسٹ اکاؤنٹ کے ساتھ جاری رکھیں (+91 97298 40336)',
-      enterOtpTitle: '6 ہندسوں کا کوڈ درج کریں',
-      enterOtpSubtitle: 'کوڈ بھیجا گیا +91',
-      changeNumber: 'نمبر تبدیل کریں',
-      resendIn: 'دوبارہ کوڈ:',
-      resendNow: 'دوبارہ کوڈ بھیجیں',
-      verifyBtn: 'تصدیق کر کے لاگ ان کریں',
-      bypassDemo: 'یا ٹیسٹ اکاؤنٹ کے ساتھ براہ راست لاگ ان کریں',
-      welcomeBack: 'اکاؤنٹ فعال ہے',
-      registeredPhone: 'موبائل نمبر',
-      browseShop: 'مصنوعات دیکھیں',
-      signOutBtn: 'لاگ آؤٹ',
-      errValidPhone: 'درست 10 ہندسوں کا موبائل نمبر درج کریں۔',
-      errValidOtp: 'براہ کرم پورا 6 ہندسوں کا کوڈ درج کریں۔',
-    },
-  }[language] || {
     badge: 'Sign in',
     title: 'Sign in to your account',
     subtitle: 'Use your 10-digit mobile number to view your orders and saved delivery details.',
@@ -416,7 +325,7 @@ export default function SignInPage() {
                   <Link href="/account" className="flex-1">
                     <Button3D variant="primary" size="md" className="w-full">
                       <span>{t('account')}</span>
-                      <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />
+                      <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />
                     </Button3D>
                   </Link>
                   <Link href="/catalog" className="flex-1">
@@ -487,7 +396,7 @@ export default function SignInPage() {
                       disabled={loading}
                     >
                       <span>{loading ? t('verifying') : content.sendOtpBtn}</span>
-                      {!loading && <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />}
+                      {!loading && <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />}
                     </Button3D>
 
                     <div className="pt-2 text-center">
@@ -564,7 +473,7 @@ export default function SignInPage() {
                       disabled={loading}
                     >
                       <span>{loading ? t('verifying') : content.verifyBtn}</span>
-                      {!loading && <ArrowRight className="w-4 h-4 ms-2 rtl-flip" strokeWidth={1.5} />}
+                      {!loading && <ArrowRight className="w-4 h-4 ms-2" strokeWidth={1.5} />}
                     </Button3D>
 
                     <div className="pt-1 text-center">
