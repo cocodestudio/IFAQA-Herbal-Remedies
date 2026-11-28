@@ -20,9 +20,10 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage, LanguageCode } from '@/context/LanguageContext';
 import { MobileNavDrawer } from './MobileNavDrawer';
+import { ShimmerImage } from '@/components/ui/ShimmerImage';
 import { triggerNavigationProgress } from '@/lib/nav-progress';
 import seedData from '@/lib/seed-data.json';
-import { getRemedies } from '@/lib/remedies-service';
+import { getRemedies, getCachedStorefrontSnapshot } from '@/lib/remedies-service';
 import { HerbalRemedy } from '@/lib/types';
 import { formatPriceINR } from '@/lib/formatters';
 
@@ -45,6 +46,10 @@ export function Header() {
 
   useEffect(() => {
     let active = true;
+    const snap = getCachedStorefrontSnapshot();
+    if (snap.fromCache && snap.remedies.length > 0) {
+      setLiveRemedies(snap.remedies.filter((r) => r.isAvailable !== false));
+    }
     getRemedies()
       .then((list) => {
         if (active && Array.isArray(list) && list.length > 0) {
@@ -207,7 +212,7 @@ export function Header() {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative w-10 h-10 rounded-lg border border-ifaqa-plum/10 bg-white shrink-0 overflow-hidden flex items-center justify-center">
                       {item.primaryImage ? (
-                        <Image
+                        <ShimmerImage
                           src={item.primaryImage}
                           alt={getRemedyTitle(item)}
                           fill
@@ -270,12 +275,13 @@ export function Header() {
 
               <Link href="/" className="inline-flex items-center shrink-0">
                 <div className="relative h-9 sm:h-11 w-[96px] sm:w-[132px] flex items-center">
-                  <Image
+                  <ShimmerImage
                     src="/images/logo.png"
                     alt="IFAQA Herbal Remedies"
                     width={160}
                     height={48}
                     priority
+                    wrapperClassName="h-9 sm:h-11 w-full justify-start"
                     className="h-9 sm:h-11 w-auto object-contain"
                   />
                 </div>

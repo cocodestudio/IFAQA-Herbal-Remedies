@@ -2,32 +2,64 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import seedData from '@/lib/seed-data.json';
-import { getRemedies, getCategories, getBanners } from '@/lib/remedies-service';
+import {
+  getStorefrontData,
+  getCachedStorefrontSnapshot,
+  hasWarmMemoryCache,
+} from '@/lib/remedies-service';
 import { HerbalRemedy, AilmentCategory, PromotionalBanner } from '@/lib/types';
 import { RemedyCard3D } from '@/components/catalog/RemedyCard3D';
+import { ShimmerImage } from '@/components/ui/ShimmerImage';
+import {
+  CategoryGridSkeleton,
+  RemedyGridSkeleton,
+} from '@/components/catalog/StorefrontSkeletons';
 import { useLanguage } from '@/context/LanguageContext';
 import { ArrowRight, Leaf, ShieldCheck, Truck } from 'lucide-react';
 
 export default function HomePage() {
-  const [remedies, setRemedies] = useState<HerbalRemedy[]>(() => seedData.remedies as unknown as HerbalRemedy[]);
-  const [categories, setCategories] = useState<AilmentCategory[]>(() => seedData.categories as unknown as AilmentCategory[]);
-  const [banners, setBanners] = useState<PromotionalBanner[]>([]);
+  const initialWarm = hasWarmMemoryCache();
+  const initialWarmData = initialWarm ? getCachedStorefrontSnapshot() : null;
+
+  const [remedies, setRemedies] = useState<HerbalRemedy[]>(
+    () => initialWarmData?.remedies || (seedData.remedies as unknown as HerbalRemedy[])
+  );
+  const [categories, setCategories] = useState<AilmentCategory[]>(
+    () => initialWarmData?.categories || (seedData.categories as unknown as AilmentCategory[])
+  );
+  const [banners, setBanners] = useState<PromotionalBanner[]>(
+    () => initialWarmData?.banners || (seedData.banners as unknown as PromotionalBanner[])
+  );
+  const [catalogReady, setCatalogReady] = useState<boolean>(initialWarm);
   const { language, t, getCategoryTitle } = useLanguage();
 
   useEffect(() => {
-    async function loadData() {
-      const [r, c, b] = await Promise.all([
-        getRemedies(),
-        getCategories(),
-        getBanners(),
-      ]);
-      if (r && r.length > 0) setRemedies(r);
-      if (c && c.length > 0) setCategories(c);
-      if (b) setBanners(b);
+    let active = true;
+    const warm = getCachedStorefrontSnapshot();
+    if (warm.fromCache && warm.remedies.length > 0) {
+      setRemedies(warm.remedies);
+      setCategories(warm.categories);
+      setBanners(warm.banners);
+      setCatalogReady(true);
     }
-    loadData();
+
+    async function syncStorefront() {
+      try {
+        const fresh = await getStorefrontData();
+        if (!active) return;
+        if (fresh.remedies && fresh.remedies.length > 0) setRemedies(fresh.remedies);
+        if (fresh.categories && fresh.categories.length > 0) setCategories(fresh.categories);
+        if (fresh.banners) setBanners(fresh.banners);
+      } finally {
+        if (active) setCatalogReady(true);
+      }
+    }
+
+    syncStorefront();
+    return () => {
+      active = false;
+    };
   }, []);
 
   const activeRemedies = remedies.filter((r) => r.isAvailable !== false);
@@ -200,8 +232,8 @@ export default function HomePage() {
         <section className="relative w-full bg-[#F7F6F4] border-b border-ifaqa-plum/10 overflow-hidden">
           {/* Unified Full-Bleed Hero Photograph (Desktop + Mobile behind text) */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image
-              src="/images/hero-mortar-botanical.jpg"
+            <ShimmerImage
+              src="/images/hero-mortar-botanical.webp"
               alt={heroCopy.imageAlt}
               fill
               priority
@@ -292,33 +324,37 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
-          {categoriesWithLiveCounts.map((category) => (
-            <Link
-              key={category.id}
-              href={`/catalog/${category.slug}`}
-              className="group flex flex-col justify-between p-5 sm:p-6 rounded-xl bg-white border border-ifaqa-plum/10 hover:border-ifaqa-plum/25 shadow-luxury-card hover:shadow-luxury-lifted transition-[border-color,box-shadow] duration-150"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="font-sans font-semibold text-base sm:text-lg text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors truncate">
-                    {getCategoryTitle(category)}
-                  </h3>
-                  <span className="font-mono text-xs text-[#5A6962] bg-ifaqa-cashmere px-2 py-0.5 rounded shrink-0 tabular-nums">
-                    {category.remedyCount}
-                  </span>
+        {!catalogReady ? (
+          <CategoryGridSkeleton count={6} />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr ifaqa-content-appear">
+            {categoriesWithLiveCounts.map((category) => (
+              <Link
+                key={category.id}
+                href={`/catalog/${category.slug}`}
+                className="group flex flex-col justify-between p-5 sm:p-6 rounded-xl bg-white border border-ifaqa-plum/10 hover:border-ifaqa-plum/25 shadow-luxury-card hover:shadow-luxury-lifted transition-[border-color,box-shadow] duration-150"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h3 className="font-sans font-semibold text-base sm:text-lg text-ifaqa-plum group-hover:text-ifaqa-blackberry transition-colors truncate">
+                      {getCategoryTitle(category)}
+                    </h3>
+                    <span className="font-mono text-xs text-[#5A6962] bg-ifaqa-cashmere px-2 py-0.5 rounded shrink-0 tabular-nums">
+                      {category.remedyCount}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[#5A6962] font-sans line-clamp-2 leading-relaxed">
+                    {category.description}
+                  </p>
                 </div>
-                <p className="text-sm text-[#5A6962] font-sans line-clamp-2 leading-relaxed">
-                  {category.description}
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-ifaqa-plum/10 flex items-center justify-between text-xs font-sans font-medium text-ifaqa-plum">
-                <span>{t('explorePharmacopoeia')}</span>
-                <ArrowRight className="w-4 h-4 text-[#5A6962] group-hover:text-ifaqa-plum rtl-flip" strokeWidth={1.5} />
-              </div>
-            </Link>
-          ))}
-        </div>
+                <div className="mt-4 pt-3 border-t border-ifaqa-plum/10 flex items-center justify-between text-xs font-sans font-medium text-ifaqa-plum">
+                  <span>{t('explorePharmacopoeia')}</span>
+                  <ArrowRight className="w-4 h-4 text-[#5A6962] group-hover:text-ifaqa-plum rtl-flip" strokeWidth={1.5} />
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Mid-Page Promotional Feature Banner (Admin Controlled) */}
@@ -373,11 +409,15 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-fr">
-          {featuredRemedies.map((remedy) => (
-            <RemedyCard3D key={remedy.id} remedy={remedy} />
-          ))}
-        </div>
+        {!catalogReady ? (
+          <RemedyGridSkeleton count={8} />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-fr ifaqa-content-appear">
+            {featuredRemedies.map((remedy) => (
+              <RemedyCard3D key={remedy.id} remedy={remedy} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Bottom Editorial Band + Quality Pillars (tight balanced rhythm) */}
@@ -386,8 +426,8 @@ export default function HomePage() {
         <section className="relative w-full border-y border-ifaqa-plum/10 bg-[#F5F4F2] overflow-hidden ifaqa-scroll-reveal">
           {/* Unified Full-Bleed Image 3 Backdrop */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image
-              src="/images/home-closing-botanicals.jpg"
+            <ShimmerImage
+              src="/images/home-closing-botanicals.webp"
               alt={heroCopy.closingAlt}
               fill
               loading="lazy"

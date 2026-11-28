@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ShimmerImage } from '@/components/ui/ShimmerImage';
 import { ShieldCheck, Leaf, MapPin, Phone, Mail, Truck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -27,11 +27,13 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="inline-block">
               <div className="inline-flex items-center justify-center p-2.5 bg-white border border-ifaqa-plum/10 rounded-lg shadow-sm">
-                <Image
+                <ShimmerImage
                   src="/images/logo-framed.jpg"
                   alt="IFAQA Herbal Remedies"
                   width={168}
                   height={60}
+                  loading="lazy"
+                  wrapperClassName="h-10"
                   className="h-10 w-auto object-contain"
                 />
               </div>

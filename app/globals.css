@@ -229,3 +229,59 @@ html[dir="rtl"] .rtl-flip {
     }
   }
 }
+
+/* Luxury Ivory & Warm Gold Shimmer Surface for Images & Skeletons */
+@keyframes ifaqaShimmerSweep {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes ifaqaContentFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ifaqa-shimmer-surface {
+  position: relative;
+  overflow: hidden;
+  background-color: #EFEAE0;
+}
+
+.ifaqa-shimmer-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translate3d(-100%, 0, 0);
+  background: linear-gradient(
+    105deg,
+    transparent 18%,
+    rgba(255, 255, 255, 0.72) 46%,
+    rgba(223, 186, 115, 0.16) 54%,
+    transparent 82%
+  );
+  will-change: transform;
+  animation: ifaqaShimmerSweep 1.35s var(--ease-unslop) infinite;
+  pointer-events: none;
+}
+
+.ifaqa-content-appear {
+  animation: ifaqaContentFade 240ms var(--ease-unslop) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ifaqa-shimmer-surface::after {
+    animation: none;
+    background: none;
+  }
+  .ifaqa-content-appear {
+    animation: none;
+  }
+}

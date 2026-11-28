@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HerbalRemedy } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPriceINR } from '@/lib/formatters';
 import { triggerNavigationProgress } from '@/lib/nav-progress';
+import { ShimmerImage } from '@/components/ui/ShimmerImage';
 import { Leaf, Check, Plus, Star } from 'lucide-react';
 
 interface RemedyCard3DProps {
@@ -121,11 +121,12 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
         <div className="flex sm:hidden p-3.5 gap-3.5 items-center">
           <div className="relative w-24 h-24 shrink-0 rounded-lg bg-white border border-ifaqa-plum/10 flex items-center justify-center p-1 overflow-hidden">
             {remedy.primaryImage && !imageError ? (
-              <Image
+              <ShimmerImage
                 src={remedy.primaryImage}
                 alt={displayTitle}
                 fill
                 sizes="96px"
+                loading="lazy"
                 onError={() => setImageError(true)}
                 className="object-contain"
               />
@@ -213,11 +214,12 @@ export function RemedyCard3D({ remedy }: RemedyCard3DProps) {
 
               {remedy.primaryImage && !imageError ? (
                 <div className="relative w-full h-full">
-                  <Image
+                  <ShimmerImage
                     src={remedy.primaryImage}
                     alt={displayTitle}
                     fill
                     sizes="(max-width: 1024px) 50vw, 300px"
+                    loading="lazy"
                     onError={() => setImageError(true)}
                     className="object-contain"
                   />

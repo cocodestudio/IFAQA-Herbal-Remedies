@@ -12,6 +12,19 @@ export const isFallbackMode = (): boolean => {
   return false;
 };
 
+const STORAGE_KEY = 'ifaqa_storefront_swr_v2';
+const MEMORY_FRESH_TTL_MS = 120_000; // 2 minutes fresh in RAM
+const SWR_STALE_TTL_MS = 60_000; // Background revalidate after 60s
+const MAX_PERSISTED_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours max localStorage lifetime
+
+export interface StorefrontSnapshot {
+  remedies: HerbalRemedy[];
+  categories: AilmentCategory[];
+  banners: PromotionalBanner[];
+  savedAt: number;
+  fromCache: boolean;
+}
+
 let cachedRemedies: HerbalRemedy[] | null = null;
 let remediesTimestamp = 0;
 
@@ -21,41 +34,248 @@ let categoriesTimestamp = 0;
 let cachedBanners: PromotionalBanner[] | null = null;
 let bannersTimestamp = 0;
 
-// Always keep storefront live-synced with Admin Portal updates in Firestore
-const CACHE_TTL_MS = 0;
+let inflightBootstrap: Promise<StorefrontSnapshot | null> | null = null;
+let inflightRemedies: Promise<HerbalRemedy[]> | null = null;
+let inflightCategories: Promise<AilmentCategory[]> | null = null;
+let inflightBanners: Promise<PromotionalBanner[]> | null = null;
 
-export async function getRemedies(): Promise<HerbalRemedy[]> {
-  const now = Date.now();
+function getSeedSnapshot(): StorefrontSnapshot {
+  return {
+    remedies: seedData.remedies as unknown as HerbalRemedy[],
+    categories: [...(seedData.categories as unknown as AilmentCategory[])]
+      .filter((c) => c.isActive !== false)
+      .sort((a, b) => a.displayOrder - b.displayOrder),
+    banners: [...(seedData.banners as unknown as PromotionalBanner[])]
+      .filter((b) => b.isActive)
+      .sort((a, b) => a.priorityOrder - b.priorityOrder),
+    savedAt: 0,
+    fromCache: false,
+  };
+}
+
+function persistSnapshot(snapshot: Omit<StorefrontSnapshot, 'fromCache'>): void {
+  cachedRemedies = snapshot.remedies;
+  cachedCategories = snapshot.categories;
+  cachedBanners = snapshot.banners;
+  remediesTimestamp = snapshot.savedAt;
+  categoriesTimestamp = snapshot.savedAt;
+  bannersTimestamp = snapshot.savedAt;
+
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  } catch {
+    // Ignore storage quota / private mode errors
+  }
+}
+
+function readPersistedSnapshot(): StorefrontSnapshot | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<StorefrontSnapshot>;
+    if (
+      !parsed ||
+      !Array.isArray(parsed.remedies) ||
+      !Array.isArray(parsed.categories) ||
+      !Array.isArray(parsed.banners) ||
+      parsed.remedies.length === 0
+    ) {
+      return null;
+    }
+    const age = Date.now() - Number(parsed.savedAt || 0);
+    if (age > MAX_PERSISTED_AGE_MS) return null;
+    return {
+      remedies: parsed.remedies,
+      categories: parsed.categories,
+      banners: parsed.banners,
+      savedAt: Number(parsed.savedAt || 0),
+      fromCache: true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function hasWarmMemoryCache(): boolean {
+  return Boolean(
+    cachedRemedies &&
+      cachedRemedies.length > 0 &&
+      cachedCategories &&
+      cachedCategories.length > 0 &&
+      cachedBanners
+  );
+}
+
+export function getCachedStorefrontSnapshot(): StorefrontSnapshot {
   if (
-    CACHE_TTL_MS > 0 &&
     cachedRemedies &&
     cachedRemedies.length > 0 &&
-    now - remediesTimestamp < CACHE_TTL_MS
+    cachedCategories &&
+    cachedCategories.length > 0 &&
+    cachedBanners
+  ) {
+    return {
+      remedies: cachedRemedies,
+      categories: cachedCategories,
+      banners: cachedBanners,
+      savedAt: remediesTimestamp,
+      fromCache: true,
+    };
+  }
+
+  const stored = readPersistedSnapshot();
+  if (stored) {
+    cachedRemedies = stored.remedies;
+    cachedCategories = stored.categories;
+    cachedBanners = stored.banners;
+    remediesTimestamp = stored.savedAt;
+    categoriesTimestamp = stored.savedAt;
+    bannersTimestamp = stored.savedAt;
+    return stored;
+  }
+
+  return getSeedSnapshot();
+}
+
+export function invalidateStorefrontCache(): void {
+  cachedRemedies = null;
+  cachedCategories = null;
+  cachedBanners = null;
+  remediesTimestamp = 0;
+  categoriesTimestamp = 0;
+  bannersTimestamp = 0;
+  if (typeof window !== 'undefined') {
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore
+    }
+  }
+}
+
+async function fetchEdgeStorefront(forceRefresh = false): Promise<StorefrontSnapshot | null> {
+  if (typeof window === 'undefined' || isFallbackMode()) return null;
+  if (inflightBootstrap && !forceRefresh) return inflightBootstrap;
+
+  const job = (async (): Promise<StorefrontSnapshot | null> => {
+    try {
+      const url = forceRefresh ? '/api/storefront?refresh=1' : '/api/storefront';
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (!data || !Array.isArray(data.remedies) || data.remedies.length === 0) {
+        return null;
+      }
+      const snapshot: Omit<StorefrontSnapshot, 'fromCache'> = {
+        remedies: data.remedies,
+        categories: Array.isArray(data.categories) ? data.categories : getSeedSnapshot().categories,
+        banners: Array.isArray(data.banners) ? data.banners : getSeedSnapshot().banners,
+        savedAt: Date.now(),
+      };
+      persistSnapshot(snapshot);
+      return { ...snapshot, fromCache: false };
+    } catch {
+      return null;
+    } finally {
+      inflightBootstrap = null;
+    }
+  })();
+
+  inflightBootstrap = job;
+  return job;
+}
+
+/**
+ * Single deduplicated loader for Homepage & Header — serves instant L1 RAM / L2 localStorage SWR
+ * when available and revalidates from Redis / Cloudflare Edge / Firestore in background.
+ */
+export async function getStorefrontData(forceRefresh = false): Promise<StorefrontSnapshot> {
+  const now = Date.now();
+  const current = getCachedStorefrontSnapshot();
+
+  if (!forceRefresh && current.fromCache && now - current.savedAt < SWR_STALE_TTL_MS) {
+    return current;
+  }
+
+  const edge = await fetchEdgeStorefront(forceRefresh);
+  if (edge) return edge;
+
+  // Fallback to direct Firestore client SDK calls
+  const [remedies, categories, banners] = await Promise.all([
+    getRemedies(forceRefresh),
+    getCategories(forceRefresh),
+    getBanners(forceRefresh),
+  ]);
+  const snapshot: Omit<StorefrontSnapshot, 'fromCache'> = {
+    remedies,
+    categories,
+    banners,
+    savedAt: Date.now(),
+  };
+  persistSnapshot(snapshot);
+  return { ...snapshot, fromCache: false };
+}
+
+export async function getRemedies(forceRefresh = false): Promise<HerbalRemedy[]> {
+  const now = Date.now();
+  if (
+    !forceRefresh &&
+    cachedRemedies &&
+    cachedRemedies.length > 0 &&
+    now - remediesTimestamp < MEMORY_FRESH_TTL_MS
   ) {
     return cachedRemedies;
   }
 
-  if (!isFallbackMode() && db) {
-    try {
-      const snap = await getDocs(collection(db, 'remedies'));
-      if (!snap.empty) {
-        const list = snap.docs.map((d) => ({ ...d.data(), id: d.id } as HerbalRemedy));
-        list.sort((a, b) => {
-          const tA = new Date(a.updatedAt || a.createdAt || 0).getTime();
-          const tB = new Date(b.updatedAt || b.createdAt || 0).getTime();
-          return tB - tA;
-        });
-        cachedRemedies = list;
-        remediesTimestamp = now;
-        return cachedRemedies;
-      }
-    } catch (e) {
-      console.warn('Firestore remedies fetch failed, using seed data fallback:', e);
+  if (!forceRefresh) {
+    const persisted = readPersistedSnapshot();
+    if (persisted && persisted.remedies.length > 0 && now - persisted.savedAt < SWR_STALE_TTL_MS) {
+      cachedRemedies = persisted.remedies;
+      remediesTimestamp = persisted.savedAt;
+      return cachedRemedies;
     }
   }
-  cachedRemedies = seedData.remedies as unknown as HerbalRemedy[];
-  remediesTimestamp = now;
-  return cachedRemedies;
+
+  if (inflightRemedies && !forceRefresh) return inflightRemedies;
+
+  const job = (async (): Promise<HerbalRemedy[]> => {
+    const edge = await fetchEdgeStorefront(forceRefresh);
+    if (edge && edge.remedies.length > 0) return edge.remedies;
+
+    if (!isFallbackMode() && db) {
+      try {
+        const snap = await getDocs(collection(db, 'remedies'));
+        if (!snap.empty) {
+          const list = snap.docs.map((d) => ({ ...d.data(), id: d.id } as HerbalRemedy));
+          list.sort((a, b) => {
+            const tA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+            const tB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+            return tB - tA;
+          });
+          cachedRemedies = list;
+          remediesTimestamp = Date.now();
+          return cachedRemedies;
+        }
+      } catch (e) {
+        console.warn('Firestore remedies fetch failed, using cached/seed fallback:', e);
+      }
+    }
+
+    const fallback = readPersistedSnapshot()?.remedies || (seedData.remedies as unknown as HerbalRemedy[]);
+    cachedRemedies = fallback;
+    remediesTimestamp = Date.now();
+    return cachedRemedies;
+  })().finally(() => {
+    inflightRemedies = null;
+  });
+
+  inflightRemedies = job;
+  return job;
 }
 
 export async function getRemedyBySlug(slug: string): Promise<HerbalRemedy | null> {
@@ -81,40 +301,61 @@ export async function getRemediesByCategory(categoryId: string): Promise<HerbalR
   return active.filter((r) => r.categoryId === categoryId);
 }
 
-export async function getCategories(): Promise<AilmentCategory[]> {
+export async function getCategories(forceRefresh = false): Promise<AilmentCategory[]> {
   const now = Date.now();
   if (
-    CACHE_TTL_MS > 0 &&
+    !forceRefresh &&
     cachedCategories &&
     cachedCategories.length > 0 &&
-    now - categoriesTimestamp < CACHE_TTL_MS
+    now - categoriesTimestamp < MEMORY_FRESH_TTL_MS
   ) {
     return cachedCategories;
   }
 
-  if (!isFallbackMode() && db) {
-    try {
-      const snap = await getDocs(collection(db, 'ailments'));
-      if (!snap.empty) {
-        const categories = snap.docs
-          .map((d) => ({ ...d.data(), id: d.id } as AilmentCategory))
-          .filter((c) => c && c.name && c.isActive !== false);
-        if (categories.length > 0) {
-          cachedCategories = categories.sort((a, b) => a.displayOrder - b.displayOrder);
-          categoriesTimestamp = now;
-          return cachedCategories;
-        }
-      }
-    } catch (e) {
-      console.warn('Firestore categories fetch failed, using seed data fallback:', e);
+  if (!forceRefresh) {
+    const persisted = readPersistedSnapshot();
+    if (persisted && persisted.categories.length > 0 && now - persisted.savedAt < SWR_STALE_TTL_MS) {
+      cachedCategories = persisted.categories;
+      categoriesTimestamp = persisted.savedAt;
+      return cachedCategories;
     }
   }
-  const categories = seedData.categories as unknown as AilmentCategory[];
-  cachedCategories = [...categories]
-    .filter((c) => c.isActive !== false)
-    .sort((a, b) => a.displayOrder - b.displayOrder);
-  categoriesTimestamp = now;
-  return cachedCategories;
+
+  if (inflightCategories && !forceRefresh) return inflightCategories;
+
+  const job = (async (): Promise<AilmentCategory[]> => {
+    const edge = await fetchEdgeStorefront(forceRefresh);
+    if (edge && edge.categories.length > 0) return edge.categories;
+
+    if (!isFallbackMode() && db) {
+      try {
+        const snap = await getDocs(collection(db, 'ailments'));
+        if (!snap.empty) {
+          const categories = snap.docs
+            .map((d) => ({ ...d.data(), id: d.id } as AilmentCategory))
+            .filter((c) => c && c.name && c.isActive !== false);
+          if (categories.length > 0) {
+            cachedCategories = categories.sort((a, b) => a.displayOrder - b.displayOrder);
+            categoriesTimestamp = Date.now();
+            return cachedCategories;
+          }
+        }
+      } catch (e) {
+        console.warn('Firestore categories fetch failed, using cached/seed fallback:', e);
+      }
+    }
+    const categories = readPersistedSnapshot()?.categories || (seedData.categories as unknown as AilmentCategory[]);
+    cachedCategories = [...categories]
+      .filter((c) => c.isActive !== false)
+      .sort((a, b) => a.displayOrder - b.displayOrder);
+    categoriesTimestamp = Date.now();
+    return cachedCategories;
+  })().finally(() => {
+    inflightCategories = null;
+  });
+
+  inflightCategories = job;
+  return job;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<AilmentCategory | null> {
@@ -123,38 +364,59 @@ export async function getCategoryBySlug(slug: string): Promise<AilmentCategory |
   return categories.find((c) => c.slug === cleanSlug || c.id === cleanSlug) || null;
 }
 
-export async function getBanners(): Promise<PromotionalBanner[]> {
+export async function getBanners(forceRefresh = false): Promise<PromotionalBanner[]> {
   const now = Date.now();
   if (
-    CACHE_TTL_MS > 0 &&
+    !forceRefresh &&
     cachedBanners &&
     cachedBanners.length > 0 &&
-    now - bannersTimestamp < CACHE_TTL_MS
+    now - bannersTimestamp < MEMORY_FRESH_TTL_MS
   ) {
     return cachedBanners;
   }
 
-  if (!isFallbackMode() && db) {
-    try {
-      const snap = await getDocs(collection(db, 'banners'));
-      if (!snap.empty) {
-        const banners = snap.docs.map((d) => ({ ...d.data(), id: d.id } as PromotionalBanner));
-        cachedBanners = banners
-          .filter((b) => b.isActive)
-          .sort((a, b) => a.priorityOrder - b.priorityOrder);
-        bannersTimestamp = now;
-        return cachedBanners;
-      }
-    } catch (e) {
-      console.warn('Firestore banners fetch failed, using seed data fallback:', e);
+  if (!forceRefresh) {
+    const persisted = readPersistedSnapshot();
+    if (persisted && persisted.banners && now - persisted.savedAt < SWR_STALE_TTL_MS) {
+      cachedBanners = persisted.banners;
+      bannersTimestamp = persisted.savedAt;
+      return cachedBanners;
     }
   }
-  const banners = seedData.banners as unknown as PromotionalBanner[];
-  cachedBanners = [...banners]
-    .filter((b) => b.isActive)
-    .sort((a, b) => a.priorityOrder - b.priorityOrder);
-  bannersTimestamp = now;
-  return cachedBanners;
+
+  if (inflightBanners && !forceRefresh) return inflightBanners;
+
+  const job = (async (): Promise<PromotionalBanner[]> => {
+    const edge = await fetchEdgeStorefront(forceRefresh);
+    if (edge && edge.banners) return edge.banners;
+
+    if (!isFallbackMode() && db) {
+      try {
+        const snap = await getDocs(collection(db, 'banners'));
+        if (!snap.empty) {
+          const banners = snap.docs.map((d) => ({ ...d.data(), id: d.id } as PromotionalBanner));
+          cachedBanners = banners
+            .filter((b) => b.isActive)
+            .sort((a, b) => a.priorityOrder - b.priorityOrder);
+          bannersTimestamp = Date.now();
+          return cachedBanners;
+        }
+      } catch (e) {
+        console.warn('Firestore banners fetch failed, using cached/seed fallback:', e);
+      }
+    }
+    const banners = readPersistedSnapshot()?.banners || (seedData.banners as unknown as PromotionalBanner[]);
+    cachedBanners = [...banners]
+      .filter((b) => b.isActive)
+      .sort((a, b) => a.priorityOrder - b.priorityOrder);
+    bannersTimestamp = Date.now();
+    return cachedBanners;
+  })().finally(() => {
+    inflightBanners = null;
+  });
+
+  inflightBanners = job;
+  return job;
 }
 
 export function filterRemedies(
